@@ -27,6 +27,10 @@ public class Adress
     [Column("State")]
     public string State { get; set; }
     [Required]
+    [MaxLength(5)]
+    [Column("Zip")]
+    public string Zip { get; set; }
+    [Required]
     [MaxLength(150)]
     [Column("Country")]
     public string Country { get; set; }

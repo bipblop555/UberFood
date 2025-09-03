@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace UberFood.Core.Entities;
 
-public class Pasta
+public class Pasta : Food
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column("Id")]
-    public int Id { get; set; }
     [Required]
     [Column("Type")]
     public int Type { get; set; }

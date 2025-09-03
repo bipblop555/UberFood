@@ -12,7 +12,7 @@ using UberFood.Core.Context;
 namespace UberFood.Core.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250903133800_Setup")]
+    [Migration("20250903144243_Setup")]
     partial class Setup
     {
         /// <inheritdoc />
@@ -58,23 +58,15 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("Street");
 
+                    b.Property<string>("Zip")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)")
+                        .HasColumnName("Zip");
+
                     b.HasKey("Id");
 
                     b.ToTable("Adresses");
-                });
-
-            modelBuilder.Entity("UberFood.Core.Entities.Burger", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Burgers");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Dough", b =>
@@ -95,46 +87,23 @@ namespace UberFood.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Doughs");
-                });
 
-            modelBuilder.Entity("UberFood.Core.Entities.Drink", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Fizzy")
-                        .HasColumnType("bit")
-                        .HasColumnName("Fizzy");
-
-                    b.Property<float>("KCal")
-                        .HasColumnType("real")
-                        .HasColumnName("KCal");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Drinks");
-                });
-
-            modelBuilder.Entity("UberFood.Core.Entities.Food", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("IsVegetarian")
-                        .HasColumnType("bit")
-                        .HasColumnName("IsVegetarian");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Foods");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Classique"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Fine"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Épaisse"
+                        });
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Order", b =>
@@ -191,45 +160,6 @@ namespace UberFood.Core.Migrations
                     b.ToTable("OrderProducts");
                 });
 
-            modelBuilder.Entity("UberFood.Core.Entities.Pasta", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("KCal")
-                        .HasColumnType("real")
-                        .HasColumnName("KCal");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int")
-                        .HasColumnName("Type");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pastas");
-                });
-
-            modelBuilder.Entity("UberFood.Core.Entities.Pizza", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DoughId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pizzas");
-                });
-
             modelBuilder.Entity("UberFood.Core.Entities.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -244,13 +174,15 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Name");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real")
+                    b.Property<double>("Price")
+                        .HasColumnType("float")
                         .HasColumnName("Price");
 
                     b.HasKey("ProductId");
 
                     b.ToTable("Product");
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.User", b =>
@@ -292,6 +224,158 @@ namespace UberFood.Core.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Drink", b =>
+                {
+                    b.HasBaseType("UberFood.Core.Entities.Product");
+
+                    b.Property<bool>("Fizzy")
+                        .HasColumnType("bit")
+                        .HasColumnName("Fizzy");
+
+                    b.Property<double>("KCal")
+                        .HasColumnType("float")
+                        .HasColumnName("KCal");
+
+                    b.ToTable("Drinks");
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Food", b =>
+                {
+                    b.HasBaseType("UberFood.Core.Entities.Product");
+
+                    b.Property<bool>("IsVegetarian")
+                        .HasColumnType("bit")
+                        .HasColumnName("IsVegetarian");
+
+                    b.ToTable("Foods");
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Burger", b =>
+                {
+                    b.HasBaseType("UberFood.Core.Entities.Food");
+
+                    b.ToTable("Burgers");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 4,
+                            Name = "Big Mac",
+                            Price = 9.0999999999999996,
+                            IsVegetarian = false
+                        },
+                        new
+                        {
+                            ProductId = 5,
+                            Name = "Smash Burger",
+                            Price = 12.1,
+                            IsVegetarian = false
+                        },
+                        new
+                        {
+                            ProductId = 6,
+                            Name = "Mac Chicken",
+                            Price = 9.0999999999999996,
+                            IsVegetarian = false
+                        });
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Pasta", b =>
+                {
+                    b.HasBaseType("UberFood.Core.Entities.Food");
+
+                    b.Property<double>("KCal")
+                        .HasColumnType("float")
+                        .HasColumnName("KCal");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int")
+                        .HasColumnName("Type");
+
+                    b.ToTable("Pastas");
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Pizza", b =>
+                {
+                    b.HasBaseType("UberFood.Core.Entities.Food");
+
+                    b.Property<int>("DoughId")
+                        .HasColumnType("int");
+
+                    b.ToTable("Pizzas");
+
+                    b.HasData(
+                        new
+                        {
+                            ProductId = 1,
+                            Name = "4 Fromages",
+                            Price = 9.9900000000000002,
+                            IsVegetarian = false,
+                            DoughId = 1
+                        },
+                        new
+                        {
+                            ProductId = 2,
+                            Name = "Chèvre Miel",
+                            Price = 10.0,
+                            IsVegetarian = false,
+                            DoughId = 2
+                        },
+                        new
+                        {
+                            ProductId = 3,
+                            Name = "Reine",
+                            Price = 8.5,
+                            IsVegetarian = false,
+                            DoughId = 3
+                        });
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Drink", b =>
+                {
+                    b.HasOne("UberFood.Core.Entities.Product", null)
+                        .WithOne()
+                        .HasForeignKey("UberFood.Core.Entities.Drink", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Food", b =>
+                {
+                    b.HasOne("UberFood.Core.Entities.Product", null)
+                        .WithOne()
+                        .HasForeignKey("UberFood.Core.Entities.Food", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Burger", b =>
+                {
+                    b.HasOne("UberFood.Core.Entities.Food", null)
+                        .WithOne()
+                        .HasForeignKey("UberFood.Core.Entities.Burger", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Pasta", b =>
+                {
+                    b.HasOne("UberFood.Core.Entities.Food", null)
+                        .WithOne()
+                        .HasForeignKey("UberFood.Core.Entities.Pasta", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Pizza", b =>
+                {
+                    b.HasOne("UberFood.Core.Entities.Food", null)
+                        .WithOne()
+                        .HasForeignKey("UberFood.Core.Entities.Pizza", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
