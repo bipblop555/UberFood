@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UberFood.Core.Models
+namespace UberFood.Core.Models;
+
+public class DrinkDto
 {
-    internal class DrinkDto
-    {
-    }
 }
