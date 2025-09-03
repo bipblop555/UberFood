@@ -19,6 +19,6 @@ public class Drink
     public bool Fizzy { get; set; }
     [Required]
     [Column("KCal")]
-    public float KCal { get; set; }
+    public double KCal { get; set; }
 
 }

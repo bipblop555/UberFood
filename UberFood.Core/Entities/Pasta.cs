@@ -19,5 +19,5 @@ public class Pasta
     public int Type { get; set; }
     [Required]
     [Column("KCal")]
-    public float KCal { get; set; }
+    public double KCal { get; set; }
 }
