@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace UberFood.Core.Models;
 
-public class PizzaDto
+public class PizzaDto : FoodDto
 {
+    
+    public int DoughId;
+    public int Id;
 }

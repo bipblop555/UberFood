@@ -8,4 +8,5 @@ namespace UberFood.Core.Models;
 
 public class OrderProductDto
 {
+
 }

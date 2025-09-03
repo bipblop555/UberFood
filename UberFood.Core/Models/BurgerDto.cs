@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace UberFood.Core.Models;
 
-public class BurgerDto
+public class BurgerDto : FoodDto
 {
+    public int Id { get; set; }
 }
