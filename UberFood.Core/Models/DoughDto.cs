@@ -8,4 +8,7 @@ namespace UberFood.Core.Models;
 
 public class DoughDto
 {
+    
+    public string Name { get; set; }
+    public int Id { get; set; }
 }

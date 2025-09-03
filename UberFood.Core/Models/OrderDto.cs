@@ -8,4 +8,7 @@ namespace UberFood.Core.Models;
 
 public class OrderDto
 {
+    public DateTime OrderDate { get; set; }
+    public DateTime DelivryDate { get; set; }
+    public int Status { get; set; }
 }
