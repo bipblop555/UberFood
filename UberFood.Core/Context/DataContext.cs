@@ -29,14 +29,19 @@ namespace UberFood.Core.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>().HasData(
-                    new Product { Name = "4 Fromages", Price = 9.99, ProductId = 1 },
-                    new Product { Name = "Chèvre Miel", Price = 10.00, ProductId = 2 },
-                    new Product { Name = "Reine", Price = 8.50, ProductId = 3 },
-                    new Product { Name = "Big Max", Price = 9.10, ProductId = 4 },
-                    new Product { Name = "Smash Burger", Price = 12.10, ProductId = 5 },
-                    new Product { Name = "Big Max", Price = 9.10, ProductId = 6 }
-                );
+            modelBuilder.Entity<Product>().UseTptMappingStrategy();
+            modelBuilder.Entity<Pizza>().HasData(
+                    new Pizza { Name = "4 Fromages", Price = 9.99, ProductId = 1, DoughId = 1 },
+                    new Pizza { Name = "Chèvre Miel", Price = 10.00, ProductId = 2, DoughId = 2 },
+                    new Pizza { Name = "Reine", Price = 8.50, ProductId = 3, DoughId = 3 });
+            modelBuilder.Entity<Burger>().HasData(
+                    new Burger { Name = "Big Mac", Price = 9.10, ProductId = 4 },
+                    new Burger { Name = "Smash Burger", Price = 12.10, ProductId = 5 },
+                    new Burger { Name = "Mac Chicken", Price = 9.10, ProductId = 6 });
+            modelBuilder.Entity<Dough>().HasData(
+                    new Dough { Id = 1, Name = "Classique" },
+                    new Dough { Id = 2, Name = "Fine" },
+                    new Dough { Id = 3, Name = "Épaisse" });
         }
     }
 }
