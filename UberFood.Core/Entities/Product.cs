@@ -19,5 +19,5 @@ public class Product
     public string Name { get; set; }
     [Required]
     [Column("Price")]
-    public float Price { get; set; }
+    public double Price { get; set; }
 }

@@ -26,5 +26,17 @@ namespace UberFood.Core.Context
         public DbSet<User> Users => this.Set<User>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) => optionsBuilder.UseSqlServer("Server=localhost;Database=EatDomicile;TrustServerCertificate=True;Trusted_Connection=True;");
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Product>().HasData(
+                    new Product { Name = "4 Fromages", Price = 9.99, ProductId = 1 },
+                    new Product { Name = "Chèvre Miel", Price = 10.00, ProductId = 2 },
+                    new Product { Name = "Reine", Price = 8.50, ProductId = 3 },
+                    new Product { Name = "Big Max", Price = 9.10, ProductId = 4 },
+                    new Product { Name = "Smash Burger", Price = 12.10, ProductId = 5 },
+                    new Product { Name = "Big Max", Price = 9.10, ProductId = 6 }
+                );
+        }
     }
 }
