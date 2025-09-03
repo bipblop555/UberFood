@@ -12,17 +12,22 @@ public class Adress
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("Id")]
     public int Id { get; set; }
     [Required]
     [MaxLength(150)]
+    [Column("Street")]
     public string Street { get; set; }
     [Required]
     [MaxLength(150)]
+    [Column("City")]
     public string City { get; set; }
     [Required]
     [MaxLength(150)]
+    [Column("State")]
     public string State { get; set; }
     [Required]
     [MaxLength(150)]
+    [Column("Country")]
     public string Country { get; set; }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UberFood.Core.Entities
 {
-    internal class Burger
+    public class Burger
     {
     }
 }
