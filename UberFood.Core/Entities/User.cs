@@ -15,19 +15,22 @@ public class User
     [Column("Id")]
     public int Id { get; set; }
     [Required]
-    [MaxLength(150)]
-    [Column("Street")]
-    public string Street { get; set; }
+    [MaxLength(50)]
+    [Column("FirstName")]
+    public string FirstName { get; set; }
+    [Required]
+    [MaxLength(50)]
+    [Column("LastName")]
+    public string LastName { get; set; }
     [Required]
     [MaxLength(150)]
-    [Column("City")]
-    public string City { get; set; }
+    [Column("Phone")]
+    public int Phone { get; set; }
     [Required]
     [MaxLength(150)]
-    [Column("State")]
-    public string State { get; set; }
-    [Required]
-    [MaxLength(150)]
-    [Column("Country")]
-    public string Country { get; set; }
+    [Column("Mail")]
+    public string Mail { get; set; }
+    [ForeignKey("AdressId")]
+    [Column("AdresseId")]
+    public int AdresseId { get; set; }
 }
