@@ -1,12 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UberFood.Core.Entities
+namespace UberFood.Core.Entities;
+
+public class Pizza
 {
-    internal class Pizza
-    {
-    }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("Id")]
+    public int Id { get; set; }
+    [ForeignKey("DoughId")]
+    public int DoughId { get; set; }
 }

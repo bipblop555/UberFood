@@ -1,12 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UberFood.Core.Entities
+namespace UberFood.Core.Entities;
+
+public class Product
 {
-    internal class Product
-    {
-    }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [Column("Id")]
+    public int ProductId { get; set; }
+    [Required]
+    [Column("Name")]
+    public string Name { get; set; }
+    [Required]
+    [Column("Price")]
+    public float Price { get; set; }
 }
