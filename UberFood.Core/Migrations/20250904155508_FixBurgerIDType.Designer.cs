@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UberFood.Core.Context;
 
@@ -11,9 +12,11 @@ using UberFood.Core.Context;
 namespace UberFood.Core.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250904155508_FixBurgerIDType")]
+    partial class FixBurgerIDType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,6 +98,9 @@ namespace UberFood.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BurgerID")
+                        .HasColumnType("int");
+
                     b.Property<int>("BurgerId")
                         .HasColumnType("int")
                         .HasColumnName("BurgerId");
@@ -115,7 +121,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BurgerId");
+                    b.HasIndex("BurgerID");
 
                     b.HasIndex("PizzaId");
 
@@ -311,19 +317,17 @@ namespace UberFood.Core.Migrations
                 {
                     b.HasOne("UberFood.Core.Entities.Burger", "Burger")
                         .WithMany("Ingredients")
-                        .HasForeignKey("BurgerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("BurgerID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UberFood.Core.Entities.Pizza", "Pizza")
+                    b.HasOne("UberFood.Core.Entities.Pizza", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Burger");
-
-                    b.Navigation("Pizza");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Drink", b =>

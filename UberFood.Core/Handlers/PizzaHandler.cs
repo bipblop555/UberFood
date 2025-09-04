@@ -13,11 +13,18 @@ namespace UberFood.Core.Handlers;
 
 public sealed class PizzaHandler
 {
+    private DbContextOptions<DataContext> _options;
+    public PizzaHandler()
+    {
+        var builder = new DbContextOptionsBuilder<DataContext>();
+        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
+        _options = builder.Options;
+    }
     public void AddPizza(PizzaDto pizza)
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var pizzaToAdd = new Entities.Pizza
                 {
@@ -42,7 +49,7 @@ public sealed class PizzaHandler
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var pizzas = ctx.Pizzas
                     .Include(p => p.Dough)
@@ -63,7 +70,7 @@ public sealed class PizzaHandler
     {
         try
         {
-            using (var ctx = new DataContext()) 
+            using (var ctx = new DataContext(_options)) 
             {
                 var pizzaToRemove = ctx.Pizzas.FirstOrDefault(p => p.Name == name);
                 if (pizzaToRemove is not null)
