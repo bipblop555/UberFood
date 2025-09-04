@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UberFood.Core.Context;
 
@@ -11,9 +12,11 @@ using UberFood.Core.Context;
 namespace UberFood.Core.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250904133958_KCalIngrModif")]
+    partial class KCalIngrModif
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -590,7 +593,7 @@ namespace UberFood.Core.Migrations
                     b.HasData(
                         new
                         {
-                            ProductId = 100,
+                            ProductId = 4,
                             Name = "Big Mac",
                             Price = 9.0999999999999996,
                             ContainAlergene = true,
@@ -598,7 +601,7 @@ namespace UberFood.Core.Migrations
                         },
                         new
                         {
-                            ProductId = 101,
+                            ProductId = 5,
                             Name = "Smash Burger",
                             Price = 12.1,
                             ContainAlergene = true,
@@ -606,7 +609,7 @@ namespace UberFood.Core.Migrations
                         },
                         new
                         {
-                            ProductId = 102,
+                            ProductId = 6,
                             Name = "Mac Chicken",
                             Price = 9.0999999999999996,
                             ContainAlergene = true,

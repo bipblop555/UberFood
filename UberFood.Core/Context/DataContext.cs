@@ -18,7 +18,7 @@ namespace UberFood.Core.Context
         public DbSet<Pizza> Pizzas => this.Set<Pizza>();
         public DbSet<Dough> Doughs => this.Set<Dough>();
 
-        public DbSet<Product> Ingredients => this.Set<Product>();
+        public DbSet<Ingredient> Ingredients => this.Set<Ingredient>();
         public DbSet<Adress> Adresses => this.Set<Adress>();
         public DbSet<Product> Products => this.Set<Product>();
         public DbSet<Order> Orders => this.Set<Order>();
@@ -35,9 +35,9 @@ namespace UberFood.Core.Context
                     new Pizza { Name = "Chèvre Miel", Price = 10.00, ProductId = 2, DoughId = 2, ContainAlergene = true, IsVegetarian = true },
                     new Pizza { Name = "Reine", Price = 8.50, ProductId = 3, DoughId = 3, ContainAlergene = true, IsVegetarian = false });
             modelBuilder.Entity<Burger>().HasData(
-                    new Burger { Name = "Big Mac", Price = 9.10, ProductId = 4, ContainAlergene = true, IsVegetarian = false },
-                    new Burger { Name = "Smash Burger", Price = 12.10, ProductId = 5, ContainAlergene = true, IsVegetarian = false },
-                    new Burger { Name = "Mac Chicken", Price = 9.10, ProductId = 6, ContainAlergene = true, IsVegetarian = false });
+                    new Burger { Name = "Big Mac", Price = 9.10, ProductId = 100, ContainAlergene = true, IsVegetarian = false },
+                    new Burger { Name = "Smash Burger", Price = 12.10, ProductId = 101, ContainAlergene = true, IsVegetarian = false },
+                    new Burger { Name = "Mac Chicken", Price = 9.10, ProductId = 102, ContainAlergene = true, IsVegetarian = false });
             modelBuilder.Entity<Dough>().HasData(
                     new Dough { Id = 1, Name = "Classique" },
                     new Dough { Id = 2, Name = "Fine" },
@@ -57,42 +57,42 @@ namespace UberFood.Core.Context
                     new Adress { City = "Orléans", Country = "France", Id = 1, State = "Loiret", Street = "1 rue bidon", Zip = "45000" },
                     new Adress { City = "Paris", Country = "France", Id = 2, State = "Ile de France", Street = "5 avenue du Général de Gaule", Zip = "75000" });
             modelBuilder.Entity<Ingredient>().HasData(
-                new Ingredient { Name = "Tomate", Id = 1, BurgerId = 1 },
-                    new Ingredient { Name = "Tomate", Id = 2, BurgerId = 2 },
-                    new Ingredient { Name = "Tomate", Id = 3, BurgerId = 3 },
+                new Ingredient { Name = "Tomate", Id = 1, BurgerId = 1, KCal=100 },
+                    new Ingredient { Name = "Tomate", Id = 2, BurgerId = 2, KCal = 100 },
+                    new Ingredient { Name = "Tomate", Id = 3, BurgerId = 3, KCal = 100 },
 
-                    new Ingredient { Name = "Steak Haché", Id = 4, BurgerId = 1 },
-                    new Ingredient { Name = "Steak Haché", Id = 5, BurgerId = 2 },
-                    new Ingredient { Name = "Steak de Poulet", Id = 6, BurgerId = 3 },
+                    new Ingredient { Name = "Steak Haché", Id = 4, BurgerId = 1, KCal=500 },
+                    new Ingredient { Name = "Steak Haché", Id = 5, BurgerId = 2, KCal = 500 },
+                    new Ingredient { Name = "Steak de Poulet", Id = 6, BurgerId = 3, KCal = 500 },
 
-                    new Ingredient { Name = "Cheddar", Id = 7, BurgerId = 1 },
-                    new Ingredient { Name = "Cheddar", Id = 8, BurgerId = 2 },
-                    new Ingredient { Name = "Cheddar", Id = 9, BurgerId = 3 },
+                    new Ingredient { Name = "Cheddar", Id = 7, BurgerId = 1, KCal=300 },
+                    new Ingredient { Name = "Cheddar", Id = 8, BurgerId = 2, KCal = 300 },
+                    new Ingredient { Name = "Cheddar", Id = 9, BurgerId = 3, KCal = 300 },
 
-                    new Ingredient { Name = "Sauce Tomate", Id = 10, PizzaId = 1 },
-                    new Ingredient { Name = "Sauce Tomate", Id = 11, PizzaId = 2 },
-                    new Ingredient { Name = "Sauce Tomate", Id = 12, PizzaId = 3 },
+                    new Ingredient { Name = "Sauce Tomate", Id = 10, PizzaId = 1, KCal =250 },
+                    new Ingredient { Name = "Sauce Tomate", Id = 11, PizzaId = 2, KCal = 250 },
+                    new Ingredient { Name = "Sauce Tomate", Id = 12, PizzaId = 3, KCal = 250 },
 
-                    new Ingredient { Name = "Jambon", Id = 13, PizzaId = 3 },
-                    new Ingredient { Name = "Champignons", Id = 14, PizzaId = 3 },
-                    new Ingredient { Name = "Fromage de chèvre", Id = 15, PizzaId = 3 },
+                    new Ingredient { Name = "Jambon", Id = 13, PizzaId = 3, KCal = 300 },
+                    new Ingredient { Name = "Champignons", Id = 14, PizzaId = 3, KCal = 100 },
+                    new Ingredient { Name = "Fromage de chèvre", Id = 15, PizzaId = 3, KCal = 300 },
 
-                    new Ingredient { Name = "Fromage de chèvre", Id = 16, PizzaId = 1 },
-                    new Ingredient { Name = "Roquefort", Id = 17, PizzaId = 1 },
-                    new Ingredient { Name = "Sauce Tomate", Id = 18, PizzaId = 3 },
+                    new Ingredient { Name = "Fromage de chèvre", Id = 16, PizzaId = 1, KCal = 300 },
+                    new Ingredient { Name = "Roquefort", Id = 17, PizzaId = 1, KCal = 300 },
+                    new Ingredient { Name = "Sauce Tomate", Id = 18, PizzaId = 3, KCal = 250 },
 
-                    new Ingredient { Name = "Miel", Id = 19, PizzaId = 2 },
-                    new Ingredient { Name = "Salade", Id = 20, BurgerId = 1 },
-                    new Ingredient { Name = "Salade", Id = 21, BurgerId = 2 },
-                    new Ingredient { Name = "Salade", Id = 22, BurgerId = 3 },
+                    new Ingredient { Name = "Miel", Id = 19, PizzaId = 2, KCal = 250 },
+                    new Ingredient { Name = "Salade", Id = 20, BurgerId = 1, KCal= 50 },
+                    new Ingredient { Name = "Salade", Id = 21, BurgerId = 2, KCal = 50 },
+                    new Ingredient { Name = "Salade", Id = 22, BurgerId = 3, KCal = 50 },
 
-                    new Ingredient { Name = "Sauce Bigmac", Id = 23, BurgerId = 1 },
-                    new Ingredient { Name = "Sauce Mayo", Id = 24, BurgerId = 2 },
-                    new Ingredient { Name = "Sauce Fumée", Id = 25, BurgerId = 3 },
+                    new Ingredient { Name = "Sauce Bigmac", Id = 23, BurgerId = 1, KCal= 300 },
+                    new Ingredient { Name = "Sauce Mayo", Id = 24, BurgerId = 2,  KCal = 300 },
+                    new Ingredient { Name = "Sauce Fumée", Id = 25, BurgerId = 3, KCal = 300 },
 
-                    new Ingredient { Name = "Oignons", Id = 26, BurgerId = 1 },
-                    new Ingredient { Name = "Oignons", Id = 27, BurgerId = 2 },
-                    new Ingredient { Name = "Oignons", Id = 28, BurgerId = 3 }
+                    new Ingredient { Name = "Oignons", Id = 26, BurgerId = 1, KCal = 50 },
+                    new Ingredient { Name = "Oignons", Id = 27, BurgerId = 2, KCal = 50 },
+                    new Ingredient { Name = "Oignons", Id = 28, BurgerId = 3, KCal = 50 }
                     );
         }
     }
