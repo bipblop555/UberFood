@@ -145,7 +145,7 @@ namespace UberFood.Affichage{
                 Console.WriteLine();
             }
         }
-        public static void AfficherBurger(List<Burger> burgers)
+        public static void AfficherBurger(List<BurgerDto> burgers)
         {
             int largeurFixe = 40;
 
@@ -174,7 +174,7 @@ namespace UberFood.Affichage{
                 Console.WriteLine();
             }
         }
-        public static void AfficherPasta(List<Pasta> Pastas)
+        public static void AfficherPasta(List<PastaDto> Pastas)
         {
             int largeurFixe = 40;
 
