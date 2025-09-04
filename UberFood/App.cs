@@ -34,6 +34,13 @@ do
                         var pizzaHandler = new PizzaHandler ();
                         var pizzas = pizzaHandler.GetPizzas();
                         Menu.AfficherPizzas(pizzas);
+                        var burgerHandler = new BurgerHandler ();
+                        var burgers = burgerHandler.GetBurgers();
+                        Menu.AfficherBurger(burgers);
+                        var pastaHandler = new PastaHandler();
+                        var pastas = pastaHandler.GetPastas();
+                        Menu .AfficherPasta(pastas);
+                        
                         Console.WriteLine("\nAppuyer sur une touche pour revenir en arrière");
                         Console.ReadKey();
                         break;

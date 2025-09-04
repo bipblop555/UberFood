@@ -8,18 +8,20 @@ namespace UberFood.Core.Models;
 
 public class UserDto
 {
-    public UserDto(string firstname, string lastname, string phone, string mail, int id) 
+    public UserDto(string firstname, string lastname, string phone, string mail,int addressId, int id) 
     { 
         this.FirstName = firstname;
         this.LastName = lastname;
         this.Phone = phone;
         this.Mail = mail;
+        this.AddressId = addressId;
         this.Id = id;
     }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Phone { get; set; }
     public string Mail { get; set; }
+    public int AddressId { get; set; }
     public int Id { get; set; }
 
 }
