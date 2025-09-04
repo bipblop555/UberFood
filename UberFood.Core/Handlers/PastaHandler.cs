@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,18 @@ namespace UberFood.Core.Handlers;
 
 public class PastaHandler
 {
+    private DbContextOptions<DataContext> _options;
+    public PastaHandler()
+    {
+        var builder = new DbContextOptionsBuilder<DataContext>();
+        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
+        _options = builder.Options;
+    }
     public void AddPasta(PastaDto Pasta)
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var pastaToAdd = new Entities.Pasta
                 {
@@ -35,7 +43,7 @@ public class PastaHandler
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var pastas = ctx.Pastas
 
@@ -56,7 +64,7 @@ public class PastaHandler
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var pastaToRemove = ctx.Burgers.FirstOrDefault(p => p.Name == name);
                 if (pastaToRemove is not null)

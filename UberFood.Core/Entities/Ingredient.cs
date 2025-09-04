@@ -18,15 +18,13 @@ public class Ingredient
     [MaxLength(150)]
     [Column("Name")]
     public string Name { get; set; }
-    [ForeignKey("BurgerId")]
-    [Column("BurgerID")]
-    public int BurgerId { get; set; }
-    [ForeignKey("PizzaId")]
-    [Column("PizzaID")]
-    public int PizzaId { get; set; }
+    
+    [Column("BurgerId")]
+    public int? BurgerId { get; set; }
+    [Column("PizzaId")]
+    public int? PizzaId { get; set; }
     [Column("KCal")]
     public double KCal { get; set; }
-
-    public Burger Burger { get; set; }
-    public Pizza Pizza { get; set; }
+    public Burger Burger { get; internal set; }
+    public Pizza Pizza { get; internal set; }
 }

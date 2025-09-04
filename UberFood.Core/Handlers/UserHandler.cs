@@ -11,11 +11,18 @@ namespace UberFood.Core.Handlers;
 
 public sealed class UserHandler
 {
+    private DbContextOptions<DataContext> _options;
+    public UserHandler()
+    {
+        var builder = new DbContextOptionsBuilder<DataContext>();
+        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
+        _options = builder.Options;
+    }
     public void AddUser(UserDto user)
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var userToAdd = new Entities.User
                 {
@@ -40,11 +47,12 @@ public sealed class UserHandler
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 //TODO ajouter adressid
                 var users = ctx.Users
-                    .Select(p => new UserDto(p.FirstName, p.LastName, p.Phone, p.Mail,p.Id))
+                    .Include(p => p.AdresseId)
+                    .Select(p => new UserDto(p.FirstName, p.LastName, p.Phone, p.Mail, p.AdresseId,p.Id))
                     .ToList();
 
                 return users;
@@ -60,7 +68,7 @@ public sealed class UserHandler
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var userToRemove = ctx.Users.FirstOrDefault(p => p.FirstName == name);
                 if (userToRemove is not null)

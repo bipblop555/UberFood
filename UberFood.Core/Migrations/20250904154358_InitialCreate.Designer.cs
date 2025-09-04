@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UberFood.Core.Context;
 
@@ -11,9 +12,11 @@ using UberFood.Core.Context;
 namespace UberFood.Core.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250904154358_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,21 +312,17 @@ namespace UberFood.Core.Migrations
 
             modelBuilder.Entity("UberFood.Core.Entities.Ingredient", b =>
                 {
-                    b.HasOne("UberFood.Core.Entities.Burger", "Burger")
+                    b.HasOne("UberFood.Core.Entities.Burger", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("BurgerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("UberFood.Core.Entities.Pizza", "Pizza")
+                    b.HasOne("UberFood.Core.Entities.Pizza", null)
                         .WithMany("Ingredients")
                         .HasForeignKey("PizzaId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Burger");
-
-                    b.Navigation("Pizza");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Drink", b =>

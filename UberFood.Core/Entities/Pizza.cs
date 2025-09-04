@@ -10,9 +10,8 @@ namespace UberFood.Core.Entities;
 
 public class Pizza : Food
 {
-    [ForeignKey("DoughId")]
     public int DoughId { get; set; }
     public Dough Dough { get; set; }
 
-    //public List<Ingredient> Ingredients { get; set; }
+    public List<Ingredient> Ingredients { get; set; }
 }

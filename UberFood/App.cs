@@ -1,13 +1,26 @@
-﻿using Menu = UberFood.Affichage.Affichage;
-using Saisie = UberFood.Interactions.Interactions;
+﻿using Microsoft.EntityFrameworkCore;
+using UberFood.Core.Context;
 using UberFood.Core.Handlers;
 using UberFood.Core.Models;
-using UberFood.Core.Context;
+using static UberFood.Core.Context.DataContext;
+using Menu = UberFood.Affichage.Affichage;
+using Saisie = UberFood.Interactions.Interactions;
 
-using (var context = new DataContext())
-{
-    context.Database.EnsureCreated();
-}
+
+
+// Configuration manuelle du contexte
+var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
+optionsBuilder.UseSqlServer("Server=localhost;Database=TaBase;Trusted_Connection=True;");
+
+using var context = new DataContext(optionsBuilder.Options);
+
+// Appel du seeder
+DbInitializer.Seed(context);
+
+Console.WriteLine("Base de données initialisée avec succès !");
+
+
+//TODO : a la place du ensure created : methode dans le core pour ajouter et creer les objets (ADD) "Seeder"
 
 bool quitter = false;
 do

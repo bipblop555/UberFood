@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,18 @@ namespace UberFood.Core.Handlers;
 
 public sealed class DrinksHandler
 {
+    private DbContextOptions<DataContext> _options;
+    public DrinksHandler()
+    {
+        var builder = new DbContextOptionsBuilder<DataContext>();
+        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
+        _options = builder.Options;
+    }
     public void AddDrink(DrinkDto drink)
     {
         try
         {
-            using (var ctx = new DataContext())
+            using (var ctx = new DataContext(_options))
             {
                 var drinkToAdd = new Entities.Drink
                 {
@@ -39,7 +47,7 @@ public sealed class DrinksHandler
     {
         try
         {
-            using (var ctx = new DataContext()) 
+            using (var ctx = new DataContext(_options)) 
             {
                 var drinks = ctx.Drinks.Select(d => new DrinkDto(d.Fizzy, d.KCal, d.Name, d.Price, d.ProductId)).ToList();
                 return drinks;
@@ -55,7 +63,7 @@ public sealed class DrinksHandler
     {
         try
         {
-            using (var ctx = new DataContext()) 
+            using (var ctx = new DataContext(_options)) 
             {
                 var drinkToRemove = ctx.Drinks.FirstOrDefault(d => d.Name == name);
                 if(drinkToRemove is not null)
