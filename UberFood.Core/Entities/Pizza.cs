@@ -14,5 +14,5 @@ public class Pizza : Food
     public int DoughId { get; set; }
     public Dough Dough { get; set; }
 
-    public List<Ingredient> Ingredients { get; set; }
+    //public List<Ingredient> Ingredients { get; set; }
 }
