@@ -38,13 +38,16 @@ public sealed class PizzaHandler
         }
     }
 
-    public List<Pizza> GetPizzas()
+    public List<PizzaDto> GetPizzas()
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var pizzas = ctx.Pizzas.Include(p => p.Dough).ToList();
+                var pizzas = ctx.Pizzas
+                    .Include(p => p.Dough)
+                    .Select(p => new PizzaDto(p.Dough.Name,p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.ProductId))
+                    .ToList();
 
                 return pizzas;
             }
