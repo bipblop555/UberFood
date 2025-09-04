@@ -31,13 +31,13 @@ namespace UberFood.Core.Context
         {
             modelBuilder.Entity<Product>().UseTptMappingStrategy();
             modelBuilder.Entity<Pizza>().HasData(
-                    new Pizza { Name = "4 Fromages", Price = 9.99, ProductId = 1, DoughId = 1 },
-                    new Pizza { Name = "Chèvre Miel", Price = 10.00, ProductId = 2, DoughId = 2 },
-                    new Pizza { Name = "Reine", Price = 8.50, ProductId = 3, DoughId = 3 });
+                    new Pizza { Name = "4 Fromages", Price = 9.99, ProductId = 1, DoughId = 1, ContainAlergene = true, IsVegetarian = true },
+                    new Pizza { Name = "Chèvre Miel", Price = 10.00, ProductId = 2, DoughId = 2, ContainAlergene = true, IsVegetarian = true },
+                    new Pizza { Name = "Reine", Price = 8.50, ProductId = 3, DoughId = 3, ContainAlergene = true, IsVegetarian = false });
             modelBuilder.Entity<Burger>().HasData(
-                    new Burger { Name = "Big Mac", Price = 9.10, ProductId = 4 },
-                    new Burger { Name = "Smash Burger", Price = 12.10, ProductId = 5 },
-                    new Burger { Name = "Mac Chicken", Price = 9.10, ProductId = 6 });
+                    new Burger { Name = "Big Mac", Price = 9.10, ProductId = 4, ContainAlergene = true, IsVegetarian = false },
+                    new Burger { Name = "Smash Burger", Price = 12.10, ProductId = 5, ContainAlergene = true, IsVegetarian = false },
+                    new Burger { Name = "Mac Chicken", Price = 9.10, ProductId = 6, ContainAlergene = true, IsVegetarian = false });
             modelBuilder.Entity<Dough>().HasData(
                     new Dough { Id = 1, Name = "Classique" },
                     new Dough { Id = 2, Name = "Fine" },
@@ -47,9 +47,9 @@ namespace UberFood.Core.Context
                     new Drink { Name = "Eau", Fizzy = false, KCal = 0, Price = 1, ProductId = 8 },
                     new Drink { Name = "Fanta", Fizzy = true, KCal = 350, Price = 2.4, ProductId = 9 });
             modelBuilder.Entity<Pasta>().HasData(
-                    new Pasta { Name = "Pâtes Pesto", IsVegetarian = false, KCal = 750, Price = 11.00, ProductId = 10 },
-                    new Pasta { Name = "Pâtes Carbonara", IsVegetarian = false, KCal = 800, Price = 10.00, ProductId = 11 },
-                    new Pasta { Name = "Pâtes aux fromages", IsVegetarian = true, KCal = 750, Price = 9.00, ProductId = 12 });
+                    new Pasta { Name = "Pâtes Pesto", IsVegetarian = false, KCal = 750, Price = 11.00, ProductId = 10, ContainAlergene = true },
+                    new Pasta { Name = "Pâtes Carbonara", IsVegetarian = false, KCal = 800, Price = 10.00, ProductId = 11, ContainAlergene = true },
+                    new Pasta { Name = "Pâtes aux fromages", IsVegetarian = true, KCal = 750, Price = 9.00, ProductId = 12, ContainAlergene = true });
             modelBuilder.Entity<User>().HasData(
                     new User { FirstName = "John", LastName = "Doe", Id = 1, Mail = "johndoe@mail.com", Phone = 0633333333, AdresseId = 1 },
                     new User { FirstName = "Jane", LastName = "Dae", Id = 2, Mail = "janedae@mail.com", Phone = 0644444444, AdresseId = 2 });
@@ -92,7 +92,7 @@ namespace UberFood.Core.Context
 
                     new Ingredient { Name = "Oignons", Id = 26, BurgerId = 1 },
                     new Ingredient { Name = "Oignons", Id = 27, BurgerId = 2 },
-                    new Ingredient { Name = "Oignons", Id = 28, BurgerId = 3 },
+                    new Ingredient { Name = "Oignons", Id = 28, BurgerId = 3 }
                     );
         }
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UberFood.Core.Context;
 
@@ -11,9 +12,11 @@ using UberFood.Core.Context;
 namespace UberFood.Core.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250904091924_AjoutColumnFood")]
+    partial class AjoutColumnFood
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -534,9 +537,9 @@ namespace UberFood.Core.Migrations
                 {
                     b.HasBaseType("UberFood.Core.Entities.Product");
 
-                    b.Property<bool>("ContainAlergene")
+                    b.Property<bool>("Containalergene")
                         .HasColumnType("bit")
-                        .HasColumnName("ContainAlergene");
+                        .HasColumnName("Containalergene");
 
                     b.Property<bool>("IsVegetarian")
                         .HasColumnType("bit")
@@ -557,7 +560,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 4,
                             Name = "Big Mac",
                             Price = 9.0999999999999996,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = false
                         },
                         new
@@ -565,7 +568,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 5,
                             Name = "Smash Burger",
                             Price = 12.1,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = false
                         },
                         new
@@ -573,7 +576,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 6,
                             Name = "Mac Chicken",
                             Price = 9.0999999999999996,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = false
                         });
                 });
@@ -598,7 +601,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 10,
                             Name = "Pâtes Pesto",
                             Price = 11.0,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = false,
                             KCal = 750.0,
                             Type = 0
@@ -608,7 +611,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 11,
                             Name = "Pâtes Carbonara",
                             Price = 10.0,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = false,
                             KCal = 800.0,
                             Type = 0
@@ -618,7 +621,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 12,
                             Name = "Pâtes aux fromages",
                             Price = 9.0,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = true,
                             KCal = 750.0,
                             Type = 0
@@ -640,7 +643,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 1,
                             Name = "4 Fromages",
                             Price = 9.9900000000000002,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = true,
                             DoughId = 1
                         },
@@ -649,7 +652,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 2,
                             Name = "Chèvre Miel",
                             Price = 10.0,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = true,
                             DoughId = 2
                         },
@@ -658,7 +661,7 @@ namespace UberFood.Core.Migrations
                             ProductId = 3,
                             Name = "Reine",
                             Price = 8.5,
-                            ContainAlergene = true,
+                            Containalergene = true,
                             IsVegetarian = false,
                             DoughId = 3
                         });
