@@ -25,7 +25,7 @@ public class User
     [Required]
     [MaxLength(150)]
     [Column("Phone")]
-    public int Phone { get; set; }
+    public string Phone { get; set; }
     [Required]
     [MaxLength(150)]
     [Column("Mail")]
