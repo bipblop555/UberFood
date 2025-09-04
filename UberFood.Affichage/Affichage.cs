@@ -1,5 +1,6 @@
 ﻿using UberFood.Core.Entities;
 using UberFood.Core.Handlers;
+using UberFood.Core.Models;
 
 namespace UberFood.Affichage{
     public class Affichage
@@ -115,7 +116,7 @@ namespace UberFood.Affichage{
             AfficherBoutons("3. Pasta");
             AfficherBoutons("4. Retour en arrière");
         }
-        public static void AfficherPizzas(List<Pizza> pizzas)
+        public static void AfficherPizzas(List<PizzaDto> pizzas)
         {
             int largeurFixe = 40;
 
