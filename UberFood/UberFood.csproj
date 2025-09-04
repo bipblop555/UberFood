@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UberFood.Affichage\UberFood.Affichage.csproj" />
     <ProjectReference Include="..\UberFood.Core\UberFood.Core.csproj" />
+    <ProjectReference Include="..\UberFood.Interactions\UberFood.Interactions.csproj" />
   </ItemGroup>
 
 </Project>
