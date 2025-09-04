@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace UberFood.Core.Models;
 
-public class FoodDto : ProductDto
+public abstract class FoodDto : ProductDto
 {
-    public bool IsVegetable { get; set; }
-    public bool ContainAlergen { get; set; }
-    public int Id { get; set; }
+    protected FoodDto(bool vegetarian,bool alergene, string name, double price, int id )
+            : base(name, price, id)
+    {
+        this.IsVegetable = vegetarian;
+        this.ContainAlergen = alergene;
+    }
+    public bool IsVegetable { get; protected set; }
+    public bool ContainAlergen { get; protected set; }
+
 }
