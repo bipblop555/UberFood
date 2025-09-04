@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace UberFood.Core.Models;
 
-public class BurgerDto : FoodDto
+public sealed class BurgerDto : FoodDto
 {
-    public int Id { get; set; }
+    public BurgerDto(bool vegetarian,bool alergene, string name,double price,int id)
+        :base(vegetarian,alergene,name,price,id)
+    {
+    }
 }
