@@ -1,5 +1,13 @@
 ﻿using Menu = UberFood.Affichage.Affichage;
 using Saisie = UberFood.Interactions.Interactions;
+using UberFood.Core.Handlers;
+using UberFood.Core.Models;
+using UberFood.Core.Context;
+
+using (var context = new DataContext())
+{
+    context.Database.EnsureCreated();
+}
 
 bool quitter = false;
 do
@@ -23,6 +31,9 @@ do
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Liste des produits");
                         //afficher la liste des produit
+                        var pizzaHandler = new PizzaHandler ();
+                        var pizzas = pizzaHandler.GetPizzas();
+                        Menu.AfficherPizzas(pizzas);
                         Console.WriteLine("\nAppuyer sur une touche pour revenir en arrière");
                         Console.ReadKey();
                         break;
