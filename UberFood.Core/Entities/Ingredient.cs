@@ -24,4 +24,7 @@ public class Ingredient
     [ForeignKey("PizzaId")]
     [Column("PizzaID")]
     public int PizzaId { get; set; }
+
+    public Burger Burger { get; set; }
+    public Pizza Pizza { get; set; }
 }
