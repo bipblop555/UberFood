@@ -63,7 +63,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Adresses");
+                    b.ToTable("Adresses", (string)null);
 
                     b.HasData(
                         new
@@ -103,7 +103,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Doughs");
+                    b.ToTable("Doughs", (string)null);
 
                     b.HasData(
                         new
@@ -148,7 +148,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredient");
+                    b.ToTable("Ingredient", (string)null);
 
                     b.HasData(
                         new
@@ -380,7 +380,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.OrderProduct", b =>
@@ -400,7 +400,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderProducts");
+                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Product", b =>
@@ -423,7 +423,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Product");
+                    b.ToTable("Product", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -466,7 +466,7 @@ namespace UberFood.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new
@@ -501,7 +501,7 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("float")
                         .HasColumnName("KCal");
 
-                    b.ToTable("Drinks");
+                    b.ToTable("Drinks", (string)null);
 
                     b.HasData(
                         new
@@ -542,14 +542,14 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("IsVegetarian");
 
-                    b.ToTable("Foods");
+                    b.ToTable("Foods", (string)null);
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Burger", b =>
                 {
                     b.HasBaseType("UberFood.Core.Entities.Food");
 
-                    b.ToTable("Burgers");
+                    b.ToTable("Burgers", (string)null);
 
                     b.HasData(
                         new
@@ -590,7 +590,7 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Type");
 
-                    b.ToTable("Pastas");
+                    b.ToTable("Pastas", (string)null);
 
                     b.HasData(
                         new
@@ -632,7 +632,7 @@ namespace UberFood.Core.Migrations
                     b.Property<int>("DoughId")
                         .HasColumnType("int");
 
-                    b.ToTable("Pizzas");
+                    b.ToTable("Pizzas", (string)null);
 
                     b.HasData(
                         new

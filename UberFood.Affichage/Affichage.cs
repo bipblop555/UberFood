@@ -1,4 +1,7 @@
-﻿namespace UberFood.Affichage{
+﻿using UberFood.Core.Entities;
+using UberFood.Core.Handlers;
+
+namespace UberFood.Affichage{
     public class Affichage
     {
         public static void AfficherBandeau(string texte, int largeurFixe = 50)
@@ -111,6 +114,93 @@
             AfficherBoutons("2. Burger");
             AfficherBoutons("3. Pasta");
             AfficherBoutons("4. Retour en arrière");
+        }
+        public static void AfficherPizzas(List<Pizza> pizzas)
+        {
+            int largeurFixe = 40;
+
+            foreach (var pizza in pizzas)
+            {
+                string texte = $"{pizza.Name} - {pizza.Price} Euros";
+                texte = texte.Trim();
+
+                string contenu = texte.Length > largeurFixe - 4
+                    ? texte.Substring(0, largeurFixe - 7) + "..."
+                    : texte;
+
+                int espaceDisponible = largeurFixe;
+                int leftPadding = (espaceDisponible - contenu.Length) / 2;
+                int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+                string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+                string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+                string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(ligneTexte);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine();
+            }
+        }
+        public static void AfficherBurger(List<Burger> burgers)
+        {
+            int largeurFixe = 40;
+
+            foreach (var burger in burgers)
+            {
+                string texte = $"{burger.Name} - {burger.Price} Euros";
+                texte = texte.Trim();
+
+                string contenu = texte.Length > largeurFixe - 4
+                    ? texte.Substring(0, largeurFixe - 7) + "..."
+                    : texte;
+
+                int espaceDisponible = largeurFixe;
+                int leftPadding = (espaceDisponible - contenu.Length) / 2;
+                int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+                string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+                string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+                string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(ligneTexte);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine();
+            }
+        }
+        public static void AfficherPasta(List<Pasta> Pastas)
+        {
+            int largeurFixe = 40;
+
+            foreach (var pasta in Pastas)
+            {
+                string texte = $"{pasta.Name} - {pasta.Price} Euros";
+                texte = texte.Trim();
+
+                string contenu = texte.Length > largeurFixe - 4
+                    ? texte.Substring(0, largeurFixe - 7) + "..."
+                    : texte;
+
+                int espaceDisponible = largeurFixe;
+                int leftPadding = (espaceDisponible - contenu.Length) / 2;
+                int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+                string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+                string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+                string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(ligneTexte);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine();
+            }
         }
     }
 }
