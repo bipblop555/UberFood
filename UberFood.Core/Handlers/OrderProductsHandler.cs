@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UberFood.Core.Context;
+using UberFood.Core.Entities;
 using UberFood.Core.Models;
 
 namespace UberFood.Core.Handlers;
@@ -19,8 +21,7 @@ public class OrderProductsHandler
                 var orderProductToAdd = new Entities.OrderProduct
                 {
                     OrderId = orderProduct.OrderId,
-                    ProductsId = orderProduct.ProductId
-
+                    ProductsId = orderProduct.ProductsId
                 };
 
                 ctx.Add(orderProductToAdd);
@@ -33,18 +34,34 @@ public class OrderProductsHandler
        
     }
 
-    public List<OrderProductDto> GetOrderProductsByUser(int orderId)
+    public List<OrderProductDto> GetOrderProductsByUser(int userId)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var ordersProductById = ctx.OrderProducts
-                    .Select((p => new OrderProductDto(p.Id, p.ProductsId)))
-                    .Where(p => p.OrderId == orderId)
+                var ordersId = ctx.Orders
+                    .Where(o =>  o.UserId == userId)
+                    .Select(o => o.OrderId)
                     .ToList();
 
-                return ordersProductById;
+
+                //var orderProducts = ctx.OrderProducts
+                //        //.Include(op => op.Product)
+                //        .Where(op => ordersId.Contains(op.OrderId))
+                //        .Select(op => new OrderProductDto(op.OrderId, op.ProductsId))
+                //        .ToList();
+
+                //return orderProducts;
+                var orderProducts = (from op in ctx.OrderProducts
+                                     join p in ctx.Products on op.ProductsId equals p.Id
+                                     where ordersId.Contains(op.OrderId)
+                                     select new OrderProductDto(
+                                         op.OrderId,
+                                         new ProductDto(p.Name, p.Price) // ⚡ Ici tu récupères les infos produit
+                                     )).ToList();
+
+                return orderProducts;
             }
         } catch(Exception ex)
         {

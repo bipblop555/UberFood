@@ -73,8 +73,9 @@ namespace UberFood.Affichage{
             AfficherBoutons("4. Afficher votre panier en cours");
             AfficherBoutons("5. Valider votre panier");
             AfficherBoutons("6. Supprimer votre panier");
-            AfficherBoutons("7. Retour en arrière");
-            AfficherBoutons("8. Quitter l'application");
+            AfficherBoutons("7. Afficher mes commandes");
+            AfficherBoutons("8. Retour en arrière");
+            AfficherBoutons("9. Quitter l'application");
 
         }
         public static void AfficherMenuChoix2()

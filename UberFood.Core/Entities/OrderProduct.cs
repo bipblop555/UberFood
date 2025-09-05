@@ -18,4 +18,6 @@ public class OrderProduct
     public int OrderId { get; set; }
     [ForeignKey("ProductsId")]
     public int ProductsId { get; set; }
+
+    public Product Product { get; set; }
 }
