@@ -124,7 +124,20 @@ do
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Ajout d'une pizza");
-                                    //var newpizza = new PizzaDto(saisie);
+                                    Menu.AfficherChoixPate();
+                                    int newPateId = Saisie.GetEntier("\nSaisissez le type de pate");
+
+                                   
+                                    bool isVeggy = Saisie.GetString("\nEst elle vegetarienne : o/n") == "o" ;
+                                    bool alergen = Saisie.GetString("\nContient elle des alergene : o/n") == "o";
+                                    string newName = Saisie.GetString("\nSaisissez son nom");
+                                    double newPrice = Convert.ToDouble(Saisie.GetEntier("\nSaisissez son prix"));
+                                    var newPizza = new PizzaDto(newPateId,isVeggy,alergen,newName,newPrice);
+                                    //TODO ajout a la BDD
+                                    var pizzahandler = new PizzaHandler();
+                                    pizzahandler.AddPizza(newPizza);
+
+                                    Console.ReadKey();
                                     break;
                                 case 2: //Ajout d'un burger
                                     Console.Clear();
