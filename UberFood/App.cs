@@ -8,8 +8,8 @@ using Menu = UberFood.Affichage.Affichage;
 using Saisie = UberFood.Interactions.Interactions;
 
 
-var seeder = new Seeder();
-seeder.SeedData();
+//var seeder = new Seeder();
+//seeder.SeedData();
 
 Console.WriteLine("Base de données initialisée avec succès !");
 
@@ -38,15 +38,7 @@ do
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Liste des produits");
                         //afficher la liste des produit
-                        var pizzaHandler = new PizzaHandler ();
-                        var pizzas = pizzaHandler.GetPizzas();
-                        Menu.AfficherPizzas(pizzas);
-                        var burgerHandler = new BurgerHandler ();
-                        var burgers = burgerHandler.GetBurgers();
-                        Menu.AfficherBurger(burgers);
-                        var pastaHandler = new PastaHandler();
-                        var pastas = pastaHandler.GetPastas();
-                        Menu .AfficherPasta(pastas);
+                        Menu.AfficherListeProduit();
                         
                         Console.WriteLine("\nAppuyer sur une touche pour revenir en arrière");
                         Console.ReadKey();
@@ -55,7 +47,10 @@ do
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Ajout d'un produit au panier");
+                        
                         //afficher la liste de tous les produits
+                        Menu.AfficherListeProduit();
+
                         var produit = Saisie.GetEntier("\nVeuiller choisir un produit et saisir son id : ");
                         //ajout du produit dans le panier
                         break;
@@ -129,7 +124,7 @@ do
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Ajout d'une pizza");
-                                    Console.ReadKey();
+                                    
                                     break;
                                 case 2: //Ajout d'un burger
                                     Console.Clear();

@@ -22,7 +22,7 @@ public sealed class PizzaHandler
             {
                 var pizzaToAdd = new Entities.Pizza
                 {
-                    DoughId = pizza.DoughId,
+                    Dough = new Entities.Dough { Id = pizza.Dough.Id,Name = pizza.Dough.Name },
                     IsVegetarian = pizza.IsVegetable,
                     Name = pizza.Name,
                     Price = pizza.Price,
@@ -47,7 +47,7 @@ public sealed class PizzaHandler
             {
                 var pizzas = ctx.Pizzas
                     .Include(p => p.Dough)
-                    .Select(p => new PizzaDto(p.Dough.Name,p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
+                    .Select(p => new PizzaDto(p.Dough.Id,p.Dough.Name, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 
                 return pizzas;
