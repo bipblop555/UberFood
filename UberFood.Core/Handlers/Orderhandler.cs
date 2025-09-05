@@ -44,7 +44,7 @@ public class Orderhandler
             using (var ctx = new DataContext())
             {
                 var orders = ctx.Orders
-                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.OrderDate, o.DeliveryDate, o.Status))
                     .ToList();
 
                 return orders;
@@ -115,9 +115,36 @@ public class Orderhandler
                 return orders;
             }
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Console.WriteLine(e.Message);
             return [];
+        }
+    }
+
+    public void GetVeggyOrders()
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var orders = ctx.Orders
+                    .Where(o => o.OrderProducts
+                    .All(op =>
+                        ctx.Foods
+                        .Where(f => f.Id == op.ProductsId)
+                        .All(f => f.IsVegetarian == true)))
+                    .ToList();
+
+                foreach (var order in orders)
+                {
+                    Console.WriteLine(order.OrderId);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
         }
     }
 }

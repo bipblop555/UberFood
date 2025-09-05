@@ -30,4 +30,6 @@ public class Order
     [Column("DeliveryAdressId")]
     public int AdressId { get; set; }
 
+    public List<OrderProduct> OrderProducts { get; set; } = new();
+
 }

@@ -10,7 +10,7 @@ public class OrdersDto
 {
     private DateTime deliverydate;
 
-    public OrdersDto(DateTime orderdate, DateTime deliverydate,int status,int id) 
+    public OrdersDto(DateTime orderdate, DateTime deliverydate, int status, int id)
     {
         this.OrderDate = orderdate;
         this.DelivryDate = deliverydate;
@@ -43,4 +43,6 @@ public class OrdersDto
     public DateTime DelivryDate { get; set; }
     public int Status { get; set; }
     public int Id { get; set; }
+
+    public OrderProductDto OrderProduct { get; set; }
 }

@@ -11,7 +11,7 @@ namespace UberFood.Core.Handlers;
 
 public sealed class IngredientsHandler
 {
-    
+
     public void AddIngredients(IngredientDto ingredient)
     {
         try
@@ -29,7 +29,8 @@ public sealed class IngredientsHandler
                 ctx.Add(ingredientToAdd);
                 ctx.SaveChanges();
             }
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
         }
@@ -47,7 +48,8 @@ public sealed class IngredientsHandler
 
                 return ingredients;
             }
-        } catch(Exception e)
+        }
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
             return [];
@@ -69,10 +71,12 @@ public sealed class IngredientsHandler
                 }
                 return false;
             }
-        } catch(Exception e)
+        }
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
             return false;
         }
     }
+
 }
