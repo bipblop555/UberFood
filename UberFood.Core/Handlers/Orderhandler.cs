@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +14,11 @@ namespace UberFood.Core.Handlers;
 public class Orderhandler
 {
 
-    public void AddOrders(OrdersDto orders)
+    public EntityEntry<Order> AddOrders(OrdersDto orders)
     {
-        try
-        {
             using (var ctx = new DataContext())
             {
+
                 var orderToAdd = new Entities.Order
                 {
                     UserId = orders.UserId,
@@ -28,14 +28,11 @@ public class Orderhandler
                     Status = orders.Status
                 };
 
-                ctx.Add(orderToAdd);
+                var order = ctx.Add(orderToAdd);
                 ctx.SaveChanges();
+
+                return order;
             }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
-        }
     }
     public List<OrdersDto> GetOrders()
     {

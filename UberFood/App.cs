@@ -22,9 +22,20 @@ do
     Console.Clear();
     Menu.AfficherMenuDepart();
     var choix1 = Saisie.GetEntier("\nVeuillez choisir un option parmis les options proposée : ");
+
+    var uHandler = new UserHandler();
+    var defaultUser = uHandler.GetDefaultUser();
     switch (choix1)
     {
         case 1: //Espace commande
+            var prHandler = new ProductHandler();
+            var products = prHandler.GetProducts();
+            var basket = new List<ProductDto>();
+            foreach (var product in products)
+            {
+                Console.WriteLine($"{product.Id}. {product.Name}, {product.Price}euros ");
+            }
+
             bool retourEspaceCommande = false;
             do
             {
@@ -37,8 +48,10 @@ do
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Liste des produits");
+
                         //afficher la liste des produit
-                        Menu.AfficherListeProduit();
+                        //Menu.AfficherListeProduit();
+                        Menu.AfficherProduits(products);
                         Console.WriteLine("\nAppuyer sur une touche pour revenir en arrière");
                         Console.ReadKey();
                         break;
@@ -47,16 +60,25 @@ do
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Ajout d'un produit au panier");
                         //afficher la liste de tous les produits
-                        Menu.AfficherListeProduit();
-                        var produit = Saisie.GetEntier("\nVeuillez choisir un produit et saisir son id : ");
+                        Menu.AfficherProduits(products);
+
+                        var produitId = Saisie.GetEntier("\nVeuillez choisir un produit et saisir son id : ");
+                        var productToAdd = products.Find(p => p.Id == produitId);
+                        if (productToAdd is not null)
+                            basket.Add(productToAdd);
                         //ajout du produit dans le panier
                         break;
                     case 3: //Supprimer un produit de son panier
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Supprimer un produit de votre panier");
+                        Menu.AfficherProduits(basket);
+
                         //afficher le panier
                         var produitDelete = Saisie.GetEntier("\nVeuillez choisir un produit et saisir son id : ");
+                        var productToRemove = products.Find(p => p.Id == produitDelete);
+                        if (productToRemove is not null)
+                            basket.Remove(productToRemove);
                         //supprimer le produitDelete parmis le panier
                         break;
                     case 4: //Afficher son panier
@@ -64,6 +86,7 @@ do
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Votre panier");
                         //afficher le panier en cours
+                        Menu.AfficherProduits(basket);
                         Console.WriteLine("\nAppuyer sur une touche pour revenir en arrière");
                         Console.ReadKey();
                         break;
@@ -72,7 +95,21 @@ do
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Valider votre panier");
                         //afficher le panier en cours
+                        Menu.AfficherProduits(basket);
+
                         Console.WriteLine("\nValidez vous votre panier ?");
+                        var orderHandler = new Orderhandler();
+                        var opHandler = new OrderProductsHandler();
+                        //var opHandler = new 
+                        var orderDto = new OrdersDto(defaultUser.Id, defaultUser.AddressId,DateTime.Now, DateTime.Now.AddHours(1), 1);
+                        var orderId = orderHandler.AddOrders(orderDto);
+
+                        foreach(var item in basket)
+                        {
+                            var oP = new OrderProductDto(orderId.Entity.OrderId, item.Id);
+                            opHandler.AddOrderProduct(oP);
+                        }
+                        
                         var validation = Saisie.GetString("\nVeuillez saisir oui ou non :");
                         //continuer sur la validation du panier
                         break;
@@ -83,6 +120,10 @@ do
                         //affficher le panier en cours
                         Console.WriteLine("\nSouhaitez vous supprimer votre panier ?");
                         var suppression = Saisie.GetString("\nVeuillez saisir oui ou non :");
+                        if(suppression == "oui")
+                        {
+                            basket = null;
+                        }
                         //continuer sur la validation du panier
                         break;
                     case 7: //Retour en arrière

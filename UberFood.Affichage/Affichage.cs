@@ -297,6 +297,36 @@ namespace UberFood.Affichage{
             var pastas = pastaHandler.GetPastas();
             AfficherPasta(pastas);
         }
+
+        public static void AfficherProduits(List<ProductDto> products)
+        {
+            int largeurFixe = 40;
+
+            foreach (var product in products)
+            {
+                string texte = $"{product.Id}. {product.Name} - {product.Price} Euros";
+                texte = texte.Trim();
+
+                string contenu = texte.Length > largeurFixe - 4
+                    ? texte.Substring(0, largeurFixe - 7) + "..."
+                    : texte;
+
+                int espaceDisponible = largeurFixe;
+                int leftPadding = (espaceDisponible - contenu.Length) / 2;
+                int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+                string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+                string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+                string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(ligneTexte);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine();
+            }
+        }
         public static void AfficherListeUsers()
         {
             var userHandler = new UserHandler();
