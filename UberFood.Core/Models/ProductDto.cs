@@ -21,7 +21,7 @@ public abstract class ProductDto
 
     }
 
-    public string Name { get; protected set; }
+    public string Name { get;protected set; }
     public double Price { get; protected set; }
     public int Id { get; protected set; }
 }

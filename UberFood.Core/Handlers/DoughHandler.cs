@@ -56,7 +56,27 @@ public sealed class DoughHandler
             return [];
         }
     }
+    //public DoughDto GetDough(int id)
+    //{
+    //    try
+    //    {
+    //        using (var ctx = new DataContext())
+    //        {
+    //            var dough = ctx.Doughs
 
+    //                .Select(p => new DoughDto(p.Name, p.Id))
+    //                .Where(p => p.Id == id);
+
+
+    //            return dough;
+    //        }
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Console.WriteLine(e.Message);
+    //        return null;
+    //    }
+    //}
     public bool DeleteDough(string name)
     {
         try
