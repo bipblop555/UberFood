@@ -11,18 +11,12 @@ namespace UberFood.Core.Handlers;
 
 public sealed class IngredientsHandler
 {
-    private DbContextOptions<DataContext> _options;
-    public IngredientsHandler()
-    {
-        var builder = new DbContextOptionsBuilder<DataContext>();
-        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
-        _options = builder.Options;
-    }
+    
     public void AddIngredients(IngredientDto ingredient)
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var ingredientToAdd = new Entities.Ingredient
                 {
@@ -45,7 +39,7 @@ public sealed class IngredientsHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var ingredients = ctx.Ingredients
                     .Select(p => new IngredientDto(p.Name, p.KCal, p.Id, p.PizzaId, p.BurgerId))
@@ -64,7 +58,7 @@ public sealed class IngredientsHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var ingrToRemove = ctx.Ingredients.FirstOrDefault(p => p.Name == name);
                 if (ingrToRemove is not null)

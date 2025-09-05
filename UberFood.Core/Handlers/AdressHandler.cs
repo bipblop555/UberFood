@@ -12,18 +12,11 @@ namespace UberFood.Core.Handlers;
 
 public class AdressHandler
 {
-    private DbContextOptions<DataContext> _options;
-    public AdressHandler()
-    {
-        var builder = new DbContextOptionsBuilder<DataContext>();
-        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
-        _options = builder.Options;
-    }
     public void AddAdress(AdressDto adress)
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var adressToAdd = new Entities.Adress
                 {
@@ -49,9 +42,9 @@ public class AdressHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
-                var adress = ctx.Adresses
+                var adress = ctx.Addresses
                     .Select(p => new AdressDto(p.Street, p.City, p.State, p.Zip, p.Country, p.Id))
                     .ToList();
 
@@ -68,9 +61,9 @@ public class AdressHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
-                var adressToRemove = ctx.Adresses.FirstOrDefault(p => p.Id == id);
+                var adressToRemove = ctx.Addresses.FirstOrDefault(p => p.Id == id);
                 if (adressToRemove is not null)
                 {
                     ctx.Remove(adressToRemove);

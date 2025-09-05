@@ -11,18 +11,11 @@ namespace UberFood.Core.Handlers;
 
 public sealed class BurgerHandler
 {
-    private DbContextOptions<DataContext> _options;
-    public BurgerHandler()
-    {
-        var builder = new DbContextOptionsBuilder<DataContext>();
-        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
-        _options = builder.Options;
-    }
     public void AddBurger(BurgerDto burger)
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var burgerToAdd = new Entities.Burger
                 {
@@ -43,11 +36,11 @@ public sealed class BurgerHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var burgers = ctx.Burgers
                     
-                    .Select(p => new BurgerDto(p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.ProductId))
+                    .Select(p => new BurgerDto(p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 
                 return burgers;
@@ -64,7 +57,7 @@ public sealed class BurgerHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var burgerToRemove = ctx.Burgers.FirstOrDefault(p => p.Name == name);
                 if (burgerToRemove is not null)
