@@ -202,6 +202,19 @@ namespace UberFood.Affichage{
                 Console.WriteLine(bordureHautBas);
                 Console.WriteLine();
             }
+            
+        }
+       public static void AfficherListeProduit()
+        {
+            var pizzaHandler = new PizzaHandler();
+            var pizzas = pizzaHandler.GetPizzas();
+            AfficherPizzas(pizzas);
+            var burgerHandler = new BurgerHandler();
+            var burgers = burgerHandler.GetBurgers();
+            AfficherBurger(burgers);
+            var pastaHandler = new PastaHandler();
+            var pastas = pastaHandler.GetPastas();
+            AfficherPasta(pastas);
         }
     }
 }
