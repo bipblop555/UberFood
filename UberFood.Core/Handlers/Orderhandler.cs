@@ -21,11 +21,11 @@ public class Orderhandler
             {
                 var orderToAdd = new Entities.Order
                 {
-                    UserId = orders.UserId ,
-                    AdressId = orders.AdressId ,
-                    DeliveryDate = orders.DelivryDate ,
-                    OrderDate = orders.OrderDate ,
-                    Status = orders.Status                                
+                    UserId = orders.UserId,
+                    AdressId = orders.AdressId,
+                    DeliveryDate = orders.DelivryDate,
+                    OrderDate = orders.OrderDate,
+                    Status = orders.Status
                 };
 
                 ctx.Add(orderToAdd);
@@ -80,4 +80,44 @@ public class Orderhandler
         }
     }
 
+    public List<OrdersDto> GetOrdersByUser(int id)
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var orders = ctx.Orders
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
+                    .Where(o => o.UserId == id)
+                    .ToList();
+
+                return orders;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return [];
+        }
+    }
+
+    public List<OrdersDto> GetEnCoursOrders()
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var orders = ctx.Orders
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
+                    .Where(o => o.Status == 1)
+                    .ToList();
+
+                return orders;
+            }
+        }
+        catch (Exception e) {
+            Console.WriteLine(e.Message);
+            return [];
+        }
+    }
 }
