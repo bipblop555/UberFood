@@ -41,6 +41,8 @@ do
             {
                 Console.Clear();
                 Menu.AfficherMenuChoix1();
+                var orderHandler = new Orderhandler();
+                var opHandler = new OrderProductsHandler();
                 var choix2 = Saisie.GetEntier("\nVeuillez choisir un option parmis les options proposée : ");
                 switch (choix2)
                 {
@@ -98,8 +100,7 @@ do
                         Menu.AfficherProduits(basket);
 
                         Console.WriteLine("\nValidez vous votre panier ?");
-                        var orderHandler = new Orderhandler();
-                        var opHandler = new OrderProductsHandler();
+                        
                         //var opHandler = new 
                         var orderDto = new OrdersDto(defaultUser.Id, defaultUser.AddressId,DateTime.Now, DateTime.Now.AddHours(1), 1);
                         var orderId = orderHandler.AddOrders(orderDto);
@@ -126,11 +127,24 @@ do
                         }
                         //continuer sur la validation du panier
                         break;
-                    case 7: //Retour en arrière
+
+                    case 7: // Consulter mes commandes
+                        Console.Clear();
+                        Menu.AfficherBandeau("UberFood");
+                        Menu.AfficherBandeau("Afficher mes commandes");
+
+                        var myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
+
+                        foreach( var item in myOrders)
+                        {
+                            Console.WriteLine($"{item.Product.Name}, {item.Product.Price}");
+                        }
+                        break;
+                    case 8: //Retour en arrière
                         Console.Clear();
                         retourEspaceCommande = true;
                         break;
-                    case 8: //Quitter l'application
+                    case 9: //Quitter l'application
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Console.WriteLine("\nMerci pour votre temps ! à bientôt !");

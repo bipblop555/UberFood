@@ -10,6 +10,11 @@ public class OrdersDto
 {
     private DateTime deliverydate;
 
+    public OrdersDto(int id)
+    {
+        this.Id = id;
+    }
+
     public OrdersDto(DateTime orderdate, DateTime deliverydate, int status, int id)
     {
         this.OrderDate = orderdate;
