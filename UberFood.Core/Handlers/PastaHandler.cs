@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UberFood.Core.Context;
+using UberFood.Core.Entities;
 using UberFood.Core.Models;
 
 namespace UberFood.Core.Handlers;
@@ -12,7 +13,7 @@ namespace UberFood.Core.Handlers;
 public class PastaHandler
 {
     
-    public void AddPasta(PastaDto Pasta)
+    public void AddPasta(PastaDto pasta)
     {
         try
         {
@@ -20,7 +21,13 @@ public class PastaHandler
             {
                 var pastaToAdd = new Entities.Pasta
                 {
-
+                    Type = pasta.Type,
+                    KCal = pasta.KCal,
+                    IsVegetarian = pasta.IsVegetable,
+                    Name = pasta.Name,
+                    Price = pasta.Price,
+                    Id = pasta.Id,
+                    ContainAlergene = pasta.ContainAlergen
                 };
 
                 ctx.Add(pastaToAdd);
