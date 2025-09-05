@@ -14,6 +14,12 @@ public abstract class FoodDto : ProductDto
         this.IsVegetable = vegetarian;
         this.ContainAlergen = alergene;
     }
+    protected FoodDto(bool vegetarian, bool alergene, string name, double price)
+            : base(name, price)
+    {
+        this.IsVegetable = vegetarian;
+        this.ContainAlergen = alergene;
+    }
     public bool IsVegetable { get; protected set; }
     public bool ContainAlergen { get; protected set; }
 
