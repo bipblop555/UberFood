@@ -58,13 +58,13 @@ public sealed class UserHandler
             return [];
         }
     }
-    public bool DeleteUsers(string name)
+    public bool DeleteUsers(int id)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var userToRemove = ctx.Users.FirstOrDefault(p => p.FirstName == name);
+                var userToRemove = ctx.Users.FirstOrDefault(p => p.Id == id);
                 if (userToRemove is not null)
                 {
                     ctx.Remove(userToRemove);

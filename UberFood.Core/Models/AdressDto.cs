@@ -17,6 +17,14 @@ public class AdressDto
         this.Country = country;
         this.Id = id;
     }
+    public AdressDto(string street, string city, string state, string zip, string country)
+    {
+        this.Street = street;
+        this.City = city;
+        this.State = state;
+        this.Zip = zip;
+        this.Country = country;
+    }
     public string Street { get; set; }
     public string City { get; set; }
     public string State { get; set; }
