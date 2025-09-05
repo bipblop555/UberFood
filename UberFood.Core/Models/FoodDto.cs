@@ -8,7 +8,7 @@ namespace UberFood.Core.Models;
 
 public abstract class FoodDto : ProductDto
 {
-    protected FoodDto(bool vegetarian,bool alergene, string name, double price, int id )
+    protected FoodDto(bool vegetarian, bool alergene, string name, double price, int id)
             : base(name, price, id)
     {
         this.IsVegetable = vegetarian;

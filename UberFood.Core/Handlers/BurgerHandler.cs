@@ -38,8 +38,7 @@ public sealed class BurgerHandler
         {
             using (var ctx = new DataContext())
             {
-                var burgers = ctx.Burgers
-                    
+                var burgers = ctx.Burgers                    
                     .Select(p => new BurgerDto(p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 

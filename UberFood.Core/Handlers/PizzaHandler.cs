@@ -13,7 +13,7 @@ namespace UberFood.Core.Handlers;
 
 public sealed class PizzaHandler
 {
-    
+
     public void AddPizza(PizzaDto pizza)
     {
         try
@@ -33,9 +33,10 @@ public sealed class PizzaHandler
                 ctx.Add(pizzaToAdd);
                 ctx.SaveChanges();
             }
-        } catch(Exception e)
+        }
+        catch (Exception e)
         {
-           Console.WriteLine(e.Message);
+            Console.WriteLine(e.Message);
         }
     }
 
@@ -53,7 +54,7 @@ public sealed class PizzaHandler
                 return pizzas;
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
             return [];
@@ -64,7 +65,7 @@ public sealed class PizzaHandler
     {
         try
         {
-            using (var ctx = new DataContext()) 
+            using (var ctx = new DataContext())
             {
                 var pizzaToRemove = ctx.Pizzas.FirstOrDefault(p => p.Name == name);
                 if (pizzaToRemove is not null)
@@ -76,7 +77,7 @@ public sealed class PizzaHandler
                 return false;
             }
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             Console.WriteLine(e.Message);
             return false;
