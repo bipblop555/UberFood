@@ -1,36 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UberFood.Core.Context;
-using UberFood.Core.Entities;
 using UberFood.Core.Models;
 
 namespace UberFood.Core.Handlers;
 
-public sealed class PizzaHandler
+public sealed class DoughHandler
 {
-
-    public void AddPizza(PizzaDto pizza)
+    public void AddDough(DoughDto dough)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var pizzaToAdd = new Entities.Pizza
+                var doughToAdd = new Entities.Dough
                 {
-                    DoughId = pizza.DoughId,
-                    IsVegetarian = pizza.IsVegetable,
-                    Name = pizza.Name,
-                    Price = pizza.Price,
-                    Id = pizza.Id,
-                    ContainAlergene = pizza.ContainAlergen
+
+                    Name = dough.Name,
+
+                    Id = dough.Id,
+
                 };
 
-                ctx.Add(pizzaToAdd);
+                ctx.Add(doughToAdd);
                 ctx.SaveChanges();
             }
         }
@@ -40,18 +35,19 @@ public sealed class PizzaHandler
         }
     }
 
-    public List<PizzaDto> GetPizzas()
+    public List<DoughDto> GetDoughs()
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var pizzas = ctx.Pizzas
-                    .Include(p => p.Dough)
-                    .Select(p => new PizzaDto(p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
+                var doughs = ctx.Doughs
+
+                    .Select(p => new DoughDto(p.Name, p.Id))
                     .ToList();
 
-                return pizzas;
+
+                return doughs;
             }
         }
         catch (Exception e)
@@ -61,16 +57,16 @@ public sealed class PizzaHandler
         }
     }
 
-    public bool DeletePizza(string name)
+    public bool DeleteDough(string name)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var pizzaToRemove = ctx.Pizzas.FirstOrDefault(p => p.Name == name);
-                if (pizzaToRemove is not null)
+                var doughToRemove = ctx.Doughs.FirstOrDefault(p => p.Name == name);
+                if (doughToRemove is not null)
                 {
-                    ctx.Remove(pizzaToRemove);
+                    ctx.Remove(doughToRemove);
                     ctx.SaveChanges();
                     return true;
                 }

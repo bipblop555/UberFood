@@ -124,18 +124,54 @@ do
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Ajout d'une pizza");
-                                    //var newpizza = new PizzaDto(saisie);
+                                    bool isVeggyPizza = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
+                                    bool alergenPizza = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
+                                    string newNamePizza = Saisie.GetString("\nSaisissez son nom");
+                                    double newPricePizza = Convert.ToDouble(Saisie.GetEntier("\nSaisissez son prix\n"));
+                                    Menu.AfficherChoixPate();
+                                    int newPateIdPizza = Saisie.GetEntier("\nSaisissez le type de pate");
+                                    //Création de l'objet
+                                    var newPizza = new PizzaDto(newPateIdPizza, isVeggyPizza, alergenPizza, newNamePizza, newPricePizza);
+                                    //ajout a la BDD
+                                    var pizzahandler = new PizzaHandler();
+                                    pizzahandler.AddPizza(newPizza);
+                                    Console.WriteLine("\nAjout de la pizza avec succès !");
+                                    Console.ReadKey();
                                     break;
                                 case 2: //Ajout d'un burger
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Ajout d'un burger");
+                                    //Déclaration des variables pour les Burgers
+                                    bool isVeggyBurger = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
+                                    bool alergenBurger = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
+                                    string newNameBurger = Saisie.GetString("\nSaisissez son nom");
+                                    double newPriceBurger = Convert.ToDouble(Saisie.GetEntier("\nSaisissez son prix"));
+                                    //Création de l'objet
+                                    var newBurger = new BurgerDto(isVeggyBurger, alergenBurger, newNameBurger, newPriceBurger);
+                                    //ajout a la BDD
+                                    var burgerhandler = new BurgerHandler();
+                                    burgerhandler.AddBurger(newBurger);
+                                    Console.WriteLine("\nAjout du burger avec succès !");
                                     Console.ReadKey();
                                     break;
                                 case 3: //Ajout de pasta
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
-                                    Menu.AfficherBandeau("Ajout de pasta");
+                                    Menu.AfficherBandeau("Ajout d'un plat de pates");
+                                    //Déclaration des variables pour les Pastas
+                                    bool isVeggyPasta = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
+                                    bool alergenPasta = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
+                                    string newNamePasta = Saisie.GetString("\nSaisissez son nom");
+                                    double newPricePasta = Convert.ToDouble(Saisie.GetEntier("\nSaisissez son prix"));
+                                    int newTypePasta = Saisie.GetEntier("Saisissez le type de pâte");
+                                    double newKCalPasta = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
+                                    //Création de l'objet
+                                    var newPasta = new PastaDto(newTypePasta, newKCalPasta, isVeggyPasta, alergenPasta, newNamePasta, newPricePasta);
+                                    //ajout a la BDD
+                                    var pastahandler = new PastaHandler();
+                                    pastahandler.AddPasta(newPasta);
+                                    Console.WriteLine("\nAjout de la pasta avec succès !");
                                     Console.ReadKey();
                                     break;
                                 case 4: //Retour au menu de gestion de produit

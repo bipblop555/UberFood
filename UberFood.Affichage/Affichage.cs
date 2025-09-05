@@ -216,5 +216,14 @@ namespace UberFood.Affichage{
             var pastas = pastaHandler.GetPastas();
             AfficherPasta(pastas);
         }
+        public static void AfficherChoixPate()
+        {
+            var doughHandler = new DoughHandler();
+            var doughs = doughHandler.GetDoughs();
+            foreach (var dough in doughs)
+            {
+                AfficherBoutons($"{dough.Id} : {dough.Name}");
+            }
+        }
     }
 }
