@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UberFood.Core.Context;
+using UberFood.Core.Entities;
 using UberFood.Core.Models;
 
 namespace UberFood.Core.Handlers;
@@ -19,7 +20,11 @@ public sealed class BurgerHandler
             {
                 var burgerToAdd = new Entities.Burger
                 {
-                    
+                    IsVegetarian = burger.IsVegetable,
+                    Name = burger.Name,
+                    Price = burger.Price,
+                    Id = burger.Id,
+                    ContainAlergene = burger.ContainAlergen
                 };
 
                 ctx.Add(burgerToAdd);
@@ -39,7 +44,7 @@ public sealed class BurgerHandler
             using (var ctx = new DataContext())
             {
                 var burgers = ctx.Burgers                    
-                    .Select(p => new BurgerDto(p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
+                    .Select(p => new BurgerDto(p.IsVegetarian, p.ContainAlergene, p.Name, p.Price,p.Id))
                     .ToList();
 
                 return burgers;
