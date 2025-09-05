@@ -17,6 +17,14 @@ public class UserDto
         this.AddressId = addressId;
         this.Id = id;
     }
+    public UserDto(string firstname, string lastname, string phone, string mail, int addressId)
+    {
+        this.FirstName = firstname;
+        this.LastName = lastname;
+        this.Phone = phone;
+        this.Mail = mail;
+        this.AddressId = addressId;
+    }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Phone { get; set; }

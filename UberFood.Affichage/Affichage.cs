@@ -1,4 +1,5 @@
-﻿using UberFood.Core.Entities;
+﻿using UberFood.Core.Context;
+using UberFood.Core.Entities;
 using UberFood.Core.Handlers;
 using UberFood.Core.Models;
 
@@ -57,7 +58,8 @@ namespace UberFood.Affichage{
             Console.WriteLine("Que souhaitez vous faire ?\n");
             AfficherBoutons("1. Commander");
             AfficherBoutons("2. Gestion de produits");
-            AfficherBoutons("3. Quitter l'application");
+            AfficherBoutons("3. Gestion de clients");
+            AfficherBoutons("4. Quitter l'application");
             
         }
         public static void AfficherMenuChoix1()
@@ -85,6 +87,18 @@ namespace UberFood.Affichage{
             AfficherBoutons("3. Supprimer un produit");
             AfficherBoutons("4. Retour en arrière");
             AfficherBoutons("5. Quitter l'application");
+        }
+        public static void AfficherMenuChoix3()
+        {
+            AfficherBandeau("Uberfood");
+            AfficherBandeau("Espace de gestion de Clients");
+            Console.WriteLine("\nVoici les options disponibles : \n");
+            AfficherBoutons("1. Ajouter un Client");
+            AfficherBoutons("2. Modifier un Client");
+            AfficherBoutons("3. Supprimer un Client");
+            AfficherBoutons("4. Liste des Client");
+            AfficherBoutons("5. Retour en arrière");
+            AfficherBoutons("6. Quitter l'application");
         }
         public static void AfficherMenuAjoutProduit()
         {
@@ -204,7 +218,74 @@ namespace UberFood.Affichage{
             }
             
         }
-       public static void AfficherListeProduit()
+        public static void AfficherUsers(List<UserDto> Users)
+        {
+            int largeurFixe = 80;
+
+            foreach (var user in Users)
+            {
+                string texte = $"{user.Id} - {user.FirstName} - {user.LastName} - {user.Phone} - {user.Mail}";
+                texte = texte.Trim();
+
+                string contenu = texte.Length > largeurFixe - 4
+                    ? texte.Substring(0, largeurFixe - 7) + "..."
+                    : texte;
+
+                int espaceDisponible = largeurFixe;
+                int leftPadding = (espaceDisponible - contenu.Length) / 2;
+                int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+                string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+                string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+                string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(ligneTexte);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine();
+            }
+
+
+        }
+        public static void AfficherUser(int userId)
+        {
+            using (var context = new DataContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Id == userId);
+
+                if (user == null)
+                {
+                    Console.WriteLine("User not found.");
+                    return;
+                }
+
+                int largeurFixe = 80;
+
+                string texte = $"{user.Id} - {user.FirstName} - {user.LastName} - {user.Phone} - {user.Mail}";
+                texte = texte.Trim();
+
+                string contenu = texte.Length > largeurFixe - 4
+                    ? texte.Substring(0, largeurFixe - 7) + "..."
+                    : texte;
+
+                int leftPadding = (largeurFixe - contenu.Length) / 2;
+                int rightPadding = largeurFixe - contenu.Length - leftPadding;
+
+                string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+                string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+                string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(ligneTexte);
+                Console.WriteLine(ligneVide);
+                Console.WriteLine(bordureHautBas);
+                Console.WriteLine();
+            }
+        }   
+        public static void AfficherListeProduit()
         {
             var pizzaHandler = new PizzaHandler();
             var pizzas = pizzaHandler.GetPizzas();
@@ -215,6 +296,12 @@ namespace UberFood.Affichage{
             var pastaHandler = new PastaHandler();
             var pastas = pastaHandler.GetPastas();
             AfficherPasta(pastas);
+        }
+        public static void AfficherListeUsers()
+        {
+            var userHandler = new UserHandler();
+            var users = userHandler.GetUsers();
+            AfficherUsers(users);
         }
         public static void AfficherChoixPate()
         {
