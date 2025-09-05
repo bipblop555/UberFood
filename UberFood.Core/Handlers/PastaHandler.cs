@@ -60,7 +60,7 @@ public class PastaHandler
         {
             using (var ctx = new DataContext())
             {
-                var pastaToRemove = ctx.Burgers.FirstOrDefault(p => p.Name == name);
+                var pastaToRemove = ctx.Pastas.FirstOrDefault(p => p.Name == name);
                 if (pastaToRemove is not null)
                 {
                     ctx.Remove(pastaToRemove);
