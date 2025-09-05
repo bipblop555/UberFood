@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace UberFood.Core.Models;
 
-public abstract class ProductDto
+public class ProductDto
 {
-    protected ProductDto(string name, double price, int id)
+    public ProductDto(string name, double price, int id)
     {
         this.Name = name;
         this.Price = price;
         this.Id = id;
     }
-    protected ProductDto(string name, double price)
+    public ProductDto(string name, double price)
     {
         this.Name = name;
         this.Price = price;
     }
 
-    public string Name { get;protected set; }
-    public double Price { get; protected set; }
-    public int Id { get; protected set; }
+    public string Name { get; set; }
+    public double Price { get; set; }
+    public int Id { get; set; }
 }

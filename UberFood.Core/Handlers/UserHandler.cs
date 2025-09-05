@@ -80,4 +80,23 @@ public sealed class UserHandler
             return false;
         }
     }
+
+    public UserDto GetDefaultUser()
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var user = ctx.Users.FirstOrDefault();
+
+                var userDto = new UserDto(user.FirstName, user.LastName, user.Phone, user.Mail, user.AdresseId, user.Id);
+
+                return userDto;
+            }
+        } catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return new UserDto();
+        }
+    }
 }
