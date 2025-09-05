@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UberFood.Core;
 using UberFood.Core.Context;
 using UberFood.Core.Handlers;
 using UberFood.Core.Models;
@@ -7,15 +8,8 @@ using Menu = UberFood.Affichage.Affichage;
 using Saisie = UberFood.Interactions.Interactions;
 
 
-
-// Configuration manuelle du contexte
-var optionsBuilder = new DbContextOptionsBuilder<DataContext>();
-optionsBuilder.UseSqlServer("Server=localhost;Database=TaBase;Trusted_Connection=True;");
-
-using var context = new DataContext(optionsBuilder.Options);
-
-// Appel du seeder
-DbInitializer.Seed(context);
+var seeder = new Seeder();
+seeder.SeedData();
 
 Console.WriteLine("Base de données initialisée avec succès !");
 

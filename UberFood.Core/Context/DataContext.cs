@@ -5,9 +5,8 @@ namespace UberFood.Core.Context;
 
 public class DataContext : DbContext
 {
-    public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-    public DataContext() : base() { }
-
+    //public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+    
     public DbSet<Food> Foods => Set<Food>();
     public DbSet<Drink> Drinks => Set<Drink>();
     public DbSet<Pasta> Pastas => Set<Pasta>();
@@ -15,7 +14,7 @@ public class DataContext : DbContext
     public DbSet<Pizza> Pizzas => Set<Pizza>();
     public DbSet<Dough> Doughs => Set<Dough>();
     public DbSet<Ingredient> Ingredients => Set<Ingredient>();
-    public DbSet<Adress> Adresses => Set<Adress>();
+    public DbSet<Adress> Addresses => Set<Adress>();
     public DbSet<Product> Products => Set<Product>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
@@ -37,12 +36,14 @@ public class DataContext : DbContext
             .HasOne(i => i.Burger)
             .WithMany(b => b.Ingredients)
             .HasForeignKey(i => i.BurgerId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
 
         modelBuilder.Entity<Ingredient>()
             .HasOne(i => i.Pizza)
             .WithMany(p => p.Ingredients)
             .HasForeignKey(i => i.PizzaId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.NoAction);
     }
+
+
 }

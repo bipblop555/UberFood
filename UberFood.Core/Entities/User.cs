@@ -14,23 +14,32 @@ public class User
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("Id")]
     public int Id { get; set; }
+
     [Required]
     [MaxLength(50)]
     [Column("FirstName")]
     public string FirstName { get; set; }
+
     [Required]
     [MaxLength(50)]
     [Column("LastName")]
     public string LastName { get; set; }
+
     [Required]
     [MaxLength(150)]
     [Column("Phone")]
     public string Phone { get; set; }
+
     [Required]
     [MaxLength(150)]
     [Column("Mail")]
     public string Mail { get; set; }
-    [ForeignKey("AdressId")]
+
+    [ForeignKey("AdresseId")]
     [Column("AdresseId")]
     public int AdresseId { get; set; }
+
+    public Adress Adresse { get; set; }
+
+
 }

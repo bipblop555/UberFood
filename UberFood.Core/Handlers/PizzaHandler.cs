@@ -13,18 +13,12 @@ namespace UberFood.Core.Handlers;
 
 public sealed class PizzaHandler
 {
-    private DbContextOptions<DataContext> _options;
-    public PizzaHandler()
-    {
-        var builder = new DbContextOptionsBuilder<DataContext>();
-        builder.UseSqlServer("Server=localhost;Database=Base;Trusted_Connection=True;");
-        _options = builder.Options;
-    }
+    
     public void AddPizza(PizzaDto pizza)
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var pizzaToAdd = new Entities.Pizza
                 {
@@ -32,7 +26,7 @@ public sealed class PizzaHandler
                     IsVegetarian = pizza.IsVegetable,
                     Name = pizza.Name,
                     Price = pizza.Price,
-                    ProductId = pizza.Id,
+                    Id = pizza.Id,
                     ContainAlergene = pizza.ContainAlergen
                 };
 
@@ -49,11 +43,11 @@ public sealed class PizzaHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options))
+            using (var ctx = new DataContext())
             {
                 var pizzas = ctx.Pizzas
                     .Include(p => p.Dough)
-                    .Select(p => new PizzaDto(p.Dough.Name,p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.ProductId))
+                    .Select(p => new PizzaDto(p.Dough.Name,p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 
                 return pizzas;
@@ -70,7 +64,7 @@ public sealed class PizzaHandler
     {
         try
         {
-            using (var ctx = new DataContext(_options)) 
+            using (var ctx = new DataContext()) 
             {
                 var pizzaToRemove = ctx.Pizzas.FirstOrDefault(p => p.Name == name);
                 if (pizzaToRemove is not null)

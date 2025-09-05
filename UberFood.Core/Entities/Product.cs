@@ -13,7 +13,7 @@ public class Product
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("Id")]
-    public int ProductId { get; set; }
+    public int Id { get; set; }
     [Required]
     [Column("Name")]
     public string Name { get; set; }

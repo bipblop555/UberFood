@@ -8,6 +8,9 @@ namespace UberFood.Core.Models;
 
 public class IngredientDto
 {
+    private int? pizzaId;
+    private int? burgerId;
+
     public IngredientDto(string name, double kcal,int id, int pizzaId, int burgerId)
     {
         this.Name = name;
@@ -16,6 +19,16 @@ public class IngredientDto
         PizzaId = pizzaId;
         BurgerId = burgerId;
     }
+
+    public IngredientDto(string name, double kCal, int id, int? pizzaId, int? burgerId)
+    {
+        Name = name;
+        KCal = kCal;
+        Id = id;
+        this.pizzaId = pizzaId;
+        this.burgerId = burgerId;
+    }
+
     public string Name { get; set; }
     public double KCal { get; set; }
     public int Id { get; set; }

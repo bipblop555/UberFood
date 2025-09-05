@@ -3,18 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace UberFood.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class Setup : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Adresses",
+                name: "Addresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -27,7 +25,7 @@ namespace UberFood.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Adresses", x => x.Id);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,7 +73,7 @@ namespace UberFood.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -85,7 +83,7 @@ namespace UberFood.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Product", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,7 +94,7 @@ namespace UberFood.Core.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Phone = table.Column<int>(type: "int", maxLength: 150, nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Mail = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     AdresseId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -117,9 +115,9 @@ namespace UberFood.Core.Migrations
                 {
                     table.PrimaryKey("PK_Drinks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Drinks_Product_Id",
+                        name: "FK_Drinks_Products_Id",
                         column: x => x.Id,
-                        principalTable: "Product",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -129,15 +127,16 @@ namespace UberFood.Core.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    IsVegetarian = table.Column<bool>(type: "bit", nullable: false)
+                    IsVegetarian = table.Column<bool>(type: "bit", nullable: false),
+                    ContainAlergene = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Foods", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Foods_Product_Id",
+                        name: "FK_Foods_Products_Id",
                         column: x => x.Id,
-                        principalTable: "Product",
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -189,6 +188,12 @@ namespace UberFood.Core.Migrations
                 {
                     table.PrimaryKey("PK_Pizzas", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_Pizzas_Doughs_DoughId",
+                        column: x => x.DoughId,
+                        principalTable: "Doughs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Pizzas_Foods_Id",
                         column: x => x.Id,
                         principalTable: "Foods",
@@ -196,77 +201,59 @@ namespace UberFood.Core.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Doughs",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "Ingredients",
+                columns: table => new
                 {
-                    { 1, "Classique" },
-                    { 2, "Fine" },
-                    { 3, "Épaisse" }
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    BurgerId = table.Column<int>(type: "int", nullable: true),
+                    PizzaId = table.Column<int>(type: "int", nullable: true),
+                    KCal = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Burgers_BurgerId",
+                        column: x => x.BurgerId,
+                        principalTable: "Burgers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Ingredients_Pizzas_PizzaId",
+                        column: x => x.PizzaId,
+                        principalTable: "Pizzas",
+                        principalColumn: "Id");
                 });
 
-            migrationBuilder.InsertData(
-                table: "Product",
-                columns: new[] { "Id", "Name", "Price" },
-                values: new object[,]
-                {
-                    { 1, "4 Fromages", 9.9900000000000002 },
-                    { 2, "Chèvre Miel", 10.0 },
-                    { 3, "Reine", 8.5 },
-                    { 4, "Big Mac", 9.0999999999999996 },
-                    { 5, "Smash Burger", 12.1 },
-                    { 6, "Mac Chicken", 9.0999999999999996 }
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_BurgerId",
+                table: "Ingredients",
+                column: "BurgerId");
 
-            migrationBuilder.InsertData(
-                table: "Foods",
-                columns: new[] { "Id", "IsVegetarian" },
-                values: new object[,]
-                {
-                    { 1, false },
-                    { 2, false },
-                    { 3, false },
-                    { 4, false },
-                    { 5, false },
-                    { 6, false }
-                });
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_PizzaId",
+                table: "Ingredients",
+                column: "PizzaId");
 
-            migrationBuilder.InsertData(
-                table: "Burgers",
-                column: "Id",
-                values: new object[]
-                {
-                    4,
-                    5,
-                    6
-                });
-
-            migrationBuilder.InsertData(
+            migrationBuilder.CreateIndex(
+                name: "IX_Pizzas_DoughId",
                 table: "Pizzas",
-                columns: new[] { "Id", "DoughId" },
-                values: new object[,]
-                {
-                    { 1, 1 },
-                    { 2, 2 },
-                    { 3, 3 }
-                });
+                column: "DoughId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Adresses");
-
-            migrationBuilder.DropTable(
-                name: "Burgers");
-
-            migrationBuilder.DropTable(
-                name: "Doughs");
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Drinks");
+
+            migrationBuilder.DropTable(
+                name: "Ingredients");
 
             migrationBuilder.DropTable(
                 name: "OrderProducts");
@@ -278,16 +265,22 @@ namespace UberFood.Core.Migrations
                 name: "Pastas");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Burgers");
+
+            migrationBuilder.DropTable(
                 name: "Pizzas");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Doughs");
 
             migrationBuilder.DropTable(
                 name: "Foods");
 
             migrationBuilder.DropTable(
-                name: "Product");
+                name: "Products");
         }
     }
 }
