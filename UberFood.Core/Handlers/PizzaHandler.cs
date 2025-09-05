@@ -47,7 +47,7 @@ public sealed class PizzaHandler
             {
                 var pizzas = ctx.Pizzas
                     .Include(p => p.Dough)
-                    .Select(p => new PizzaDto(p.Dough.Id,p.Dough.Name, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
+                    .Select(p => new PizzaDto(p.Dough.Name, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 
                 return pizzas;

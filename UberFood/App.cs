@@ -124,7 +124,7 @@ do
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Ajout d'une pizza");
-                                    
+                                    //var newpizza = new PizzaDto(saisie);
                                     break;
                                 case 2: //Ajout d'un burger
                                     Console.Clear();

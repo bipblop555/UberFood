@@ -17,11 +17,11 @@ public sealed class PizzaDto : FoodDto
         this.Dough = dough;
         
     }
-    public PizzaDto(int doughId, string doughName, bool vegetarian, bool alergene, string name, double price, int id)
+    public PizzaDto( string doughName, bool vegetarian, bool alergene, string name, double price, int id)
         : base(vegetarian, alergene, name, price, id)
     {
 
-        this.Dough.Id = doughId;
+        
         this.Dough.Name = doughName;
 
     }
