@@ -10,13 +10,6 @@ namespace UberFood.Core.Models;
 
 public sealed class PizzaDto : FoodDto
 {
-    public PizzaDto(int doughId, bool vegetarian, bool alergene,string name, double price, int id)
-        : base(vegetarian, alergene, name, price, id)
-    {
-
-        this.DoughId = doughId;
-
-    }
     public PizzaDto(int doughId, bool vegetarian, bool alergene, string name, double price)
         : base(vegetarian, alergene, name, price)
     {
@@ -26,5 +19,5 @@ public sealed class PizzaDto : FoodDto
     }
     public int DoughId { get; set; }
 
-    public DoughDto Dough { get; set; }
+    public DoughDto Dough {  get; set; }
 }

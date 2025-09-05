@@ -136,6 +136,7 @@ do
                                     var pizzahandler = new PizzaHandler();
                                     pizzahandler.AddPizza(newPizza);
                                     Console.WriteLine("\nAjout de la pizza avec succès !");
+
                                     Console.ReadKey();
                                     break;
                                 case 2: //Ajout d'un burger

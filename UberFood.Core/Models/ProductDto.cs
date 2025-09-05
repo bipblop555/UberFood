@@ -18,7 +18,6 @@ public abstract class ProductDto
     {
         this.Name = name;
         this.Price = price;
-
     }
 
     public string Name { get;protected set; }
