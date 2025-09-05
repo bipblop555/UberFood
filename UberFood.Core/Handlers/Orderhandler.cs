@@ -5,30 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UberFood.Core.Context;
+using UberFood.Core.Entities;
 using UberFood.Core.Models;
 
 namespace UberFood.Core.Handlers;
 
-public sealed class UserHandler
+public class Orderhandler
 {
-    
-    public void AddUser(UserDto user)
+
+    public void AddOrders(OrdersDto orders)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var userToAdd = new Entities.User
+                var orderToAdd = new Entities.Order
                 {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Phone = user.Phone,
-                    Mail = user.Mail,
-
+                    UserId = orders.UserId ,
+                    AdressId = orders.AdressId ,
+                    DeliveryDate = orders.DelivryDate ,
+                    OrderDate = orders.OrderDate ,
+                    Status = orders.Status                                
                 };
 
-                ctx.Add(userToAdd);
+                ctx.Add(orderToAdd);
                 ctx.SaveChanges();
             }
         }
@@ -37,19 +37,17 @@ public sealed class UserHandler
             Console.WriteLine(e.Message);
         }
     }
-    public List<UserDto> GetUsers()
+    public List<OrdersDto> GetOrders()
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                //TODO ajouter adressid
-                var users = ctx.Users
-                    .Include(p => p.Adresse)
-                    .Select(p => new UserDto(p.FirstName, p.LastName, p.Phone, p.Mail, p.AdresseId,p.Id))
+                var orders = ctx.Orders
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
                     .ToList();
 
-                return users;
+                return orders;
             }
         }
         catch (Exception e)
@@ -58,16 +56,17 @@ public sealed class UserHandler
             return [];
         }
     }
-    public bool DeleteUsers(string name)
+
+    public bool DeleteOrder(int id)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var userToRemove = ctx.Users.FirstOrDefault(p => p.FirstName == name);
-                if (userToRemove is not null)
+                var orderToRemove = ctx.Orders.FirstOrDefault(o => o.OrderId == id);
+                if (orderToRemove is not null)
                 {
-                    ctx.Remove(userToRemove);
+                    ctx.Remove(orderToRemove);
                     ctx.SaveChanges();
                     return true;
                 }
@@ -80,4 +79,5 @@ public sealed class UserHandler
             return false;
         }
     }
+
 }
