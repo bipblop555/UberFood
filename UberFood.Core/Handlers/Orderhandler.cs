@@ -179,9 +179,9 @@ public class Orderhandler
             using(var ctx = new DataContext())
             {
                 var orders = ctx.Orders
-                    .Where(o => o.OrderId == orderId)
-                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
-                    .FirstOrDefault();
+                    //.Where(o => o.OrderId == orderId)
+                    //.Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
+                    .FirstOrDefault(o => o.OrderId == orderId);
 
                 if (orders is not null)
                 {
