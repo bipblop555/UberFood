@@ -14,7 +14,7 @@ namespace UberFood.Core.Handlers;
 public sealed class PizzaHandler
 {
 
-    public void AddPizza(PizzaDto pizza)
+    public int AddPizza(PizzaDto pizza)
     {
         try
         {
@@ -27,16 +27,22 @@ public sealed class PizzaHandler
                     Name = pizza.Name,
                     Price = pizza.Price,
                     Id = pizza.Id,
-                    ContainAlergene = pizza.ContainAlergen
+                    ContainAlergene = pizza.ContainAlergen,
+
                 };
 
                 ctx.Add(pizzaToAdd);
+
                 ctx.SaveChanges();
+                return pizzaToAdd.Id;
             }
+
+
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return -1;
         }
     }
 
@@ -48,7 +54,7 @@ public sealed class PizzaHandler
             {
                 var pizzas = ctx.Pizzas
                     .Include(p => p.Dough)
-                    .Select(p => new PizzaDto(p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price,p.Id))
+                    .Select(p => new PizzaDto(p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price))
                     .ToList();
 
                 return pizzas;

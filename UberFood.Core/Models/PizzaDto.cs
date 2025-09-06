@@ -17,14 +17,16 @@ public sealed class PizzaDto : FoodDto
         this.DoughId = doughId;
 
     }
-    public PizzaDto(int doughId, bool vegetarian, bool alergene, string name, double price, int id)
-        : base(vegetarian, alergene, name, price,id)
+    public PizzaDto(int doughId, bool vegetarian, bool alergene, string name, double price, int id, List<IngredientDto>? ingredients)
+        : base(vegetarian, alergene, name, price, id)
     {
 
         this.DoughId = doughId;
+        this.Ingredients = ingredients;
 
     }
     public int DoughId { get; set; }
 
-    public DoughDto Dough {  get; set; }
+    public DoughDto Dough { get; set; }
+    public List<IngredientDto>? Ingredients { get; set; }
 }

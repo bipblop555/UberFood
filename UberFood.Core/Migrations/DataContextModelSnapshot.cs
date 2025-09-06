@@ -168,22 +168,29 @@ namespace UberFood.Core.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Product", b =>
                 {
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -194,7 +201,7 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("float")
                         .HasColumnName("Price");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
 
                     b.ToTable("Products");
 
@@ -239,6 +246,8 @@ namespace UberFood.Core.Migrations
                         .HasColumnName("Phone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdresseId");
 
                     b.ToTable("Users");
                 });
@@ -324,11 +333,39 @@ namespace UberFood.Core.Migrations
                     b.Navigation("Pizza");
                 });
 
+            modelBuilder.Entity("UberFood.Core.Entities.OrderProduct", b =>
+                {
+                    b.HasOne("UberFood.Core.Entities.Order", null)
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UberFood.Core.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.User", b =>
+                {
+                    b.HasOne("UberFood.Core.Entities.Adress", "Adresse")
+                        .WithMany()
+                        .HasForeignKey("AdresseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Adresse");
+                });
+
             modelBuilder.Entity("UberFood.Core.Entities.Drink", b =>
                 {
                     b.HasOne("UberFood.Core.Entities.Product", null)
                         .WithOne()
-                        .HasForeignKey("UberFood.Core.Entities.Drink", "ProductId")
+                        .HasForeignKey("UberFood.Core.Entities.Drink", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -337,7 +374,7 @@ namespace UberFood.Core.Migrations
                 {
                     b.HasOne("UberFood.Core.Entities.Product", null)
                         .WithOne()
-                        .HasForeignKey("UberFood.Core.Entities.Food", "ProductId")
+                        .HasForeignKey("UberFood.Core.Entities.Food", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -346,7 +383,7 @@ namespace UberFood.Core.Migrations
                 {
                     b.HasOne("UberFood.Core.Entities.Food", null)
                         .WithOne()
-                        .HasForeignKey("UberFood.Core.Entities.Burger", "ProductId")
+                        .HasForeignKey("UberFood.Core.Entities.Burger", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -355,7 +392,7 @@ namespace UberFood.Core.Migrations
                 {
                     b.HasOne("UberFood.Core.Entities.Food", null)
                         .WithOne()
-                        .HasForeignKey("UberFood.Core.Entities.Pasta", "ProductId")
+                        .HasForeignKey("UberFood.Core.Entities.Pasta", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -370,11 +407,16 @@ namespace UberFood.Core.Migrations
 
                     b.HasOne("UberFood.Core.Entities.Food", null)
                         .WithOne()
-                        .HasForeignKey("UberFood.Core.Entities.Pizza", "ProductId")
+                        .HasForeignKey("UberFood.Core.Entities.Pizza", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Dough");
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Burger", b =>
