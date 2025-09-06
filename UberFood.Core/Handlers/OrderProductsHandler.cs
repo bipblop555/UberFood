@@ -80,10 +80,12 @@ public class OrderProductsHandler
                     ctx.SaveChanges();
                 }
 
-                var orderProductToRemove = ctx.OrderProducts.FirstOrDefault(op => op.OrderId == orderID);
+                var orderProductToRemove = ctx.OrderProducts
+                    .Where(op => op.OrderId == orderID)
+                    .ToList();
                 if(orderProductToRemove is not null)
                 {
-                    ctx.Remove(orderProductToRemove);
+                    ctx.RemoveRange(orderProductToRemove);
                     ctx.SaveChanges();
                 }
 
