@@ -84,8 +84,8 @@ public class Orderhandler
             using (var ctx = new DataContext())
             {
                 var orders = ctx.Orders
-                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
                     .Where(o => o.UserId == id)
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
                     .ToList();
 
                 return orders;
@@ -142,6 +142,58 @@ public class Orderhandler
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+        }
+    }
+
+    public bool UpdateOrder(OrdersDto updatedOrder)
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var existingOrder = ctx.Orders.FirstOrDefault(o => o.OrderId == updatedOrder.Id);
+
+                if (existingOrder is null)
+                    return false;
+
+                // Mettre à jour les champs
+                existingOrder.AdressId = updatedOrder.AdressId;
+                existingOrder.DeliveryDate = updatedOrder.DelivryDate;
+                existingOrder.Status = updatedOrder.Status;
+
+                ctx.SaveChanges();
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public bool UpdateOrderStatusById(int orderId, int newStatusId)
+    {
+        try
+        {
+            using(var ctx = new DataContext())
+            {
+                var orders = ctx.Orders
+                    .Where(o => o.OrderId == orderId)
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
+                    .FirstOrDefault();
+
+                if (orders is not null)
+                {
+                    orders.Status = newStatusId;
+                    ctx.SaveChanges();
+                }
+            }
+            return true;
+        } catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
         }
     }
 }

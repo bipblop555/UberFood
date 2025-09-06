@@ -98,4 +98,39 @@ public class OrderProductsHandler
             return false;
         }
     }
+
+    public bool UpdateOrderProducts(int orderId, List<int> newProductIds)
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var order = ctx.Orders
+                    .Include(o => o.OrderProducts)
+                    .FirstOrDefault(o => o.OrderId == orderId);
+
+                if (order is null)
+                    return false;
+
+                ctx.OrderProducts.RemoveRange(order.OrderProducts);
+
+                foreach (var productId in newProductIds)
+                {
+                    ctx.OrderProducts.Add(new OrderProduct
+                    {
+                        OrderId = orderId,
+                        ProductsId = productId
+                    });
+                }
+
+                ctx.SaveChanges();
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
 }
