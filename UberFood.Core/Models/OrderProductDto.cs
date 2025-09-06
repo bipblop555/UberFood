@@ -17,10 +17,10 @@ public class OrderProductDto
         this.Price = price;
     }
 
-    public OrderProductDto(int orderId, int productId)
+    public OrderProductDto(int orderId, int productsId)
     {
         OrderId = orderId;
-        ProductsId = productId;
+        ProductsId = productsId;
     }
 
     public OrderProductDto(int orderId, ProductDto productDto)
