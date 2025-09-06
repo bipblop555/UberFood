@@ -25,6 +25,11 @@ do
 
     var uHandler = new UserHandler();
     var defaultUser = uHandler.GetDefaultUser();
+    var orderHandler = new Orderhandler();
+    var opHandler = new OrderProductsHandler();
+
+    var myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
+    var ordersGrouped = myOrders.GroupBy(o => o.OrderId).ToList();
     switch (choix1)
     {
         case 1: //Espace commande
@@ -41,8 +46,7 @@ do
             {
                 Console.Clear();
                 Menu.AfficherMenuChoix1();
-                var orderHandler = new Orderhandler();
-                var opHandler = new OrderProductsHandler();
+
                 var choix2 = Saisie.GetEntier("\nVeuillez choisir un option parmis les options proposée : ");
                 switch (choix2)
                 {
@@ -110,8 +114,9 @@ do
                             var oP = new OrderProductDto(orderId.Entity.OrderId, item.Id);
                             opHandler.AddOrderProduct(oP);
                         }
-                        
-                        var validation = Saisie.GetString("\nVeuillez saisir oui ou non :");
+                        var intres = Saisie.GetEntier("\nAppuyez sur n'importe quelle touche pour continuer ");
+
+
                         //continuer sur la validation du panier
                         break;
                     case 6: //Supprimer son panier
@@ -133,18 +138,28 @@ do
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Afficher mes commandes");
 
-                        var myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
+                        Menu.AfficherCommande(defaultUser.FirstName, ordersGrouped);
 
-                        foreach( var item in myOrders)
-                        {
-                            Console.WriteLine($"{item.Product.Name}, {item.Product.Price}");
-                        }
+                        var res = Saisie.GetString("Appuyez sur n'importe quelle touche pour revenir en arrière");
+                        
                         break;
-                    case 8: //Retour en arrière
+                    case 8: //Supprimer une commande
+                        Console.Clear();
+                        Menu.AfficherBandeau("UberFood");
+                        Menu.AfficherBandeau("Supprimer / Annuler une commande");
+
+                        Menu.AfficherCommande(defaultUser.FirstName, ordersGrouped);
+                        var orderIdToDelete = Saisie.GetEntier("Merci d'entrer le numéro d'identification de la commande à supprimer");
+                        opHandler.RemoveOrderById(orderIdToDelete);
+                        //retourEspaceCommande = true;
+                        break;
+
+                    case 9: //Retour en arrière
                         Console.Clear();
                         retourEspaceCommande = true;
                         break;
-                    case 9: //Quitter l'application
+
+                    case 10: //Quitter l'application
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Console.WriteLine("\nMerci pour votre temps ! à bientôt !");

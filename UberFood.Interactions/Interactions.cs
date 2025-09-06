@@ -20,6 +20,4 @@ public class Interactions
             sortie = 0;
         return sortie;
     }
-
-    
 }

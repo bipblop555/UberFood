@@ -74,9 +74,9 @@ namespace UberFood.Affichage{
             AfficherBoutons("5. Valider votre panier");
             AfficherBoutons("6. Supprimer votre panier");
             AfficherBoutons("7. Afficher mes commandes");
-            AfficherBoutons("8. Retour en arrière");
-            AfficherBoutons("9. Quitter l'application");
-
+            AfficherBoutons("8. Supprimer une commande");
+            AfficherBoutons("9. Retour en arrière");
+            AfficherBoutons("10. Quitter l'application");
         }
         public static void AfficherMenuChoix2()
         {
@@ -297,6 +297,71 @@ namespace UberFood.Affichage{
             var pastaHandler = new PastaHandler();
             var pastas = pastaHandler.GetPastas();
             AfficherPasta(pastas);
+        }
+
+        public static void AfficherCommande(string name, List<IGrouping<int, OrderProductDto>> orderProductDtos)
+        {
+            int largeurFixe = 40;
+            double total = 0;
+            var i = 0;
+            foreach (var groups in orderProductDtos)
+            {
+                total = 0;
+                i++;
+                Console.WriteLine($"Commande n° {i}");
+                foreach (var item in groups)
+                {
+                    total += item.Product.Price;
+                    string texte = $"{item.OrderId}. {item.Product.Name} - {item.Product.Price} Euros";
+                    texte = texte.Trim();
+
+                    string contenu = texte.Length > largeurFixe - 4
+                        ? texte.Substring(0, largeurFixe - 7) + "..."
+                        : texte;
+
+                    int espaceDisponible = largeurFixe;
+                    int leftPadding = (espaceDisponible - contenu.Length) / 2;
+                    int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+                    string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+                    string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+                    string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+                    Console.WriteLine(bordureHautBas);
+                    Console.WriteLine(ligneVide);
+                    Console.WriteLine(ligneTexte);
+                    Console.WriteLine(ligneVide);
+                    Console.WriteLine(bordureHautBas);
+                    Console.WriteLine();
+                }
+                AfficherTotal(name, total);
+            }
+        }
+        public static void AfficherTotal(string name, double price)
+        {
+            int largeurFixe = 40;
+
+            string texte = $"{name} votre total est de {price} Euros";
+            texte = texte.Trim();
+
+            string contenu = texte.Length > largeurFixe - 4
+                ? texte.Substring(0, largeurFixe - 7) + "..."
+                : texte;
+
+            int espaceDisponible = largeurFixe;
+            int leftPadding = (espaceDisponible - contenu.Length) / 2;
+            int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+            string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
+            string ligneVide = "|" + new string(' ', largeurFixe) + "|";
+            string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
+
+            Console.WriteLine(bordureHautBas);
+            Console.WriteLine(ligneVide);
+            Console.WriteLine(ligneTexte);
+            Console.WriteLine(ligneVide);
+            Console.WriteLine(bordureHautBas);
+            Console.WriteLine();
         }
 
         public static void AfficherProduits(List<ProductDto> products)
