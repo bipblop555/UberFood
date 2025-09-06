@@ -3,7 +3,8 @@ using UberFood.Core.Entities;
 using UberFood.Core.Handlers;
 using UberFood.Core.Models;
 
-namespace UberFood.Affichage{
+namespace UberFood.Affichage
+{
     public class Affichage
     {
         public static void AfficherBandeau(string texte, int largeurFixe = 50)
@@ -53,14 +54,14 @@ namespace UberFood.Affichage{
         public static void AfficherMenuDepart()
         {
             AfficherBandeau("Uberfood");
-            
+
             Console.WriteLine("\nPar Axel, Guillaume et Tom\n");
             Console.WriteLine("Que souhaitez vous faire ?\n");
             AfficherBoutons("1. Commander");
             AfficherBoutons("2. Gestion de produits");
             AfficherBoutons("3. Gestion de clients");
             AfficherBoutons("4. Quitter l'application");
-            
+
         }
         public static void AfficherMenuChoix1()
         {
@@ -75,9 +76,8 @@ namespace UberFood.Affichage{
             AfficherBoutons("6. Supprimer votre panier");
             AfficherBoutons("7. Afficher mes commandes");
             AfficherBoutons("8. Supprimer une commande");
-            AfficherBoutons("9. Modifier statut commande");
-            AfficherBoutons("10. Retour en arrière");
-            AfficherBoutons("11. Quitter l'application");
+            AfficherBoutons("9. Retour en arrière");
+            AfficherBoutons("10. Quitter l'application");
         }
         public static void AfficherMenuChoix2()
         {
@@ -138,7 +138,7 @@ namespace UberFood.Affichage{
 
             foreach (var pizza in pizzas)
             {
-                string texte = $"{pizza.Name} - {pizza.Price} Euros";
+                string texte = $"{pizza.Id} : {pizza.Name} - {pizza.Price} Euros";
                 texte = texte.Trim();
 
                 string contenu = texte.Length > largeurFixe - 4
@@ -167,7 +167,7 @@ namespace UberFood.Affichage{
 
             foreach (var burger in burgers)
             {
-                string texte = $"{burger.Name} - {burger.Price} Euros";
+                string texte = $" {burger.Id} : {burger.Name} - {burger.Price} Euros";
                 texte = texte.Trim();
 
                 string contenu = texte.Length > largeurFixe - 4
@@ -196,7 +196,7 @@ namespace UberFood.Affichage{
 
             foreach (var pasta in Pastas)
             {
-                string texte = $"{pasta.Name} - {pasta.Price} Euros";
+                string texte = $"{pasta.Id} : {pasta.Name} - {pasta.Price} Euros";
                 texte = texte.Trim();
 
                 string contenu = texte.Length > largeurFixe - 4
@@ -218,7 +218,7 @@ namespace UberFood.Affichage{
                 Console.WriteLine(bordureHautBas);
                 Console.WriteLine();
             }
-            
+
         }
         public static void AfficherUsers(List<UserDto> Users)
         {
@@ -286,7 +286,7 @@ namespace UberFood.Affichage{
                 Console.WriteLine(bordureHautBas);
                 Console.WriteLine();
             }
-        }   
+        }
         public static void AfficherListeProduit()
         {
             var pizzaHandler = new PizzaHandler();

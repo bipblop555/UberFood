@@ -54,7 +54,7 @@ public sealed class PizzaHandler
             {
                 var pizzas = ctx.Pizzas
                     .Include(p => p.Dough)
-                    .Select(p => new PizzaDto(p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price))
+                    .Select(p => new PizzaDto(p.DoughId, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 
                 return pizzas;
@@ -66,14 +66,42 @@ public sealed class PizzaHandler
             return [];
         }
     }
-
-    public bool DeletePizza(string name)
+    public bool UpdatePizza(PizzaDto newPizza)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var pizzaToRemove = ctx.Pizzas.FirstOrDefault(p => p.Name == name);
+                var pizzaToUpdate = ctx.Pizzas.Find(newPizza.Id);
+                {
+                    pizzaToUpdate.Name = newPizza.Name;
+                    pizzaToUpdate.Price = newPizza.Price;
+                    pizzaToUpdate.IsVegetarian = newPizza.IsVegetable;
+                    pizzaToUpdate.ContainAlergene = newPizza.ContainAlergen;
+                    pizzaToUpdate.Id = newPizza.Id;
+                    pizzaToUpdate.DoughId = newPizza.DoughId;
+
+                    ctx.Update(pizzaToUpdate);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
+    }
+
+    public bool DeletePizza(int id)
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var pizzaToRemove = ctx.Pizzas.FirstOrDefault(p => p.Id == id);
                 if (pizzaToRemove is not null)
                 {
                     ctx.Remove(pizzaToRemove);
