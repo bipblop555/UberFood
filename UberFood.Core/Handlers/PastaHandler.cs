@@ -12,7 +12,7 @@ namespace UberFood.Core.Handlers;
 
 public class PastaHandler
 {
-    
+
     public void AddPasta(PastaDto pasta)
     {
         try
@@ -48,7 +48,7 @@ public class PastaHandler
             {
                 var pastas = ctx.Pastas
 
-                    .Select(p => new PastaDto(p.Type,p.KCal,p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
+                    .Select(p => new PastaDto(p.Type, p.KCal, p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 
                 return pastas;
@@ -60,14 +60,40 @@ public class PastaHandler
             return [];
         }
     }
-
-    public bool DeletePasta(string name)
+    public bool UpdatePasta(PastaDto newPasta)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var pastaToRemove = ctx.Pastas.FirstOrDefault(p => p.Name == name);
+                var pastaToUpdate = ctx.Pastas.Find(newPasta.Id);
+                {
+                    pastaToUpdate.Name = newPasta.Name;
+                    pastaToUpdate.Price = newPasta.Price;
+                    pastaToUpdate.IsVegetarian = newPasta.IsVegetable;
+                    pastaToUpdate.ContainAlergene = newPasta.ContainAlergen;
+                    pastaToUpdate.Id = newPasta.Id;
+
+                    ctx.Update(pastaToUpdate);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
+    }
+    public bool DeletePasta(int id)
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var pastaToRemove = ctx.Pastas.FirstOrDefault(p => p.Id == id);
                 if (pastaToRemove is not null)
                 {
                     ctx.Remove(pastaToRemove);

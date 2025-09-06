@@ -45,8 +45,8 @@ public sealed class BurgerHandler
         {
             using (var ctx = new DataContext())
             {
-                var burgers = ctx.Burgers                    
-                    .Select(p => new BurgerDto(p.IsVegetarian, p.ContainAlergene, p.Name, p.Price,p.Id))
+                var burgers = ctx.Burgers
+                    .Select(p => new BurgerDto(p.IsVegetarian, p.ContainAlergene, p.Name, p.Price, p.Id))
                     .ToList();
 
                 return burgers;
@@ -58,14 +58,41 @@ public sealed class BurgerHandler
             return [];
         }
     }
-
-    public bool DeleteBurger(string name)
+    public bool UpdateBurger(BurgerDto newBurger)
     {
         try
         {
             using (var ctx = new DataContext())
             {
-                var burgerToRemove = ctx.Burgers.FirstOrDefault(p => p.Name == name);
+                var burgerToUpdate = ctx.Burgers.Find(newBurger.Id);
+                {
+                    burgerToUpdate.Name = newBurger.Name;
+                    burgerToUpdate.Price = newBurger.Price;
+                    burgerToUpdate.IsVegetarian = newBurger.IsVegetable;
+                    burgerToUpdate.ContainAlergene = newBurger.ContainAlergen;
+                    burgerToUpdate.Id = newBurger.Id;
+
+                    ctx.Update(burgerToUpdate);
+                    ctx.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
+    }
+
+    public bool DeleteBurger(int id)
+    {
+        try
+        {
+            using (var ctx = new DataContext())
+            {
+                var burgerToRemove = ctx.Burgers.FirstOrDefault(p => p.Id == id);
                 if (burgerToRemove is not null)
                 {
                     ctx.Remove(burgerToRemove);
@@ -81,4 +108,6 @@ public sealed class BurgerHandler
             return false;
         }
     }
+
+
 }

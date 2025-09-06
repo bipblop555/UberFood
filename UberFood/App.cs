@@ -1,9 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using UberFood.Core;
-using UberFood.Core.Context;
+﻿using UberFood.Core.Context;
 using UberFood.Core.Handlers;
 using UberFood.Core.Models;
-using static UberFood.Core.Context.DataContext;
 using Menu = UberFood.Affichage.Affichage;
 using Saisie = UberFood.Interactions.Interactions;
 
@@ -27,7 +24,6 @@ do
     var defaultUser = uHandler.GetDefaultUser();
     var orderHandler = new Orderhandler();
     var opHandler = new OrderProductsHandler();
-    var adressHandler = new AdressHandler();
 
     var myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
     var ordersGrouped = myOrders.GroupBy(o => o.OrderId).ToList();
@@ -105,12 +101,12 @@ do
                         Menu.AfficherProduits(basket);
 
                         Console.WriteLine("\nValidez vous votre panier ?");
-                        
+
                         //var opHandler = new 
-                        var orderDto = new OrdersDto(defaultUser.Id, defaultUser.AddressId,DateTime.Now, DateTime.Now.AddHours(1), 1);
+                        var orderDto = new OrdersDto(defaultUser.Id, defaultUser.AddressId, DateTime.Now, DateTime.Now.AddHours(1), 1);
                         var orderId = orderHandler.AddOrders(orderDto);
 
-                        foreach(var item in basket)
+                        foreach (var item in basket)
                         {
                             var oP = new OrderProductDto(orderId.Entity.OrderId, item.Id);
                             opHandler.AddOrderProduct(oP);
@@ -127,7 +123,7 @@ do
                         //affficher le panier en cours
                         Console.WriteLine("\nSouhaitez vous supprimer votre panier ?");
                         var suppression = Saisie.GetString("\nVeuillez saisir oui ou non :");
-                        if(suppression == "oui")
+                        if (suppression == "oui")
                         {
                             basket = null;
                         }
@@ -144,7 +140,7 @@ do
                         Menu.AfficherCommande(defaultUser.FirstName, ordersGrouped);
 
                         var res = Saisie.GetString("Appuyez sur n'importe quelle touche pour revenir en arrière");
-                        
+
                         break;
                     case 8: //Supprimer une commande
                         Console.Clear();
@@ -158,27 +154,12 @@ do
                         //retourEspaceCommande = true;
                         break;
 
-                    case 9: //Modification Statut commande
-                        Console.Clear();
-                        myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
-                        ordersGrouped = myOrders.GroupBy(o => o.OrderId).ToList();
-                        Menu.AfficherCommande(defaultUser.FirstName, ordersGrouped);
-
-                        var ordId = Saisie.GetEntier("Entrez le numéro de la commande dont le statut doit etre changé");
-                        var newStatus = Saisie.GetEntier("Entrez le nouveau statut de commande");
-
-                        orderHandler.UpdateOrderStatusById(ordId, newStatus);
-
-                        res = Saisie.GetString("Appuyez sur n'importe quelle touche pour revenir en arrière");
-                        retourEspaceCommande = true;
-                        break;
-
-                    case 10: //Retour en arrière
+                    case 9: //Retour en arrière
                         Console.Clear();
                         retourEspaceCommande = true;
                         break;
 
-                    case 11: //Quitter l'application
+                    case 10: //Quitter l'application
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Console.WriteLine("\nMerci pour votre temps ! à bientôt !");
@@ -221,10 +202,9 @@ do
                                     //ajout a la BDD
                                     var pizzahandler = new PizzaHandler();
                                     var newPizzaId = pizzahandler.AddPizza(newPizza);
-                                    Console.WriteLine(newPizzaId);
-                                    Console.WriteLine("coucou");
 
-                                    //
+
+
                                     //boucle d'ajout d'ingredients
                                     bool pizzaIngredients = true;
                                     while (pizzaIngredients)
@@ -236,7 +216,7 @@ do
 
                                                 var newIngredientName = Saisie.GetString("Saisissez un ingredient");
                                                 var newIngredientKCal = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
-                                                IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal,newPizzaId,null);
+                                                IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal, newPizzaId, null);
                                                 var ingredientHandler = new IngredientsHandler();
                                                 ingredientHandler.AddIngredients(newIngredient);
 
@@ -247,11 +227,11 @@ do
                                             }
                                         }
                                     }
-                                    if(newPizzaId != null)
+                                    if (newPizzaId != null)
                                     {
                                         Console.WriteLine("\nAjout de la pizza avec succès !");
                                     }
-                                    
+
 
                                     Console.ReadKey();
                                     break;
@@ -295,7 +275,7 @@ do
                                     {
                                         Console.WriteLine("\nAjout du burger avec succès !");
                                     }
-                                  
+
                                     Console.ReadKey();
                                     break;
                                 case 3: //Ajout de pasta
@@ -337,18 +317,144 @@ do
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Modification d'une pizza");
+                                    var modifPizzaHandler = new PizzaHandler();
+                                    var pizzasToUpdate = modifPizzaHandler.GetPizzas();
+                                    Menu.AfficherPizzas(pizzasToUpdate);
+
+                                    int saisiPizzaId = Saisie.GetEntier("Saisissez le burger a modifier");
+                                    int updatePizzaId = 0;
+                                    string newNamePizza = "";
+                                    double newPricePizza = 0;
+                                    foreach (var pizza in pizzasToUpdate)
+                                    {
+                                        if (pizza.Id == saisiPizzaId)
+                                        {
+                                            updatePizzaId = pizza.Id;
+                                            newNamePizza = pizza.Name;
+                                            newPricePizza = pizza.Price;
+
+                                        }
+                                    }
+                                    Console.WriteLine(newNamePizza);
+
+                                    string saisieNamePizza = Saisie.GetString($"Saisissez le nouveau nom du Pizza (laissez vide pour garder la valeur : {newNamePizza})");
+                                    if (saisieNamePizza != "")
+                                    {
+                                        newNamePizza = saisieNamePizza;
+                                    }
+
+                                    double saisiePricePizza = Convert.ToDouble(Saisie.GetEntier($"Saisissez le nouveau prix du Pizza (laissez vide pour garder la valeur : {newPricePizza})"));
+                                    if (saisiePricePizza != 0)
+                                    {
+                                        newPricePizza = saisiePricePizza;
+                                    }
+
+                                    bool updateVeggyPizza = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
+                                    bool updateAlergenPizza = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
+                                    Menu.AfficherChoixPate();
+                                    int newdoughId = Saisie.GetEntier("\nSaisissez le type de pate");
+                                    PizzaDto updatedPizza = new(newdoughId, updateVeggyPizza, updateAlergenPizza, newNamePizza, newPricePizza, updatePizzaId);
+
+                                    modifPizzaHandler.UpdatePizza(updatedPizza);
                                     Console.ReadKey();
                                     break;
                                 case 2: //Modification d'un burger
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Modification d'un burger");
+
+                                    var modifBurgerHandler = new BurgerHandler();
+                                    var burgersToUpdate = modifBurgerHandler.GetBurgers();
+                                    Menu.AfficherBurger(burgersToUpdate);
+
+                                    int saisiBurgerId = Saisie.GetEntier("Saisissez le burger a modifier");
+                                    int updateBurgerId = 0;
+                                    string newNameBurger = "";
+                                    double newPriceBurger = 0;
+                                    foreach (var burger in burgersToUpdate)
+                                    {
+                                        if (burger.Id == saisiBurgerId)
+                                        {
+                                            updateBurgerId = burger.Id;
+                                            newNameBurger = burger.Name;
+                                            newPriceBurger = burger.Price;
+
+                                        }
+                                        string saisieNameBurger = Saisie.GetString($"Saisissez le nouveau nom du burger (laissez vide pour garder la valeur : {newNameBurger})");
+                                        if (saisieNameBurger != "")
+                                        {
+                                            newNameBurger = saisieNameBurger;
+                                        }
+
+                                        double saisiePriceBurger = Convert.ToDouble(Saisie.GetEntier($"Saisissez le nouveau prix du burger (laissez vide pour garder la valeur : {newPriceBurger})"));
+                                        if (saisiePriceBurger != 0)
+                                        {
+                                            newPriceBurger = saisiePriceBurger;
+                                        }
+
+                                        bool updateVeggyBurger = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
+                                        bool updateAlergenBurger = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
+
+                                        BurgerDto updatedBurger = new(updateVeggyBurger, updateAlergenBurger, newNameBurger, newPriceBurger, updateBurgerId);
+
+                                        modifBurgerHandler.UpdateBurger(updatedBurger);
+                                    }
                                     Console.ReadKey();
                                     break;
                                 case 3: //Modification de pasta
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Modification de pasta");
+                                    var modifPastaHandler = new PastaHandler();
+                                    var PastasToUpdate = modifPastaHandler.GetPastas();
+                                    Menu.AfficherPasta(PastasToUpdate);
+
+                                    int saisiPastaId = Saisie.GetEntier("Saisissez le Pasta a modifier");
+                                    int updatePastaId = 0;
+                                    string newNamePasta = "";
+                                    int newTypePasta = 0;
+                                    double newKCalPasta = 0;
+                                    double newPricePasta = 0;
+                                    foreach (var Pasta in PastasToUpdate)
+                                    {
+                                        if (Pasta.Id == saisiPastaId)
+                                        {
+                                            updatePastaId = Pasta.Id;
+                                            newNamePasta = Pasta.Name;
+                                            newPricePasta = Pasta.Price;
+                                            newTypePasta = Pasta.Type;
+
+                                        }
+                                        string saisieNamePasta = Saisie.GetString($"Saisissez le nouveau nom du Pasta (laissez vide pour garder la valeur : {newNamePasta})");
+                                        if (saisieNamePasta != "")
+                                        {
+                                            newNamePasta = saisieNamePasta;
+                                        }
+
+
+                                        double saisiePricePasta = Convert.ToDouble(Saisie.GetEntier($"Saisissez le nouveau prix du Pasta (laissez vide pour garder la valeur : {newPricePasta})"));
+                                        if (saisiePricePasta != 0)
+                                        {
+                                            newPricePasta = saisiePricePasta;
+                                        }
+                                        int saisieTypePasta = Saisie.GetEntier($"Saisissez le nouveau nom du Pasta (laissez vide pour garder la valeur : {newTypePasta})");
+                                        if (saisieTypePasta != 0)
+                                        {
+                                            newTypePasta = saisieTypePasta;
+                                        }
+                                        double saisieKCalPasta = Convert.ToDouble(Saisie.GetEntier($"Saisissez le nouveau prix du Pasta (laissez vide pour garder la valeur : {newKCalPasta})"));
+                                        if (saisieKCalPasta != 0)
+                                        {
+                                            newKCalPasta = saisieKCalPasta;
+                                        }
+
+                                        bool updateVeggyPasta = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
+                                        bool updateAlergenPasta = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
+
+                                        PastaDto updatedPasta = new(newTypePasta, newKCalPasta, updateVeggyPasta, updateAlergenPasta, newNamePasta, newPricePasta, updatePastaId);
+
+                                        modifPastaHandler.UpdatePasta(updatedPasta);
+                                    }
                                     Console.ReadKey();
                                     break;
                                 case 4: //retour au menu de gestion de produit
@@ -356,7 +462,7 @@ do
                                     retourModificationProduit = true;
                                     break;
                             }
-                        } while(!retourModificationProduit);
+                        } while (!retourModificationProduit);
                         break;
                     case 3: //Supprimer un produit
                         bool retourSuppressionProduit = false;
@@ -371,32 +477,47 @@ do
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Suppression d'une pizza");
-                                    //Afficher la liste des pizza
+                                    //Afficher la liste des pizzas
+                                    var delPizzaHandler = new PizzaHandler();
+                                    Menu.AfficherPizzas(delPizzaHandler.GetPizzas());
                                     var choixSuppressionPizza = Saisie.GetEntier("\nVeuillez choisir un produit et saisir son id : ");
+
                                     //Appliquer la suppresion du produit avec la valeur saisie
+
+                                    delPizzaHandler.DeletePizza(choixSuppressionPizza);
                                     break;
                                 case 2: //Supprimer un burger
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Suppression d'un Burger");
                                     //Afficher la liste des burgers
+                                    var delBurgerHandler = new BurgerHandler();
+                                    Menu.AfficherBurger(delBurgerHandler.GetBurgers());
                                     var choixSuppressionBurger = Saisie.GetEntier("\nVeuillez choisir un produit et saisir son id : ");
+
                                     //Appliquer la suppresion du produit avec la valeur saisie
+
+                                    delBurgerHandler.DeleteBurger(choixSuppressionBurger);
                                     break;
                                 case 3: //Supprimer une pasta
                                     Console.Clear();
                                     Menu.AfficherBandeau("UberFood");
                                     Menu.AfficherBandeau("Suppression de pasta");
                                     //Afficher la liste des pasta
+                                    var delPastaHandler = new PastaHandler();
+                                    Menu.AfficherPasta(delPastaHandler.GetPastas());
                                     var choixSuppressionPasta = Saisie.GetEntier("\nVeuillez choisir un produit et saisir son id : ");
+
                                     //Appliquer la suppresion du produit avec la valeur saisie
+
+                                    delPastaHandler.DeletePasta(choixSuppressionPasta);
                                     break;
                                 case 4: //retour au menu de gestion de produit
                                     Console.Clear();
                                     retourSuppressionProduit = true;
                                     break;
                             }
-                        } while(!retourSuppressionProduit);
+                        } while (!retourSuppressionProduit);
                         break;
                     case 4: //Retour au menu principal
                         Console.Clear();
@@ -410,7 +531,7 @@ do
                         quitter = true;
                         break;
                 }
-            } while(!retourEspaceProduit);
+            } while (!retourEspaceProduit);
             break;
         case 3: //Gestion client
             bool retourEspaceClient = false;
@@ -424,48 +545,22 @@ do
                     case 1: //Ajouter un client
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
-                        Menu.AfficherBandeau("Ajout d'une pizza");
-                        bool isVeggyPizza = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
-                        bool alergenPizza = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
-                        string newNamePizza = Saisie.GetString("\nSaisissez son nom");
-                        double newPricePizza = Convert.ToDouble(Saisie.GetEntier("\nSaisissez son prix\n"));
-                        Menu.AfficherChoixPate();
-                        int newPateIdPizza = Saisie.GetEntier("\nSaisissez le type de pate");
-                        //Création de l'objet
-                        PizzaDto newPizza = new(newPateIdPizza, isVeggyPizza, alergenPizza, newNamePizza, newPricePizza);
-                        //ajout a la BDD
-                        var pizzahandler = new PizzaHandler();
-                        var newPizzaId = pizzahandler.AddPizza(newPizza);
-
-                        
-                        //boucle d'ajout d'ingredients
-                        bool ajoutIngredients = true;
-                        while (ajoutIngredients)
-                        {
-                            if (ajoutIngredients = Saisie.GetString("Voulez vous ajouter un ingredient ? : o/n") == "o")
-                            {
-                                try
-                                {
-
-                                    var newIngredientName = Saisie.GetString("Saisissez un ingredient");
-                                    var newIngredientKCal = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
-                                    IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal, newPizzaId, null);
-                                    var ingredientHandler = new IngredientsHandler();
-                                    ingredientHandler.AddIngredients(newIngredient);
-
-                                }
-                                catch (Exception ex)
-                                {
-                                    Console.WriteLine(ex.Message);
-                                }
-                            }
-                        }
-                        //if(newPizzaId != null)
-                        //{
-                        //    Console.WriteLine("\nAjout de la pizza avec succès !");
-                        //}
-                        
-                        Console.ReadKey();
+                        Menu.AfficherBandeau("Ajout d'un client");
+                        string userFirstname = Saisie.GetString("\nQuel est votre nom ? : ");
+                        string userLastname = Saisie.GetString("\nQuel est votre prénom ? : ");
+                        string userPhone = Saisie.GetString("\nQuel est votre numéro de téléphone ? : ");
+                        string userMail = Saisie.GetString("\nQuel est votre email ? : ");
+                        Console.WriteLine("\nNous allons maintenant vous demander vos informations pour renseigner votre adresse : ");
+                        string userStreet = Saisie.GetString("\nQuel est votre rue ? : ");
+                        string userCity = Saisie.GetString("\nQuel est votre ville ? : ");
+                        string userState = Saisie.GetString("\nQuel est votre région ? : ");
+                        string userZip = Saisie.GetString("\nQuel est votre code postal ? : ");
+                        string userCountry = Saisie.GetString("\nQuel est votre pays ? : ");
+                        var newAdress = new AdressDto(userStreet, userCity, userState, userZip, userCountry);
+                        var newUser = new UserDto(userFirstname, userLastname, userPhone, userMail, newAdress.Id);
+                        var userHandler = new UserHandler();
+                        userHandler.AddUser(newUser);
+                        Console.WriteLine("\nAjout de la pasta avec succès !");
                         break;
                     case 2: //Modifier un client
                         Console.Clear();
@@ -526,7 +621,7 @@ do
                         quitter = true;
                         break;
                 }
-            } while(!retourEspaceClient);
+            } while (!retourEspaceClient);
             break;
         case 4: //Quitter l'application
             Console.Clear();
@@ -535,5 +630,5 @@ do
             quitter = true;
             break;
     }
-} while(!quitter);
+} while (!quitter);
 
