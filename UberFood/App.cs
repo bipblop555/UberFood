@@ -27,6 +27,7 @@ do
     var defaultUser = uHandler.GetDefaultUser();
     var orderHandler = new Orderhandler();
     var opHandler = new OrderProductsHandler();
+    var adressHandler = new AdressHandler();
 
     var myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
     var ordersGrouped = myOrders.GroupBy(o => o.OrderId).ToList();
@@ -157,12 +158,27 @@ do
                         //retourEspaceCommande = true;
                         break;
 
-                    case 9: //Retour en arrière
+                    case 9: //Modification Statut commande
+                        Console.Clear();
+                        myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
+                        ordersGrouped = myOrders.GroupBy(o => o.OrderId).ToList();
+                        Menu.AfficherCommande(defaultUser.FirstName, ordersGrouped);
+
+                        var ordId = Saisie.GetEntier("Entrez le numéro de la commande dont le statut doit etre changé");
+                        var newStatus = Saisie.GetEntier("Entrez le nouveau statut de commande");
+
+                        orderHandler.UpdateOrderStatusById(ordId, newStatus);
+
+                        res = Saisie.GetString("Appuyez sur n'importe quelle touche pour revenir en arrière");
+                        retourEspaceCommande = true;
+                        break;
+
+                    case 10: //Retour en arrière
                         Console.Clear();
                         retourEspaceCommande = true;
                         break;
 
-                    case 10: //Quitter l'application
+                    case 11: //Quitter l'application
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Console.WriteLine("\nMerci pour votre temps ! à bientôt !");
