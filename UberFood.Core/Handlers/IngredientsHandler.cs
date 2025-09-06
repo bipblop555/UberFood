@@ -22,8 +22,9 @@ public sealed class IngredientsHandler
                 {
                     Name = ingredient.Name,
                     KCal = ingredient.KCal,
-                    PizzaId = ingredient.PizzaId,
-                    BurgerId = ingredient.BurgerId,
+                    Id = ingredient.Id,
+                    PizzaId = ingredient?.PizzaId,
+                    BurgerId = ingredient?.BurgerId,
                 };
 
                 ctx.Add(ingredientToAdd);
@@ -43,7 +44,7 @@ public sealed class IngredientsHandler
             using (var ctx = new DataContext())
             {
                 var ingredients = ctx.Ingredients
-                    .Select(p => new IngredientDto(p.Name, p.KCal, p.Id, p.PizzaId, p.BurgerId))
+                    .Select(p => new IngredientDto(p.Name, p.KCal, p.PizzaId, p.BurgerId))
                     .ToList();
 
                 return ingredients;

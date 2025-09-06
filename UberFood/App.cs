@@ -183,11 +183,41 @@ do
                                     Menu.AfficherChoixPate();
                                     int newPateIdPizza = Saisie.GetEntier("\nSaisissez le type de pate");
                                     //Création de l'objet
-                                    var newPizza = new PizzaDto(newPateIdPizza, isVeggyPizza, alergenPizza, newNamePizza, newPricePizza);
+                                    PizzaDto newPizza = new(newPateIdPizza, isVeggyPizza, alergenPizza, newNamePizza, newPricePizza);
                                     //ajout a la BDD
                                     var pizzahandler = new PizzaHandler();
-                                    pizzahandler.AddPizza(newPizza);
-                                    Console.WriteLine("\nAjout de la pizza avec succès !");
+                                    var newPizzaId = pizzahandler.AddPizza(newPizza);
+                                    Console.WriteLine(newPizzaId);
+                                    Console.WriteLine("coucou");
+
+                                    //
+                                    //boucle d'ajout d'ingredients
+                                    bool pizzaIngredients = true;
+                                    while (pizzaIngredients)
+                                    {
+                                        if (pizzaIngredients = Saisie.GetString("Voulez vous ajouter un ingredient ? : o/n") == "o")
+                                        {
+                                            try
+                                            {
+
+                                                var newIngredientName = Saisie.GetString("Saisissez un ingredient");
+                                                var newIngredientKCal = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
+                                                IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal,newPizzaId,null);
+                                                var ingredientHandler = new IngredientsHandler();
+                                                ingredientHandler.AddIngredients(newIngredient);
+
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Console.WriteLine(ex.Message);
+                                            }
+                                        }
+                                    }
+                                    if(newPizzaId != null)
+                                    {
+                                        Console.WriteLine("\nAjout de la pizza avec succès !");
+                                    }
+                                    
 
                                     Console.ReadKey();
                                     break;
@@ -204,8 +234,34 @@ do
                                     var newBurger = new BurgerDto(isVeggyBurger, alergenBurger, newNameBurger, newPriceBurger);
                                     //ajout a la BDD
                                     var burgerhandler = new BurgerHandler();
-                                    burgerhandler.AddBurger(newBurger);
-                                    Console.WriteLine("\nAjout du burger avec succès !");
+                                    var newBurgerId = burgerhandler.AddBurger(newBurger);
+                                    //boucle d'ajout d'ingredients
+                                    bool burgerIngredients = true;
+                                    while (burgerIngredients)
+                                    {
+                                        if (burgerIngredients = Saisie.GetString("Voulez vous ajouter un ingredient ? : o/n") == "o")
+                                        {
+                                            try
+                                            {
+
+                                                var newIngredientName = Saisie.GetString("Saisissez un ingredient");
+                                                var newIngredientKCal = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
+                                                IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal, null, newBurgerId);
+                                                var ingredientHandler = new IngredientsHandler();
+                                                ingredientHandler.AddIngredients(newIngredient);
+
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                Console.WriteLine(ex.Message);
+                                            }
+                                        }
+                                    }
+                                    if (newBurgerId != null)
+                                    {
+                                        Console.WriteLine("\nAjout du burger avec succès !");
+                                    }
+                                  
                                     Console.ReadKey();
                                     break;
                                 case 3: //Ajout de pasta
@@ -334,22 +390,48 @@ do
                     case 1: //Ajouter un client
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
-                        Menu.AfficherBandeau("Ajout d'un client");
-                        string userFirstname = Saisie.GetString("\nQuel est votre nom ? : ");
-                        string userLastname = Saisie.GetString("\nQuel est votre prénom ? : ");
-                        string userPhone = Saisie.GetString("\nQuel est votre numéro de téléphone ? : ");
-                        string userMail = Saisie.GetString("\nQuel est votre email ? : ");
-                        Console.WriteLine("\nNous allons maintenant vous demander vos informations pour renseigner votre adresse : ");
-                        string userStreet = Saisie.GetString("\nQuel est votre rue ? : ");
-                        string userCity = Saisie.GetString("\nQuel est votre ville ? : ");
-                        string userState = Saisie.GetString("\nQuel est votre région ? : ");
-                        string userZip = Saisie.GetString("\nQuel est votre code postal ? : ");
-                        string userCountry = Saisie.GetString("\nQuel est votre pays ? : ");
-                        var newAdress = new AdressDto(userStreet,userCity, userState, userZip, userCountry);
-                        var newUser = new UserDto(userFirstname, userLastname, userPhone, userMail, newAdress.Id);
-                        var userHandler = new UserHandler();
-                        userHandler.AddUser(newUser);
-                        Console.WriteLine("\nAjout de la pasta avec succès !");
+                        Menu.AfficherBandeau("Ajout d'une pizza");
+                        bool isVeggyPizza = Saisie.GetString("\nProduit vegetarien ? : o/n") == "o";
+                        bool alergenPizza = Saisie.GetString("\nProduit alergene ? : o/n") == "o";
+                        string newNamePizza = Saisie.GetString("\nSaisissez son nom");
+                        double newPricePizza = Convert.ToDouble(Saisie.GetEntier("\nSaisissez son prix\n"));
+                        Menu.AfficherChoixPate();
+                        int newPateIdPizza = Saisie.GetEntier("\nSaisissez le type de pate");
+                        //Création de l'objet
+                        PizzaDto newPizza = new(newPateIdPizza, isVeggyPizza, alergenPizza, newNamePizza, newPricePizza);
+                        //ajout a la BDD
+                        var pizzahandler = new PizzaHandler();
+                        var newPizzaId = pizzahandler.AddPizza(newPizza);
+
+                        
+                        //boucle d'ajout d'ingredients
+                        bool ajoutIngredients = true;
+                        while (ajoutIngredients)
+                        {
+                            if (ajoutIngredients = Saisie.GetString("Voulez vous ajouter un ingredient ? : o/n") == "o")
+                            {
+                                try
+                                {
+
+                                    var newIngredientName = Saisie.GetString("Saisissez un ingredient");
+                                    var newIngredientKCal = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
+                                    IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal, newPizzaId, null);
+                                    var ingredientHandler = new IngredientsHandler();
+                                    ingredientHandler.AddIngredients(newIngredient);
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine(ex.Message);
+                                }
+                            }
+                        }
+                        //if(newPizzaId != null)
+                        //{
+                        //    Console.WriteLine("\nAjout de la pizza avec succès !");
+                        //}
+                        
+                        Console.ReadKey();
                         break;
                     case 2: //Modifier un client
                         Console.Clear();

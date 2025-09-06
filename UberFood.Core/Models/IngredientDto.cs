@@ -20,20 +20,19 @@ public class IngredientDto
         BurgerId = burgerId;
     }
 
-    public IngredientDto(string name, double kCal, int id, int? pizzaId, int? burgerId)
+    public IngredientDto(string name, double kCal,  int? pizzaId, int? burgerId)
     {
         Name = name;
         KCal = kCal;
-        Id = id;
-        this.pizzaId = pizzaId;
-        this.burgerId = burgerId;
+        this.PizzaId = pizzaId;
+        this.BurgerId = burgerId;
     }
 
     public string Name { get; set; }
     public double KCal { get; set; }
     public int Id { get; set; }
 
-    public int PizzaId { get; set; }
-    public int BurgerId { get; set; }
+    public int? PizzaId { get; set; }
+    public int? BurgerId { get; set; }
 
 }

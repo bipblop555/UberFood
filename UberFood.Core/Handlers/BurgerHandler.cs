@@ -12,7 +12,7 @@ namespace UberFood.Core.Handlers;
 
 public sealed class BurgerHandler
 {
-    public void AddBurger(BurgerDto burger)
+    public int AddBurger(BurgerDto burger)
     {
         try
         {
@@ -29,11 +29,13 @@ public sealed class BurgerHandler
 
                 ctx.Add(burgerToAdd);
                 ctx.SaveChanges();
+                return burgerToAdd.Id;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return -1;
         }
     }
 
