@@ -138,6 +138,8 @@ do
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Afficher mes commandes");
 
+                        myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
+                        ordersGrouped = myOrders.GroupBy(o => o.OrderId).ToList();
                         Menu.AfficherCommande(defaultUser.FirstName, ordersGrouped);
 
                         var res = Saisie.GetString("Appuyez sur n'importe quelle touche pour revenir en arrière");
@@ -147,7 +149,8 @@ do
                         Console.Clear();
                         Menu.AfficherBandeau("UberFood");
                         Menu.AfficherBandeau("Supprimer / Annuler une commande");
-
+                        myOrders = opHandler.GetOrderProductsByUser(defaultUser.Id);
+                        ordersGrouped = myOrders.GroupBy(o => o.OrderId).ToList();
                         Menu.AfficherCommande(defaultUser.FirstName, ordersGrouped);
                         var orderIdToDelete = Saisie.GetEntier("Merci d'entrer le numéro d'identification de la commande à supprimer");
                         opHandler.RemoveOrderById(orderIdToDelete);

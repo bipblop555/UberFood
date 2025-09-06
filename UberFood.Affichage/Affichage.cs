@@ -311,6 +311,7 @@ namespace UberFood.Affichage{
                 Console.WriteLine($"Commande n° {i}");
                 foreach (var item in groups)
                 {
+                    Console.WriteLine($"Numéro d'identification de commande : {item.OrderId}");
                     total += item.Product.Price;
                     string texte = $"{item.OrderId}. {item.Product.Name} - {item.Product.Price} Euros";
                     texte = texte.Trim();
