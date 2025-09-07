@@ -636,7 +636,56 @@ do
                 }
             } while (!retourEspaceClient);
             break;
-        case 4: //Quitter l'application
+        case 4: //statistique
+            Console.Clear();
+            Menu.AfficherMenuChoix4();
+            var choixStatistique = Saisie.GetEntier("choisissez une statistique");
+            switch (choixStatistique)
+            {
+                case 1:
+                    Console.Clear();
+                    Menu.AfficherBandeau("UberFood");
+                    Menu.AfficherBandeau("Liste des utilisateurs qui ont commandés");
+                    break;
+                case 2:
+                    Console.Clear();
+                    Menu.AfficherBandeau("UberFood");
+                    Menu.AfficherBandeau("Liste des commandes vegetariennes");
+
+                    break;
+                case 3:
+                    Console.Clear();
+                    Menu.AfficherBandeau("UberFood");
+                    Menu.AfficherBandeau("Moyennes des calories par commande");
+
+                    break;
+                case 4:
+                    Console.Clear();
+                    Menu.AfficherBandeau("UberFood");
+                    Menu.AfficherBandeau("Liste des produits allergène");
+                    break;
+                case 5:
+                    Console.Clear();
+                    Menu.AfficherBandeau("UberFood");
+                    Menu.AfficherBandeau("Liste dess commandes en cours");
+
+                    break;
+                case 6:
+                    Console.Clear();
+                    retourEspaceClient = true;
+                    break;
+                case 7:
+                    Console.Clear();
+                    Menu.AfficherBandeau("UberFood");
+                    Console.WriteLine("\nMerci pour votre temps ! à bientôt !");
+                    retourEspaceClient = true;
+                    quitter = true;
+                    break;
+
+            }
+            ;
+            break;
+        case 5: //Quitter l'application
             Console.Clear();
             Menu.AfficherBandeau("UberFood");
             Console.WriteLine("\nMerci pour votre temps ! à bientôt !");
