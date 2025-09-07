@@ -61,7 +61,8 @@ namespace UberFood.Affichage
             AfficherBoutons("1. Commander");
             AfficherBoutons("2. Gestion de produits");
             AfficherBoutons("3. Gestion de clients");
-            AfficherBoutons("4. Quitter l'application");
+            AfficherBoutons("4. Statistiques");
+            AfficherBoutons("5. Quitter l'application");
 
         }
         public static void AfficherMenuChoix1()
@@ -114,7 +115,7 @@ namespace UberFood.Affichage
             AfficherBoutons("2. Liste des commandes vegetariennes");
             AfficherBoutons("3. Moyennes des calories par commande");
             AfficherBoutons("4. Liste des produits allergène");
-            AfficherBoutons("5. Liste dess commandes en cours");
+            AfficherBoutons("5. Liste des commandes en cours");
             AfficherBoutons("6. Retour en arrière");
             AfficherBoutons("7. Quitter l'application");
         }

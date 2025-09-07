@@ -105,8 +105,8 @@ public class Orderhandler
             using (var ctx = new DataContext())
             {
                 var orders = ctx.Orders
-                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
                     .Where(o => o.Status == 1)
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
                     .ToList();
 
                 return orders;
@@ -115,11 +115,11 @@ public class Orderhandler
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
-            return [];
+            return new List<OrdersDto>();
         }
     }
 
-    public void GetVeggyOrders()
+    public static List<Order> GetVeggyOrders()
     {
         try
         {
@@ -133,15 +133,13 @@ public class Orderhandler
                         .All(f => f.IsVegetarian == true)))
                     .ToList();
 
-                foreach (var order in orders)
-                {
-                    Console.WriteLine(order.OrderId);
-                }
+                return orders;
             }
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            return [];
         }
     }
 
@@ -202,7 +200,14 @@ public class Orderhandler
             using(var ctx = new DataContext())
             {
                 var orders = ctx.Orders
-                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
+                    .Select(o => new OrdersDto(
+                        o.UserId,
+                        o.AdressId,
+                        o.DeliveryDate,
+                        o.OrderDate,
+                        o.OrderId,
+                        o.Status))
+                    .AsEnumerable()
                     .GroupBy(o => o.UserId)
                     .ToList();
 
@@ -217,9 +222,9 @@ public class Orderhandler
 
     public void GetKcalByOrderId(int orderId)
     {
-        using(var ctx = new DataContext())
+        using (var ctx = new DataContext())
         {
-
+            
         }
     }
 }
