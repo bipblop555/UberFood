@@ -20,4 +20,6 @@ public class Product
     [Required]
     [Column("Price")]
     public double Price { get; set; }
+
+    public List<Ingredient> Ingredients { get; set; }
 }

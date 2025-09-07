@@ -179,8 +179,6 @@ public class Orderhandler
             using(var ctx = new DataContext())
             {
                 var orders = ctx.Orders
-                    //.Where(o => o.OrderId == orderId)
-                    //.Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
                     .FirstOrDefault(o => o.OrderId == orderId);
 
                 if (orders is not null)
@@ -194,6 +192,34 @@ public class Orderhandler
         {
             Console.WriteLine(ex.Message);
             return false;
+        }
+    }
+
+    public List<IGrouping<int, OrdersDto>> OrdersGroupedByUser()
+    {
+        try
+        {
+            using(var ctx = new DataContext())
+            {
+                var orders = ctx.Orders
+                    .Select(o => new OrdersDto(o.UserId, o.AdressId, o.DeliveryDate, o.OrderDate, o.OrderId, o.Status))
+                    .GroupBy(o => o.UserId)
+                    .ToList();
+
+                return orders;
+            }
+        } catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return new List<IGrouping<int, OrdersDto>>();
+        }
+    }
+
+    public void GetKcalByOrderId(int orderId)
+    {
+        using(var ctx = new DataContext())
+        {
+
         }
     }
 }
