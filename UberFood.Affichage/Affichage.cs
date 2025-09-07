@@ -1,4 +1,5 @@
-﻿using UberFood.Core.Context;
+﻿using System;
+using UberFood.Core.Context;
 using UberFood.Core.Entities;
 using UberFood.Core.Handlers;
 using UberFood.Core.Models;
@@ -139,24 +140,54 @@ namespace UberFood.Affichage
 
             foreach (var pizza in pizzas)
             {
-                string texte = $"{pizza.Id} : {pizza.Name} - {pizza.Price} Euros";
+                
+                var handleringredient = new IngredientsHandler();
+                var ingredients = handleringredient.GetIngredients();
+                var pizzaIngredients = ingredients.Where(e => e.PizzaId == pizza.Id);
+                string ingre = "";
+                foreach(var ingredient in pizzaIngredients)
+                {
+                    ingre += ingredient.Name + " ";
+                }
+                string texte = $"{pizza.Id} : {pizza.Name} - {pizza.Price} Euros ";
+                
+                
                 texte = texte.Trim();
+                ingre = ingre.Trim();
 
                 string contenu = texte.Length > largeurFixe - 4
                     ? texte.Substring(0, largeurFixe - 7) + "..."
                     : texte;
 
                 int espaceDisponible = largeurFixe;
+
                 int leftPadding = (espaceDisponible - contenu.Length) / 2;
                 int rightPadding = espaceDisponible - contenu.Length - leftPadding;
+
+               
 
                 string bordureHautBas = "+" + new string('-', largeurFixe) + "+";
                 string ligneVide = "|" + new string(' ', largeurFixe) + "|";
                 string ligneTexte = "|" + new string(' ', leftPadding) + contenu + new string(' ', rightPadding) + "|";
 
+                
+
                 Console.WriteLine(bordureHautBas);
                 Console.WriteLine(ligneVide);
                 Console.WriteLine(ligneTexte);
+                //ajout d'une ligne ingredient
+                if (!string.IsNullOrEmpty(ingre))
+                {
+                    string texteIngredients = ingre.Length > largeurFixe
+                        ? ingre.Substring(0, largeurFixe - 3) + "..."
+                        : ingre;
+
+                    int leftPaddingIngredients = (largeurFixe - texteIngredients.Length) / 2;
+                    int rightPaddingIngredients = largeurFixe - texteIngredients.Length - leftPaddingIngredients;
+
+                    string ligneIngredients = "|" + new string(' ', leftPaddingIngredients) + texteIngredients + new string(' ', rightPaddingIngredients) + "|";
+                    Console.WriteLine(ligneIngredients);
+                }
                 Console.WriteLine(ligneVide);
                 Console.WriteLine(bordureHautBas);
                 Console.WriteLine();
@@ -168,6 +199,14 @@ namespace UberFood.Affichage
 
             foreach (var burger in burgers)
             {
+                var handleringredient = new IngredientsHandler();
+                var ingredients = handleringredient.GetIngredients();
+                var burgerIngredients = ingredients.Where(e => e.BurgerId == burger.Id);
+                string ingre = "";
+                foreach (var ingredient in burgerIngredients)
+                {
+                    ingre += ingredient.Name + " ";
+                }
                 string texte = $" {burger.Id} : {burger.Name} - {burger.Price} Euros";
                 texte = texte.Trim();
 
@@ -186,6 +225,18 @@ namespace UberFood.Affichage
                 Console.WriteLine(bordureHautBas);
                 Console.WriteLine(ligneVide);
                 Console.WriteLine(ligneTexte);
+                if (!string.IsNullOrEmpty(ingre))
+                {
+                    string texteIngredients = ingre.Length > largeurFixe
+                        ? ingre.Substring(0, largeurFixe - 3) + "..."
+                        : ingre;
+
+                    int leftPaddingIngredients = (largeurFixe - texteIngredients.Length) / 2;
+                    int rightPaddingIngredients = largeurFixe - texteIngredients.Length - leftPaddingIngredients;
+
+                    string ligneIngredients = "|" + new string(' ', leftPaddingIngredients) + texteIngredients + new string(' ', rightPaddingIngredients) + "|";
+                    Console.WriteLine(ligneIngredients);
+                }
                 Console.WriteLine(ligneVide);
                 Console.WriteLine(bordureHautBas);
                 Console.WriteLine();

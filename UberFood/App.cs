@@ -227,7 +227,7 @@ do
                                             try
                                             {
 
-                                                var newIngredientName = Saisie.GetString("Saisissez un ingredient");
+                                                var newIngredientName = Saisie.GetString("Saisissez le nom d'un ingredient");
                                                 var newIngredientKCal = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
                                                 IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal, newPizzaId, null);
                                                 var ingredientHandler = new IngredientsHandler();
@@ -271,7 +271,7 @@ do
                                             try
                                             {
 
-                                                var newIngredientName = Saisie.GetString("Saisissez un ingredient");
+                                                var newIngredientName = Saisie.GetString("Saisissez le nom d'un ingredient");
                                                 var newIngredientKCal = Convert.ToDouble(Saisie.GetEntier("\nSaisissez ses kCal"));
                                                 IngredientDto newIngredient = new IngredientDto(newIngredientName, newIngredientKCal, null, newBurgerId);
                                                 var ingredientHandler = new IngredientsHandler();
