@@ -17,19 +17,17 @@ namespace UberFood.Core.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.8")
+                .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("UberFood.Core.Entities.Adress", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -68,12 +66,10 @@ namespace UberFood.Core.Migrations
 
             modelBuilder.Entity("UberFood.Core.Entities.Dough", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -88,16 +84,17 @@ namespace UberFood.Core.Migrations
 
             modelBuilder.Entity("UberFood.Core.Entities.Ingredient", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BurgerId")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("BurgerId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("BurgerId");
+
+                    b.Property<Guid?>("DrinkId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("KCal")
                         .HasColumnType("float")
@@ -109,13 +106,20 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("Name");
 
-                    b.Property<int?>("PizzaId")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("PastaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PizzaId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("PizzaId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BurgerId");
+
+                    b.HasIndex("DrinkId");
+
+                    b.HasIndex("PastaId");
 
                     b.HasIndex("PizzaId");
 
@@ -124,16 +128,14 @@ namespace UberFood.Core.Migrations
 
             modelBuilder.Entity("UberFood.Core.Entities.Order", b =>
                 {
-                    b.Property<int>("OrderId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<int>("AdressId")
-                        .HasColumnType("int")
-                        .HasColumnName("DeliveryAdressId");
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeliveryAddressId");
 
                     b.Property<DateTime>("DeliveryDate")
                         .HasColumnType("datetime2")
@@ -147,50 +149,41 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("int")
                         .HasColumnName("Status");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("UserId");
 
-                    b.HasKey("OrderId");
+                    b.HasKey("Id");
 
                     b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.OrderProduct", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductsId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductsId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -210,15 +203,13 @@ namespace UberFood.Core.Migrations
 
             modelBuilder.Entity("UberFood.Core.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("Id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdresseId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("AdresseId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("AdresseId");
 
                     b.Property<string>("FirstName")
@@ -308,8 +299,8 @@ namespace UberFood.Core.Migrations
                 {
                     b.HasBaseType("UberFood.Core.Entities.Food");
 
-                    b.Property<int>("DoughId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("DoughId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("DoughId");
 
@@ -322,6 +313,14 @@ namespace UberFood.Core.Migrations
                         .WithMany("Ingredients")
                         .HasForeignKey("BurgerId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("UberFood.Core.Entities.Drink", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("DrinkId");
+
+                    b.HasOne("UberFood.Core.Entities.Pasta", null)
+                        .WithMany("Ingredients")
+                        .HasForeignKey("PastaId");
 
                     b.HasOne("UberFood.Core.Entities.Pizza", "Pizza")
                         .WithMany("Ingredients")
@@ -340,14 +339,6 @@ namespace UberFood.Core.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("UberFood.Core.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("UberFood.Core.Entities.User", b =>
@@ -419,7 +410,17 @@ namespace UberFood.Core.Migrations
                     b.Navigation("OrderProducts");
                 });
 
+            modelBuilder.Entity("UberFood.Core.Entities.Drink", b =>
+                {
+                    b.Navigation("Ingredients");
+                });
+
             modelBuilder.Entity("UberFood.Core.Entities.Burger", b =>
+                {
+                    b.Navigation("Ingredients");
+                });
+
+            modelBuilder.Entity("UberFood.Core.Entities.Pasta", b =>
                 {
                     b.Navigation("Ingredients");
                 });

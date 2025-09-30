@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UberFood.Core.Entities;
 
@@ -13,33 +8,31 @@ public class User
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("Id")]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     [Required]
     [MaxLength(50)]
     [Column("FirstName")]
-    public string FirstName { get; set; }
+    public string FirstName { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(50)]
     [Column("LastName")]
-    public string LastName { get; set; }
+    public string LastName { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(150)]
     [Column("Phone")]
-    public string Phone { get; set; }
+    public string Phone { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(150)]
     [Column("Mail")]
-    public string Mail { get; set; }
+    public string Mail { get; set; } = string.Empty;
 
     [ForeignKey("AdresseId")]
     [Column("AdresseId")]
-    public int AdresseId { get; set; }
-
-    public Adress Adresse { get; set; }
-
+    public Guid AdresseId { get; set; }
+    public Adress Adresse { get; set; } = null!;
 
 }
