@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace UberFood.Web.ViewsModel.Drinks;
 
-public class DrinksIndexViewModel
+public class DrinksDetailsViewModel
 {
     [DisplayName("Pétillant")]
     public bool Fizzy { get; set; }

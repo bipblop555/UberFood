@@ -1,10 +1,10 @@
-﻿@model IEnumerable<UberFood.Web.ViewsModel.Drinks.DrinksIndexViewModel>
+﻿@model IEnumerable<UberFood.Web.ViewsModel.Drinks.DrinksDetailsViewModel>
 
 @{
-    ViewData["Title"] = "View";
+    ViewData["Title"] = "Liste des boissons";
 }
 
-<h1>View</h1>
+<h1>Liste des boissons</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.Price)€
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Détails</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Modifier</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Supprimer</a>
             </td>
         </tr>
 }

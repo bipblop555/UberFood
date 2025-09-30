@@ -67,4 +67,49 @@ public sealed class DrinksController : ControllerBase
             return Results.InternalServerError($"{e.Message}");
         }
     }
+    [HttpGet("{id}")]
+    public async Task<IResult> GetDrinkById([FromRoute] Guid id)
+    {
+        try
+        {
+            var drink = await _dataContext.Drinks.FirstOrDefaultAsync(d => d.Id == id);
+            if (drink is null)
+            {
+                return Results.NotFound();
+            }
+            return Results.Ok(drink);
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError($"{e.Message}");
+        }
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IResult> UpdateDrinkById([FromRoute] Guid id, [FromBody] Drink drink)
+    {
+        try
+        {
+            var drinkToUpdate = await _dataContext.Drinks.FirstOrDefaultAsync(d => d.Id == id);
+            if (drink is null)
+            {
+                return Results.NotFound();
+            }
+            if (drinkToUpdate.KCal != drink.KCal)
+                drinkToUpdate.KCal = drink.KCal;
+            if (drinkToUpdate.Price != drink.Price)
+                drinkToUpdate.Price = drink.Price;
+            if (drinkToUpdate.Fizzy != drink.Fizzy)
+                drinkToUpdate.Fizzy = drink.Fizzy;
+            if (drinkToUpdate.Name != drink.Name)
+                drinkToUpdate.Name = drink.Name;
+
+            await _dataContext.SaveChangesAsync();
+            return Results.Ok(drinkToUpdate);
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError(e.Message);
+        }
+    }
 }
