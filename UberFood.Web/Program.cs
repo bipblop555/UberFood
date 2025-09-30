@@ -1,7 +1,15 @@
+using UberFood.Web.Services.Abstractions;
+using UberFood.Web.Services.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddHttpClient<IDrinksService, DrinksService>(client => 
+{
+    client.BaseAddress = new Uri("https://localhost:7018/api/drinks");
+});
 
 var app = builder.Build();
 
