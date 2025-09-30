@@ -6,7 +6,12 @@ namespace UberFood.Core.Context;
 public class DataContext : DbContext
 {
     //public DataContext(DbContextOptions<DataContext> options) : base(options) { }
-    
+
+    public DataContext(DbContextOptions options)
+        : base(options)
+    {
+    }
+
     public DbSet<Food> Foods => Set<Food>();
     public DbSet<Drink> Drinks => Set<Drink>();
     public DbSet<Pasta> Pastas => Set<Pasta>();
@@ -19,14 +24,6 @@ public class DataContext : DbContext
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
     public DbSet<User> Users => Set<User>();
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=EatDomicile;TrustServerCertificate=True;Trusted_Connection=True;");
-        }
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -43,7 +40,7 @@ public class DataContext : DbContext
             .WithMany(p => p.Ingredients)
             .HasForeignKey(i => i.PizzaId)
             .OnDelete(DeleteBehavior.NoAction);
-    }
 
+    }
 
 }
