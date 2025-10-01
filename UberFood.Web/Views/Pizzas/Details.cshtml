@@ -1,0 +1,53 @@
+﻿@model UberFood.Web.ViewsModel.Pizza.PizzaDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Détails</h1>
+
+<div>
+    <h4>@Model.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Name)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Name)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Price)</dt>
+        <dd class="col-sm-10">@Model.Price.ToString("F2") €</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.DoughName)</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DoughName)</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.IsVegetarian)</dt>
+        <dd class="col-sm-10">@(Model.IsVegetarian ? "Oui" : "Non")</dd>
+
+        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ContainAlergene)</dt>
+        <dd class="col-sm-10">@(Model.ContainAlergene ? "Oui" : "Non")</dd>
+
+        <dt class="col-sm-2">Ingrédients</dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>KCal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ingredient in Model.Ingredients)
+                    {
+                        <tr>
+                            <td>@ingredient.Name</td>
+                            <td>@ingredient.KCal</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+</div>

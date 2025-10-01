@@ -1,0 +1,76 @@
+﻿@model UberFood.Web.ViewsModel.Pizza.PizzaCreateOrUpdateViewModel
+
+@{
+    ViewData["Title"] = "Créer une pizza";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Create" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Name" class="control-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DoughId" class="control-label"></label>
+        <select asp-for="DoughId" asp-items="ViewBag.Doughs" class="form-control"></select>
+        <span asp-validation-for="DoughId" class="text-danger"></span>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="IsVegetarian" class="form-check-input" />
+        <label asp-for="IsVegetarian" class="form-check-label"></label>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="ContainAlergene" class="form-check-input" />
+        <label asp-for="ContainAlergene" class="form-check-label"></label>
+    </div>
+    <h4>Ingrédients</h4>
+    <div id="ingredients-container">
+        @for (int i = 0; i < Model.Ingredients.Count; i++)
+        {
+            <div class="ingredient-block">
+                <input asp-for="Ingredients[@i].Name" class="form-control" placeholder="Nom" />
+                <input asp-for="Ingredients[@i].KCal" class="form-control" placeholder="KCal" />
+            </div>
+        }
+    </div>
+    <div class="mb-2">
+        <button type="button" class="btn btn-outline-secondary" onclick="addIngredient()">Ajouter un ingrédient</button>
+    </div>
+    <button type="submit" class="btn btn-primary">Créer</button>
+    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+</form>
+
+@section Scripts {
+    <script>
+        let index = @Model.Ingredients.Count;
+
+        function addIngredient() {
+            const container = document.getElementById("ingredients-container");
+            const block = document.createElement("div");
+            block.className = "ingredient-block";
+            block.innerHTML = `
+                <input name="Ingredients[${index}].Name" class="form-control" placeholder="Nom" />
+                <input name="Ingredients[${index}].KCal" class="form-control" placeholder="KCal" />
+            `;
+            container.appendChild(block);
+            index++;
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

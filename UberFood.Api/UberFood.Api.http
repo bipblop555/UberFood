@@ -244,7 +244,10 @@ Content-Type: application/json
 GET {{UberFood.Api_HostAddress}}/api/Pizza
 
 ###
+### Récupérer une pizza
+GET {{UberFood.Api_HostAddress}}/api/Pizza/b1f7bb34-d065-49e6-11a7-08de00c02c20
 
+###
 ### Mettre à jour une pizza (id = 1)
 PUT {{UberFood.Api_HostAddress}}/api/Pizza/1005
 Content-Type: application/json

@@ -1,0 +1,79 @@
+﻿@model UberFood.Web.ViewsModel.Pizza.PizzaCreateOrUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Modifier une pizza</h1>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+           
+
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="DoughId" class="control-label"></label>
+                <select asp-for="DoughId" asp-items="ViewBag.Doughs" class="form-control"></select>
+                <span asp-validation-for="DoughId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsVegetarian" />
+                    @Html.DisplayNameFor(model => model.IsVegetarian)
+                </label>
+            </div>
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ContainAlergene" />
+                    @Html.DisplayNameFor(model => model.ContainAlergene)
+                </label>
+            </div>
+
+            <fieldset>
+                <legend>Ingredients</legend>
+                <div id="ingredients-list">
+                    @for (int i = 0; i < Model?.Ingredients.Count(); i++)
+                    {
+                        <div class="form-group">
+                            <label asp-for="Ingredients[@i].Name"></label>
+                            <input asp-for="Ingredients[@i].Name" class="form-control" />
+                            <span asp-validation-for="Ingredients[@i].Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Ingredients[@i].KCal"></label>
+                            <input asp-for="Ingredients[@i].KCal" class="form-control" />
+                            <span asp-validation-for="Ingredients[@i].KCal" class="text-danger"></span>
+                        </div>
+                        <input type="hidden" asp-for="Ingredients[@i].Id" />
+                    }
+                </div>
+            </fieldset>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Enregistrer" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
