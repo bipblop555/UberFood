@@ -1,0 +1,75 @@
+﻿@model UberFood.Web.ViewsModel.Burgers.BurgerCreateOrUpdateViewModel
+@{
+    ViewData["Title"] = "Création d'un burger";
+}
+
+<h1>Création Création d'un burger</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ContainAlergene" /> @Html.DisplayNameFor(model => model.ContainAlergene)
+                </label>
+            </div>
+            <fieldset>
+                <legend>Ingredients</legend>
+                <div id="ingredients-list">
+
+                    <input type="text" name="Ingredients[0].Name" class="form-control" placeholder="Nom ingrédient" />
+                    <input type="number" name="Ingredients[0].KCal" class="form-control" placeholder="0KCal" />
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" onclick="addIngredient()">+ Ajouter un ingrédient</button>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+    let index = 1;
+    function addIngredient() {
+        const container = document.getElementById("ingredients-list");
+
+        const inputName = document.createElement("input");
+        inputName.type = "text";
+        inputName.name = `Ingredients[${index}].Name`;
+        inputName.className = "form-control mt-2";
+        inputName.placeholder = "Nom ingrédient";
+        container.appendChild(inputName);
+
+        const inputKCal = document.createElement("input");
+        inputKCal.type = "number";
+        inputKCal.name = `Ingredients[${index}].KCal`;
+        inputKCal.className = "form-control mt-2";
+        inputKCal.placeholder = "0KCal";
+
+        index++;
+        container.appendChild(inputKCal);
+    }
+</script>
