@@ -230,6 +230,11 @@ namespace UberFood.Core.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("Mail");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Password");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(150)

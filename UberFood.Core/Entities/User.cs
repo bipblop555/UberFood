@@ -21,6 +21,11 @@ public class User
     public string LastName { get; set; } = string.Empty;
 
     [Required]
+    [MinLength(8)]
+    [Column("Password")]
+    public string Password { get; set; } = string.Empty;
+
+    [Required]
     [MaxLength(150)]
     [Column("Phone")]
     public string Phone { get; set; } = string.Empty;
@@ -30,7 +35,6 @@ public class User
     [Column("Mail")]
     public string Mail { get; set; } = string.Empty;
 
-    [ForeignKey("AdresseId")]
     [Column("AdresseId")]
     public Guid AdresseId { get; set; }
     public Adress Adresse { get; set; } = null!;

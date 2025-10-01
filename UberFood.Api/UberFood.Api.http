@@ -168,6 +168,9 @@ Content-Type: application/json
 ### Récupérer les commandes regroupées par utilisateur
 GET {{UberFood.Api_HostAddress}}/grouped-by-user
 
+### Récupérer un utilisateur
+GET {{UberFood.Api_HostAddress}}/api/user/4F8B22F6-EE8D-42B1-BA68-08DE003564F4
+
 ### === OrderProductsController ===
 
 ### Ajouter un produit à une commande
