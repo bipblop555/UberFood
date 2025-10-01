@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using UberFood.Web.Services.Dtos;
+using UberFood.Web.ViewsModel.Ingredients;
 
 namespace UberFood.Web.ViewsModel.Pizza;
 
@@ -11,7 +12,7 @@ public class PizzaDetailsViewModel
     public string DoughName { get; set; } = null;
 
     [DisplayName("Ingrédients")]
-    public List<IngredientDto> Ingredients { get; set; } = new();
+    public List<IngredientsViewModel> Ingredients { get; set; } = null!;
 
     // Hérités de ProductDto via FoodDto
     [DisplayName("Nom")]
