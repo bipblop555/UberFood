@@ -6,5 +6,5 @@ public class ProductDto
     public double Price { get; set; }
     public Guid Id { get; set; }
 
-    public List<IngredientDto> Ingredients { get; set; } = null!;
+    public IEnumerable<IngredientDto> Ingredients { get; set; } = null!;
 }

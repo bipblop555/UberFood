@@ -49,6 +49,7 @@ public sealed class PizzaController : ControllerBase
             return Results.InternalServerError(e.Message);
         }
     }
+
     [HttpPut("{id}")]
     public async Task<IResult> UpdatePizza([FromRoute] Guid id, [FromBody] Pizza newPizza)
     {

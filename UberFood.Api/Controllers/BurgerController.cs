@@ -43,6 +43,7 @@ public sealed class BurgerController : ControllerBase
                     Id = b.Id,
                     Name = b.Name,
                     Price = b.Price,
+                    ContainAlergene = b.ContainAlergene,
                     Ingredients = b.Ingredients.Select(i => new Ingredient
                     {
                         Id = i.Id,
@@ -65,7 +66,10 @@ public sealed class BurgerController : ControllerBase
     {
         try
         {
-            var burgerToUpdate = await _dataContext.Burgers.FirstOrDefaultAsync(b => b.Id == id);
+            var burgerToUpdate = await _dataContext.Burgers
+                .Include(b => b.Ingredients)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
             if (burgerToUpdate is null)
             {
                 return Results.NotFound();
@@ -78,6 +82,8 @@ public sealed class BurgerController : ControllerBase
                 burgerToUpdate.IsVegetarian = newBurger.IsVegetarian;
             if (burgerToUpdate.ContainAlergene != newBurger.ContainAlergene)
                 burgerToUpdate.ContainAlergene = newBurger.ContainAlergene;
+
+            burgerToUpdate.Ingredients = newBurger.Ingredients;
 
             await _dataContext.SaveChangesAsync();
             return Results.Ok();
@@ -93,7 +99,9 @@ public sealed class BurgerController : ControllerBase
     {
         try
         {
-            var burgerToRemove = await _dataContext.Burgers.FirstOrDefaultAsync(p => p.Id == id);
+            var burgerToRemove = await _dataContext.Burgers
+                .Include(b => b.Ingredients)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if (burgerToRemove is null)
             {
@@ -108,6 +116,36 @@ public sealed class BurgerController : ControllerBase
             _dataContext.Remove(burgerToRemove);
             await _dataContext.SaveChangesAsync();
             return Results.Ok();
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError(e.Message);
+        }
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IResult> GetBurgerById([FromRoute] Guid id)
+    {
+        try
+        {
+            var burgers = await _dataContext.Burgers
+                .Include(b => b.Ingredients)
+                .Select(b => new Burger
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Price = b.Price,
+                    ContainAlergene = b.ContainAlergene,
+                    Ingredients = b.Ingredients.Select(i => new Ingredient
+                    {
+                        Id = i.Id,
+                        Name = i.Name,
+                        KCal = i.KCal
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            return Results.Ok(burgers);
         }
         catch (Exception e)
         {
