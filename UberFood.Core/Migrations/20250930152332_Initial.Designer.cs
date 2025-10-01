@@ -12,8 +12,8 @@ using UberFood.Core.Context;
 namespace UberFood.Core.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250930090918_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250930152332_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -232,6 +232,11 @@ namespace UberFood.Core.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("Mail");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Password");
 
                     b.Property<string>("Phone")
                         .IsRequired()

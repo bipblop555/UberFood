@@ -1,4 +1,6 @@
-﻿using UberFood.Core.Context;
+﻿using Microsoft.AspNetCore.Identity;
+using UberFood.Api.Tools;
+using UberFood.Core.Context;
 using UberFood.Core.Entities;
 
 namespace UberFood.Api.Seeds;
@@ -70,10 +72,10 @@ public class Seeder
         await _dataContext.Addresses.AddAsync(address2);
 
         // --- Users ---
-        var user1 = new User { FirstName = "John", LastName = "Doe", Mail = "johndoe@mail.com", Phone = "0633333333", Adresse = address1 };
+        var user1 = new User { FirstName = "John", LastName = "Doe", Password = PasswordHash.HashPassword("123456789"),Mail = "johndoe@mail.com", Phone = "0633333333", Adresse = address1 };
         await _dataContext.Users.AddAsync(user1);
 
-        var user2 = new User { FirstName = "Jane", LastName = "Dae", Mail = "janedae@mail.com", Phone = "0644444444", Adresse = address2 };
+        var user2 = new User { FirstName = "Jane", LastName = "Dae", Password = PasswordHash.HashPassword("123456789"), Mail = "janedae@mail.com", Phone = "0644444444", Adresse = address2 };
         await _dataContext.Users.AddAsync(user2);
 
         // --- Ingredients (Burger & Pizza) ---

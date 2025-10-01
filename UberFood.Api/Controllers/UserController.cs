@@ -71,16 +71,60 @@ public sealed class UserController : ControllerBase
         }
     }
 
-    [HttpGet("/default-user")]
-    public async Task<IResult> GetDefaultUser()
+    [HttpGet("{id}")]
+    public async Task<IResult> GetUserById([FromRoute] Guid id)
     {
         try
         {
-            var user = await _dataContext.Users.FirstOrDefaultAsync();
+            var user = await _dataContext.Users
+                .Include(u => u.Adresse)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            if(user is null)
+            {
+                return Results.NotFound();
+            }
 
             return Results.Ok(user);
+        } catch (Exception e)
+        {
+            return Results.InternalServerError(e.Message);
         }
-        catch (Exception e)
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IResult> UpdateUserById([FromRoute] Guid id,  [FromBody] User user)
+    {
+        try
+        {
+            var userToUpdate = await _dataContext.Users
+                .Include(u => u.Adresse)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if(userToUpdate is null)
+            {
+                return Results.NotFound();
+            }
+            if(userToUpdate.FirstName != user.FirstName)
+                userToUpdate.FirstName = user.FirstName;
+            if(userToUpdate.LastName != user.LastName)
+                userToUpdate.LastName = user.LastName;
+            if(userToUpdate.Mail != user.Mail)
+                userToUpdate.Mail = user.Mail;
+            if(userToUpdate.Phone != user.Phone)
+                userToUpdate.Phone = user.Phone;
+
+            if (user.Adresse is not null)
+            {
+                userToUpdate.Adresse.Street = user.Adresse.Street;
+                userToUpdate.Adresse.City = user.Adresse.City;
+                userToUpdate.Adresse.State = user.Adresse.State;
+                userToUpdate.Adresse.Zip = user.Adresse.Zip;
+                userToUpdate.Adresse.Country = user.Adresse.Country;
+            }
+
+            await _dataContext.SaveChangesAsync();
+            return Results.Ok(userToUpdate);
+        } catch (Exception e)
         {
             return Results.InternalServerError(e.Message);
         }
