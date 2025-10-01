@@ -14,6 +14,11 @@ builder.Services.AddHttpClient<IIngredientsService, IngredientsService>(client =
 {
     client.BaseAddress = new Uri("https://localhost:7018/api/ingredients");
 });
+builder.Services.AddHttpClient<IUsersService, UsersService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7018/api/users");
+
+});
 
 var app = builder.Build();
 
