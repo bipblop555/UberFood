@@ -55,9 +55,14 @@ public sealed class PizzaController : ControllerBase
     {
         try
         {
-            var pizzaToUpdate = await _dataContext.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
+            var pizzaToUpdate = await _dataContext.Pizzas
+                .Include(b => b.Ingredients)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
             if (pizzaToUpdate is null)
+            {
                 return Results.NotFound();
+            }
             if (pizzaToUpdate.Name != newPizza.Name)
                 pizzaToUpdate.Name = newPizza.Name;
             if (pizzaToUpdate.Price != newPizza.Price)
@@ -69,9 +74,9 @@ public sealed class PizzaController : ControllerBase
             if (pizzaToUpdate.DoughId != newPizza.DoughId)
                 pizzaToUpdate.DoughId = newPizza.DoughId;
 
-            _dataContext.Update(pizzaToUpdate);
-            await _dataContext.SaveChangesAsync();
+            pizzaToUpdate.Ingredients = newPizza.Ingredients;
 
+            await _dataContext.SaveChangesAsync();
             return Results.Ok();
         }
         catch (Exception e)
@@ -79,25 +84,72 @@ public sealed class PizzaController : ControllerBase
             return Results.InternalServerError(e.Message);
         }
     }
+
+    [HttpGet("{id}")]
+    public async Task<IResult> GetPizzaById([FromRoute] Guid id)
+    {
+        try
+        {
+            var pizza = await _dataContext.Pizzas
+                .Include(p => p.Dough)
+                .Include(p => p.Ingredients)
+                .Where(p => p.Id == id)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Price,
+                    p.IsVegetarian,
+                    p.ContainAlergene,
+                    p.DoughId,
+                    Dough = new
+                    {
+                        p.Dough.Id,
+                        p.Dough.Name
+                    },
+                    Ingredients = p.Ingredients.Select(i => new
+                    {
+                        i.Id,
+                        i.Name,
+                        i.KCal,
+                    }).ToList()
+                })
+                .FirstOrDefaultAsync();
+
+            if (pizza is null)
+                return Results.NotFound();
+
+            return Results.Ok(pizza);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Erreur GetPizzaById : {e.Message}");
+            return Results.InternalServerError(e.Message);
+        }
+    }
+
     [HttpDelete("{id}")]
     public async Task<IResult> DeletePizza([FromRoute] Guid id)
     {
         try
         {
-            var pizzaToRemove = await _dataContext.Pizzas.FirstOrDefaultAsync(p => p.Id == id);
-            if (pizzaToRemove is null)
-            {
-                return Results.NotFound();
-            }
+            var pizzaToRemove = await _dataContext.Pizzas
+                .Include(p => p.Ingredients)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-            _dataContext.Remove(pizzaToRemove);
+            if (pizzaToRemove is null)
+                return Results.NotFound();
+
+            _dataContext.Ingredients.RemoveRange(pizzaToRemove.Ingredients);
+            _dataContext.Pizzas.Remove(pizzaToRemove);
             await _dataContext.SaveChangesAsync();
 
-            return Results.Ok();
+            return Results.NoContent();
         }
         catch (Exception e)
         {
-            return Results.InternalServerError(e.Message);
+            Console.WriteLine($"Erreur suppression pizza : {e}");
+            return Results.Problem($"Erreur serveur : {e.Message}");
         }
     }
 }

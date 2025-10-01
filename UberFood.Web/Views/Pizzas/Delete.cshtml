@@ -1,0 +1,54 @@
+﻿@model UberFood.Web.ViewsModel.Pizza.PizzaDetailsViewModel
+
+@{
+    ViewData["Title"] = "Suppression";
+}
+
+<h1>Suppression d'une pizza</h1>
+
+<h3>Es-tu sûr de vouloir supprimer cette pizza ?</h3>
+
+<div>
+    <h4>Informations sur la pizza</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">Nom</dt>
+        <dd class="col-sm-10">@Model.Name</dd>
+
+        <dt class="col-sm-2">Prix (€)</dt>
+        <dd class="col-sm-10">@Model.Price</dd>
+
+        <dt class="col-sm-2">Végétarienne</dt>
+        <dd class="col-sm-10">@Model.IsVegetarian</dd>
+
+        <dt class="col-sm-2">Contient des allergènes</dt>
+        <dd class="col-sm-10">@Model.ContainAlergene</dd>
+
+        <dt class="col-sm-2">Type de pâte</dt>
+        <dd class="col-sm-10">@Model.Dough?.Name</dd>
+
+        <dt class="col-sm-2">Ingrédients</dt>
+        <dd class="col-sm-10">
+            @if (Model.Ingredients != null && Model.Ingredients.Any())
+            {
+                <ul>
+                    @foreach (var ingredient in Model.Ingredients)
+                    {
+                        <li>@ingredient.Name (@ingredient.KCal KCal)</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>Aucun ingrédient</span>
+            }
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteConfirmed" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
