@@ -47,6 +47,47 @@ public sealed class IngredientsController : ControllerBase
             return Results.InternalServerError($"{e.Message}");
         }
     }
+    [HttpGet("{id}")]
+    public async Task<IResult> GetIngredient([FromRoute] Guid id)
+    {
+        try
+        {
+            var ingrToDetails = await _dataContext.Ingredients.FirstOrDefaultAsync(p => p.Id == id);
+            if (ingrToDetails is null)
+            {
+                return Results.NotFound();
+            }
+            
+            return Results.Ok(ingrToDetails);
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError(e.Message);
+        }
+    }
+    [HttpPut("{id}")]
+    public async Task<IResult> UpdateIngredient([FromRoute]Guid id, [FromBody] Ingredient ingredient)
+    {
+        try
+        {
+            var ingrToUpdate = await _dataContext.Ingredients.FirstOrDefaultAsync(p => p.Id == id);
+            if (ingrToUpdate is null)
+            {
+                return Results.NotFound();
+            }
+            if(ingrToUpdate.Name != ingredient.Name)
+            ingrToUpdate.Name = ingredient.Name;
+            if(ingrToUpdate.KCal !=ingredient.KCal)
+            ingrToUpdate.KCal = ingredient.KCal;
+            
+            await _dataContext.SaveChangesAsync();
+            return Results.Ok();
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError(e.Message);
+        }
+    }
 
     [HttpDelete("{id}")]
     public async Task<IResult> DeleteIngredient([FromRoute] Guid id)
