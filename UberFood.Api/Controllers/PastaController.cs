@@ -46,6 +46,25 @@ public class PastaController : ControllerBase
             return Results.InternalServerError(e.Message);
         }
     }
+    [HttpGet("{id}")]
+    public async Task<IResult> GetPasta([FromRoute] Guid id)
+    {
+        try
+        {
+            var pasta = await _dataContext.Pastas.FirstOrDefaultAsync(p => p.Id == id);
+            if (pasta is null)
+            {
+                return Results.NotFound();
+            }
+            
+            return Results.Ok(pasta);
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError($"{e.Message}");
+        }
+    }
+
 
     [HttpPut("{id}")]
     public async Task<IResult> UpdatePasta([FromRoute] Guid id, [FromBody] Pasta newPasta)
