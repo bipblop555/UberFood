@@ -10,6 +10,10 @@ builder.Services.AddHttpClient<IDrinksService, DrinksService>(client =>
 {
     client.BaseAddress = new Uri("https://localhost:7018/api/drinks");
 });
+builder.Services.AddHttpClient<IIngredientsService, IngredientsService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7018/api/ingredients");
+});
 
 var app = builder.Build();
 
