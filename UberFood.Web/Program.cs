@@ -24,7 +24,11 @@ builder.Services.AddHttpClient<IPastaService, PastaService>(client =>
     client.BaseAddress = new Uri("https://localhost:7018/api/pasta");
 
 });
+builder.Services.AddHttpClient<IBurgersService, BurgersService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7018/api/burgers");
 
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
