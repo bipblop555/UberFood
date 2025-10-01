@@ -21,7 +21,7 @@ namespace UberFood.Web.Controllers
             return View(pizza.Select(p => new PizzaDetailsViewModel
             {
                 Dough = p.Dough,
-                Ingredients = p.Ingredients,
+                Ingredients = (List<IngredientsViewModel>)p.Ingredients,
                 Name = p.Name,
                 Price = p.Price,
                 Id = p.Id,
@@ -41,7 +41,12 @@ namespace UberFood.Web.Controllers
             {
                 Dough = pizza.Dough,
                 DoughName = pizza.Dough.Name,
-                Ingredients = pizza.Ingredients,
+                Ingredients = pizza.Ingredients.Select(i => new IngredientsViewModel
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    KCal = i.KCal
+                }).ToList() ?? new List<IngredientsViewModel>(),
                 Name = pizza.Name,
                 Price = pizza.Price,
                 Id = pizza.Id,
@@ -61,15 +66,17 @@ namespace UberFood.Web.Controllers
                     new SelectListItem { Value = "A88A7238-147A-4341-4542-08DE00C02C17", Text = "Fine" },
                     new SelectListItem { Value = "D98FCCAB-A173-4169-4543-08DE00C02C17", Text = "Épaisse" }
                 }, "Value", "Text");
-
-            var pizzaCreateViewModel = new PizzaCreateOrUpdateViewModel();
+            var pizzaCreateViewModel = new PizzaCreateOrUpdateViewModel
+            {
+                Ingredients = new List<IngredientsViewModel>() 
+            };
             return View(pizzaCreateViewModel);
         }
 
         //// POST: DrinksController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Name, Price, DoughId, IsVegetarian, ContainAlergene, Ingredients")] PizzaCreateOrUpdateViewModel pizzaCreateViewModel)
+        public async Task<ActionResult> Create([Bind("DoughId, Name, Price, IsVegetarian, ContainAlergene, Ingredients")] PizzaCreateOrUpdateViewModel pizzaCreateViewModel)
         {
             if (!this.ModelState.IsValid)
             {
@@ -102,7 +109,7 @@ namespace UberFood.Web.Controllers
             }
             catch
             {
-                return View();
+                return View(pizzaCreateViewModel);
             }
         }
 
@@ -194,7 +201,7 @@ namespace UberFood.Web.Controllers
                 Name = pizza.Name,
                 Price = pizza.Price,
                 Dough = pizza.Dough,
-                Ingredients = pizza.Ingredients,
+                Ingredients = (List<IngredientsViewModel>)pizza.Ingredients,
                 IsVegetarian = pizza.IsVegetarian,
                 ContainAlergene = pizza.ContainAlergene
             };

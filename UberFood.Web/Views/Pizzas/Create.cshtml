@@ -7,7 +7,9 @@
 <h1>@ViewData["Title"]</h1>
 
 <form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
 
     <div class="form-group">
         <label asp-for="Name" class="control-label"></label>
@@ -42,7 +44,9 @@
         {
             <div class="ingredient-block">
                 <input asp-for="Ingredients[@i].Name" class="form-control" placeholder="Nom" />
+                <span asp-validation-for="Ingredients[@i].Name" class="text-danger"></span>
                 <input asp-for="Ingredients[@i].KCal" class="form-control" placeholder="KCal" />
+                <span asp-validation-for="Ingredients[@i].KCal" class="text-danger"></span>
             </div>
         }
     </div>
@@ -57,13 +61,13 @@
     <script>
         let index = @Model.Ingredients.Count;
 
-        function addIngredient() {
+                function addIngredient() {
             const container = document.getElementById("ingredients-container");
             const block = document.createElement("div");
             block.className = "ingredient-block";
             block.innerHTML = `
-                <input name="Ingredients[${index}].Name" class="form-control" placeholder="Nom" />
-                <input name="Ingredients[${index}].KCal" class="form-control" placeholder="KCal" />
+                <input name="Ingredients[${index}].Name" id="Ingredients_${index}__Name" class="form-control" placeholder="Nom" />
+                <input name="Ingredients[${index}].KCal" id="Ingredients_${index}__KCal" class="form-control" placeholder="KCal" />
             `;
             container.appendChild(block);
             index++;
