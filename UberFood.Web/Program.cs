@@ -19,6 +19,11 @@ builder.Services.AddHttpClient<IUsersService, UsersService>(client =>
     client.BaseAddress = new Uri("https://localhost:7018/api/users");
 
 });
+builder.Services.AddHttpClient<IPastaService, PastaService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7018/api/pasta");
+
+});
 
 var app = builder.Build();
 
