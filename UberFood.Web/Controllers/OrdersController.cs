@@ -34,8 +34,8 @@ public class OrdersController : Controller
             OrderDate = order.OrderDate,
             DeliveryDate = order.DeliveryDate,
             Status = order.Status,
-            ProductName = order.OrderProduct?.ProductName ?? "Produit inconnu",
-            Price = order.OrderProduct?.Price ?? 0.0
+            Products = order.OrderProducts?.ToList() ?? new List<OrderProductDto>()
+
         }).ToList();
 
         return View(viewModelList);
@@ -98,22 +98,25 @@ public class OrdersController : Controller
         {
             var orderDto = new OrdersDto
             {
-                Id = Guid.NewGuid(),
                 UserId = orderViewModel.UserId,
                 AddressId = orderViewModel.AddressId,
                 Status = orderViewModel.Status,
                 DeliveryDate = orderViewModel.DeliveryDate,
                 OrderDate = orderViewModel.OrderDate,
-                OrderProduct = new OrderProductDto
+                OrderProducts = new List<OrderProductDto>
                 {
-                    ProductsId = orderViewModel.ProductId,
+                    new OrderProductDto
+                    {
+                        ProductsId = orderViewModel.ProductId,
+                    }
                 }
             };
 
             await _ordersService.CreateOrderAsync(orderDto);
             return RedirectToAction(nameof(Index));
 
-        } catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             return View();
         }

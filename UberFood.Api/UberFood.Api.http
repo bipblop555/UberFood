@@ -125,11 +125,16 @@ POST {{UberFood.Api_HostAddress}}/api/Order
 Content-Type: application/json
 
 {
-  "userId": 1,
-  "adressId": 2,
+  "userId": "4f8b22f6-ee8d-42b1-ba68-08de003564f4",
+  "addressId": "aa1ac7a9-c330-4024-bd0c-08de003564f2",
   "orderDate": "2025-09-28T10:00:00Z",
-  "delivryDate": "2025-09-28T12:00:00Z",
-  "status": 1
+  "deliveryDate": "2025-09-28T12:00:00Z",
+  "status": 1,
+  "orderProducts": [
+    {
+      "productsId": "a4f04c0d-4cef-48c8-e4c4-08de003564ee"
+    }
+  ]
 }
 
 ### Récupérer toutes les commandes
@@ -167,6 +172,10 @@ Content-Type: application/json
 
 ### Récupérer les commandes regroupées par utilisateur
 GET {{UberFood.Api_HostAddress}}/grouped-by-user
+
+### Récupérer les commandes regroupées par utilisateur
+
+GET {{UberFood.Api_HostAddress}}/api/user
 
 ### Récupérer un utilisateur
 GET {{UberFood.Api_HostAddress}}/api/user/4F8B22F6-EE8D-42B1-BA68-08DE003564F4

@@ -31,10 +31,10 @@
                 <legend>Products</legend>
                 <div class="form-group">
                     <label asp-for="ProductId" class="control-label"></label>
-                    <select asp-for="Products" class="form-control" asp-items="Model.Products">
+                    <select asp-for="ProductId" class="form-control" asp-items="Model.Products">
                         <option value="">-- Sélectionner un produit --</option>
                     </select>
-                    <span asp-validation-for="Products" class="text-danger"></span>
+                    <span asp-validation-for="ProductId" class="text-danger"></span>
                 </div>
             </fieldset>
             

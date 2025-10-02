@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UberFood.Core.Context;
 using UberFood.Core.Entities;
@@ -21,8 +22,8 @@ public class OrderController : ControllerBase
         try
         {
             var order = await _dataContext.AddAsync(orders);
-            await _dataContext.SaveChangesAsync();
 
+            await _dataContext.SaveChangesAsync();
             return Results.Created();
         }
         catch (Exception ex)
