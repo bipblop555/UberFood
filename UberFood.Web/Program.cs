@@ -39,6 +39,11 @@ builder.Services.AddHttpClient<IBurgersService, BurgersService>(client =>
     client.BaseAddress = new Uri("https://localhost:7018/api/burgers");
 
 });
+builder.Services.AddHttpClient<IProductService, ProductService>(client =>
+{
+    client.BaseAddress = new Uri("https://localhost:7018/api/product");
+
+});
 
 var app = builder.Build();
 

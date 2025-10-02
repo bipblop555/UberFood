@@ -9,5 +9,5 @@ public class OrderProductDto
     public string ProductName { get; set; } = string.Empty;
     public double Price { get; set; }
 
-    public ProductDto Product { get; set; } = null!;
+    public IEnumerable<ProductDto> Product { get; set; } = null!;
 }
