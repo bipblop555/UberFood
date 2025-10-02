@@ -80,7 +80,7 @@ public class OrdersController : Controller
     // POST: DrinksController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Create([Bind("UserId, AddressId, ProductId, OrderDate, DeliveryDate, Status, Products")] OrderCreateOrUpdateViewModel orderViewModel)
+    public async Task<ActionResult> Create([Bind("UserId, AddressId, ProductsIds, OrderDate, DeliveryDate, Status")] OrderCreateOrUpdateViewModel orderViewModel)
     {
         if (!this.ModelState.IsValid)
         {
@@ -103,23 +103,26 @@ public class OrdersController : Controller
                 Status = orderViewModel.Status,
                 DeliveryDate = orderViewModel.DeliveryDate,
                 OrderDate = orderViewModel.OrderDate,
-                OrderProducts = new List<OrderProductDto>
+                OrderProducts = orderViewModel.ProductsIds.Select(pid => new OrderProductDto
                 {
-                    new OrderProductDto
-                    {
-                        ProductsId = orderViewModel.ProductId,
-                    }
-                }
+                    ProductsId = pid
+                }).ToList()
+
+                //OrderProducts = new List<OrderProductDto>
+                //{
+                //    new OrderProductDto
+                //    {
+                //        ProductsId = orderViewModel.ProductId,
+                //    }
+                //}
             };
 
             await _ordersService.CreateOrderAsync(orderDto);
             return RedirectToAction(nameof(Index));
-
         }
         catch (Exception ex)
         {
             return View();
         }
     }
-
 }

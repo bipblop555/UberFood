@@ -29,13 +29,16 @@
 
             <fieldset>
                 <legend>Products</legend>
-                <div class="form-group">
-                    <label asp-for="ProductId" class="control-label"></label>
-                    <select asp-for="ProductId" class="form-control" asp-items="Model.Products">
-                        <option value="">-- Sélectionner un produit --</option>
-                    </select>
-                    <span asp-validation-for="ProductId" class="text-danger"></span>
+                <div id="products-list">
+                    <div class="form-group">
+                        <label for="ProductsIds_0">Produit</label>
+                        <select name="ProductsIds[0]" class="form-control" asp-items="Model.Products">
+                            <option value="">-- Sélectionner un produit --</option>
+                        </select>
+                    </div>
                 </div>
+
+                <button type="button" class="btn btn-secondary mt-2" onclick="addProduct()">+ Ajouter un produit</button>
             </fieldset>
             
 
@@ -67,6 +70,35 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script>
+    let productIndex = 1;
+
+    function addProduct() {
+        const container = document.getElementById("products-list");
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "form-group mt-2";
+
+        const label = document.createElement("label");
+        label.setAttribute("for", `ProductsIds_${productIndex}`);
+        label.innerText = "Produit";
+
+        const select = document.createElement("select");
+        select.name = `ProductsIds[${productIndex}]`;
+        select.className = "form-control";
+
+        // récupère les options depuis ton premier select
+        const firstSelect = container.querySelector("select");
+        select.innerHTML = firstSelect.innerHTML;
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(select);
+        container.appendChild(wrapper);
+
+        productIndex++;
+    }
+</script>
 
 @section Scripts {
     @{

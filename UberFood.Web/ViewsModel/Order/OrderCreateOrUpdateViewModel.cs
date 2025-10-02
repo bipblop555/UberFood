@@ -28,6 +28,6 @@ public class OrderCreateOrUpdateViewModel
     public int Status { get; set; } = 1;
 
     [DisplayName("Produit")]
-    public Guid ProductId { get; set; }
+    public List<Guid> ProductsIds { get; set; } = new();
     public IEnumerable<SelectListItem> Products { get; set; } = new List<SelectListItem>();
 }
