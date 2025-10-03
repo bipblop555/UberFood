@@ -1,0 +1,40 @@
+﻿@model UberFood.Web.ViewsModel.Order.OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Supprésion d'une commande</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>OrderDetailsViewModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DeliveryDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteConfirmed" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Supprimer" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>

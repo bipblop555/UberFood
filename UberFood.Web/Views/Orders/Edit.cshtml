@@ -1,0 +1,53 @@
+﻿@model UberFood.Web.ViewsModel.Order.OrderCreateOrUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Modification d'une commande</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryDate" class="control-label"></label>
+                <input asp-for="DeliveryDate" class="form-control" />
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+            <h4>Modifier les produits de la commande</h4>
+
+            @for (int i = 0; i < Model.ProductsIds.Count; i++)
+            {
+                <div class="form-group">
+                    <label>Produit @(@i + 1)</label>
+                    <select name="ProductsIds[@i]" class="form-control">
+                        @foreach (var product in Model.Products)
+                        {
+                            var isSelected = Guid.TryParse(product.Value, out var productId) && productId == Model.ProductsIds[i];
+                            <option value="@product.Value" selected="@(isSelected ? "selected" : null)">@product.Text</option>
+                        }
+                    </select>
+                </div>
+            }
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+</div>
+
