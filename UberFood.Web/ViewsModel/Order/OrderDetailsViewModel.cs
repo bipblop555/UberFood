@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
-using UberFood.Web.Services;
+using UberFood.Web.ViewsModel.OrderProducts;
+
 
 namespace UberFood.Web.ViewsModel.Order;
 
@@ -15,6 +16,6 @@ public class OrderDetailsViewModel
     [DisplayName("Status de la commande")]
     public int Status { get; set; }
     [DisplayName("Produits")]
-    public List<OrderProductDto> Products { get; set; } = new();
+    public List<OrderProductViewModel> OrderProducts { get; set; } = new List<OrderProductViewModel>();
 
 }

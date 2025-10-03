@@ -274,3 +274,6 @@ DELETE {{UberFood.Api_HostAddress}}/api/Pizza/1
 
   ### Récupérer tous les produits
 GET {{UberFood.Api_HostAddress}}/api/Product
+
+###
+GET {{UberFood.Api_HostAddress}}/api/Order/340cc059-1758-45ad-7946-08de01db5e06

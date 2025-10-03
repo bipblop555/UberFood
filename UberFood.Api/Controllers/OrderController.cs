@@ -47,6 +47,45 @@ public class OrderController : ControllerBase
             return Results.InternalServerError($"{e.Message}");
         }
     }
+    [HttpGet("{id}")]
+    public async Task<IResult> GetOrder(Guid id)
+    {
+        try
+        {
+            var order = await _dataContext.Orders
+            .Where(o => o.Id == id)
+            .Select(o => new
+            {
+                o.Id,
+                o.UserId,
+                o.AddressId,
+                o.OrderDate,
+                o.DeliveryDate,
+                o.Status,
+                OrderProducts = _dataContext.OrderProducts
+                    .Where(op => op.OrderId == o.Id)
+                    .Join(
+                        _dataContext.Products,
+                        op => op.ProductsId,
+                        p => p.Id,
+                        (op, p) => new {
+                            op.Id,
+                            op.ProductsId,
+                            ProductName = p.Name,
+                            ProductPrice = p.Price
+                        }
+                    ).ToList()
+            })
+            
+            .FirstOrDefaultAsync();
+
+            return Results.Ok(order);
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError($"{e.Message}");
+        }
+    }
 
     [HttpDelete("{id}")]
     public async Task<IResult> DeleteOrder([FromRoute] Guid id)

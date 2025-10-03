@@ -37,7 +37,7 @@ public class OrdersService : IOrdersService
             }
 
             var order = await response.Content.ReadFromJsonAsync<OrdersDto>();
-            return order;
+            return order ?? null;
         }
         catch (HttpRequestException ex)
         {

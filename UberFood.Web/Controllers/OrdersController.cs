@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Threading.Tasks;
 using UberFood.Web.Services;
 using UberFood.Web.Services.Abstractions;
-using UberFood.Web.Services.Dtos;
-using UberFood.Web.Services.Services;
-using UberFood.Web.ViewsModel.Drinks;
-using UberFood.Web.ViewsModel.Ingredients;
 using UberFood.Web.ViewsModel.Order;
-using UberFood.Web.ViewsModel.Pizza;
+using UberFood.Web.ViewsModel.OrderProducts;
+
+
 
 namespace UberFood.Web.Controllers;
 
@@ -34,16 +31,40 @@ public class OrdersController : Controller
             OrderDate = order.OrderDate,
             DeliveryDate = order.DeliveryDate,
             Status = order.Status,
-            Products = order.OrderProducts?.ToList() ?? new List<OrderProductDto>()
+           
 
         }).ToList();
 
         return View(viewModelList);
     }
 
-    public async Task<IActionResult> Details(Guid id)
+    public async Task<IActionResult> Details([FromRoute]Guid id)
     {
-        return this.View();
+        var order = await _ordersService.GetOrderByIdAsync(id);
+ 
+        var productViewModels = order.OrderProducts
+        .Select(op => new OrderProductViewModel
+        {
+            
+            ProductName = op.ProductName,
+            ProductPrice = op.ProductPrice,
+        })
+        .ToList()
+       
+        ?? new List<OrderProductViewModel>();
+
+       
+        var viewModelOrder = new OrderDetailsViewModel
+        {
+            Id = order.Id,
+            OrderDate = order.OrderDate,
+            DeliveryDate = order.DeliveryDate,
+            Status = order.Status,
+            OrderProducts = productViewModels
+        };
+
+        return this.View(viewModelOrder);
+    
     }
 
     // GET: OrdersController/Create
