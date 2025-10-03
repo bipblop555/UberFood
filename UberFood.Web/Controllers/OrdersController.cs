@@ -146,4 +146,127 @@ public class OrdersController : Controller
             return View();
         }
     }
+    // GET: Orders/Edit/{id}
+    public async Task<IActionResult> Edit(Guid id)
+    {
+        var order = await _ordersService.GetOrderByIdAsync(id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        var users = await _usersService.GetUsersAsync();
+        var products = await _productService.GetProductsAsync();
+
+        var viewModel = new OrderCreateOrUpdateViewModel
+        {
+            Id = order.Id,
+            UserId = order.UserId,
+            AddressId = order.AddressId,
+            OrderDate = order.OrderDate,
+            DeliveryDate = order.DeliveryDate,
+            Status = order.Status,
+            ProductsIds = order.OrderProducts.Select(op => op.ProductsId).ToList(),
+
+            Users = users.Select(u => new SelectListItem
+            {
+                Value = u.Id.ToString(),
+                Text = u.FirstName
+            }),
+            Adresse = users.Select(u => u.Adresse).Select(a => new SelectListItem
+            {
+                Value = a.Id.ToString(),
+                Text = $"{a.Street} {a.Zip} {a.City}"
+            }),
+            Products = products.Select(p => new SelectListItem
+            {
+                Value = p.Id.ToString(),
+                Text = p.Name
+            })
+        };
+
+        return View(viewModel);
+    }
+    // POST: Orders/Edit/{id}
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(Guid id, [Bind("Id, UserId, AddressId, ProductsIds, OrderDate, DeliveryDate, Status")] OrderCreateOrUpdateViewModel orderViewModel)
+    {
+        if (id != orderViewModel.Id)
+        {
+            return BadRequest();
+        }
+
+        if (!ModelState.IsValid)
+        {
+            var users = await _usersService.GetUsersAsync();
+            var products = await _productService.GetProductsAsync();
+
+            orderViewModel.Users = users.Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FirstName });
+            orderViewModel.Adresse = users.Select(u => u.Adresse).Select(a => new SelectListItem { Value = a.Id.ToString(), Text = $"{a.Street} {a.Zip} {a.City}" });
+            orderViewModel.Products = products.Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Name });
+
+            return View(orderViewModel);
+        }
+
+        try
+        {
+            var orderDto = new OrdersDto
+            {
+                Id = orderViewModel.Id,
+                UserId = orderViewModel.UserId,
+                AddressId = orderViewModel.AddressId,
+                OrderDate = orderViewModel.OrderDate,
+                DeliveryDate = orderViewModel.DeliveryDate,
+                Status = orderViewModel.Status,
+                OrderProducts = orderViewModel.ProductsIds.Select(pid => new OrderProductDto
+                {
+                    ProductsId = pid
+                }).ToList()
+            };
+
+            await _ordersService.UpdateOrderrAsync(orderDto.Id,orderDto);
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View(orderViewModel);
+        }
+    }
+
+    // GET: Orders/Delete/{id}
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var order = await _ordersService.GetOrderByIdAsync(id);
+        if (order == null)
+        {
+            return NotFound();
+        }
+
+        var viewModel = new OrderDetailsViewModel
+        {
+            Id = order.Id,
+            OrderDate = order.OrderDate,
+            DeliveryDate = order.DeliveryDate,
+            Status = order.Status
+        };
+
+        return View(viewModel);
+    }
+
+    // POST: Orders/DeleteConfirmed
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(Guid id)
+    {
+        try
+        {
+            await _ordersService.DeleteOrderAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+        catch
+        {
+            return View("Error");
+        }
+    }
 }

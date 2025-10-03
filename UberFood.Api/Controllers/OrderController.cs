@@ -178,6 +178,12 @@ public class OrderController : ControllerBase
                 existingOrder.DeliveryDate = updatedOrder.DeliveryDate;
             if (existingOrder.Status != updatedOrder.Status)
                 existingOrder.Status = updatedOrder.Status;
+            // Supprimer les anciens produits liés
+            var existingProducts = _dataContext.OrderProducts.Where(op => op.OrderId == id);
+            _dataContext.OrderProducts.RemoveRange(existingProducts);
+
+            // Ajouter les nouveaux produits
+            existingOrder.OrderProducts = updatedOrder.OrderProducts;
 
             await _dataContext.SaveChangesAsync();
             return Results.Ok();
