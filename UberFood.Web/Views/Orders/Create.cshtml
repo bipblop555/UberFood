@@ -1,0 +1,107 @@
+﻿@model UberFood.Web.ViewsModel.Order.OrderCreateOrUpdateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>OrderCreateOrUpdateViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="Model.Users">
+                    <option value="">-- Sélectionner un utilisateur --</option>
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AddressId" class="control-label"></label>
+                <select asp-for="AddressId" class="form-control" asp-items="Model.Adresse">
+                    <option value="">-- Sélectionner une adresse --</option>
+                </select>
+                <span asp-validation-for="AddressId" class="text-danger"></span>
+            </div>
+
+            <fieldset>
+                <legend>Products</legend>
+                <div id="products-list">
+                    <div class="form-group">
+                        <label for="ProductsIds_0">Produit</label>
+                        <select name="ProductsIds[0]" class="form-control" asp-items="Model.Products">
+                            <option value="">-- Sélectionner un produit --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-secondary mt-2" onclick="addProduct()">+ Ajouter un produit</button>
+            </fieldset>
+            
+
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control" type="date" />
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DeliveryDate" class="control-label"></label>
+                <input asp-for="DeliveryDate" class="form-control" type="date" />
+                <span asp-validation-for="DeliveryDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Status" class="control-label"></label>
+                <input asp-for="Status" class="form-control" />
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Créer</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    let productIndex = 1;
+
+    function addProduct() {
+        const container = document.getElementById("products-list");
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "form-group mt-2";
+
+        const label = document.createElement("label");
+        label.setAttribute("for", `ProductsIds_${productIndex}`);
+        label.innerText = "Produit";
+
+        const select = document.createElement("select");
+        select.name = `ProductsIds[${productIndex}]`;
+        select.className = "form-control";
+
+        // récupère les options depuis ton premier select
+        const firstSelect = container.querySelector("select");
+        select.innerHTML = firstSelect.innerHTML;
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(select);
+        container.appendChild(wrapper);
+
+        productIndex++;
+    }
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

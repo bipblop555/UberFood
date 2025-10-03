@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using UberFood.Core.Context;
 using UberFood.Core.Entities;
@@ -21,8 +22,8 @@ public class OrderController : ControllerBase
         try
         {
             var order = await _dataContext.AddAsync(orders);
-            await _dataContext.SaveChangesAsync();
 
+            await _dataContext.SaveChangesAsync();
             return Results.Created();
         }
         catch (Exception ex)
@@ -40,6 +41,45 @@ public class OrderController : ControllerBase
                 .ToListAsync();
 
             return Results.Ok(orders);
+        }
+        catch (Exception e)
+        {
+            return Results.InternalServerError($"{e.Message}");
+        }
+    }
+    [HttpGet("{id}")]
+    public async Task<IResult> GetOrder(Guid id)
+    {
+        try
+        {
+            var order = await _dataContext.Orders
+            .Where(o => o.Id == id)
+            .Select(o => new
+            {
+                o.Id,
+                o.UserId,
+                o.AddressId,
+                o.OrderDate,
+                o.DeliveryDate,
+                o.Status,
+                OrderProducts = _dataContext.OrderProducts
+                    .Where(op => op.OrderId == o.Id)
+                    .Join(
+                        _dataContext.Products,
+                        op => op.ProductsId,
+                        p => p.Id,
+                        (op, p) => new {
+                            op.Id,
+                            op.ProductsId,
+                            ProductName = p.Name,
+                            ProductPrice = p.Price
+                        }
+                    ).ToList()
+            })
+            
+            .FirstOrDefaultAsync();
+
+            return Results.Ok(order);
         }
         catch (Exception e)
         {

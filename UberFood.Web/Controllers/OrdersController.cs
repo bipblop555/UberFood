@@ -1,18 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using UberFood.Web.Services;
 using UberFood.Web.Services.Abstractions;
-using UberFood.Web.Services.Services;
-using UberFood.Web.ViewsModel.Ingredients;
 using UberFood.Web.ViewsModel.Order;
-using UberFood.Web.ViewsModel.Pizza;
+using UberFood.Web.ViewsModel.OrderProducts;
+
+
 
 namespace UberFood.Web.Controllers;
 
 public class OrdersController : Controller
 {
     private readonly IOrdersService _ordersService;
-    public OrdersController(IOrdersService ordersService)
+    private readonly IUsersService _usersService;
+    private readonly IProductService _productService;
+    public OrdersController(IOrdersService ordersService, IUsersService usersService, IProductService productService)
     {
         this._ordersService = ordersService;
+        this._usersService = usersService;
+        this._productService = productService;
     }
     // GET: PizzasController
     public async Task<ActionResult> Index()
@@ -25,10 +31,119 @@ public class OrdersController : Controller
             OrderDate = order.OrderDate,
             DeliveryDate = order.DeliveryDate,
             Status = order.Status,
-            ProductName = order.OrderProduct?.ProductName ?? "Produit inconnu",
-            Price = order.OrderProduct?.Price ?? 0.0
+           
+
         }).ToList();
 
         return View(viewModelList);
+    }
+
+    public async Task<IActionResult> Details([FromRoute]Guid id)
+    {
+        var order = await _ordersService.GetOrderByIdAsync(id);
+ 
+        var productViewModels = order.OrderProducts
+        .Select(op => new OrderProductViewModel
+        {
+            
+            ProductName = op.ProductName,
+            ProductPrice = op.ProductPrice,
+        })
+        .ToList()
+       
+        ?? new List<OrderProductViewModel>();
+
+       
+        var viewModelOrder = new OrderDetailsViewModel
+        {
+            Id = order.Id,
+            OrderDate = order.OrderDate,
+            DeliveryDate = order.DeliveryDate,
+            Status = order.Status,
+            OrderProducts = productViewModels
+        };
+
+        return this.View(viewModelOrder);
+    
+    }
+
+    // GET: OrdersController/Create
+    public async Task<ActionResult> Create()
+    {
+        var users = await _usersService.GetUsersAsync();
+        var products = await _productService.GetProductsAsync();
+
+        var vm = new OrderCreateOrUpdateViewModel
+        {
+            Users = users.Select(u => new SelectListItem
+            {
+                Value = u.Id.ToString(),
+                Text = u.FirstName,
+            }),
+
+            Adresse = users.Select(u => u.Adresse)
+                .Select(a => new SelectListItem
+                {
+                    Value = a.Id.ToString(),
+                    Text = $"{a.Street} {a.Zip} {a.City}",
+                }),
+
+            Products = products
+                .Select(p => new SelectListItem
+                {
+                    Value = p.Id.ToString(),
+                    Text = p.Name
+                }),
+        };
+        return View(vm);
+    }
+
+    // POST: DrinksController/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<ActionResult> Create([Bind("UserId, AddressId, ProductsIds, OrderDate, DeliveryDate, Status")] OrderCreateOrUpdateViewModel orderViewModel)
+    {
+        if (!this.ModelState.IsValid)
+        {
+            var users = await _usersService.GetUsersAsync();
+            var products = await _productService.GetProductsAsync();
+
+            orderViewModel.Users = users
+                        .Select(u => new SelectListItem { Value = u.Id.ToString(), Text = u.FirstName });
+            orderViewModel.Products = products
+                    .Select(p => new SelectListItem { Value = p.Id.ToString(), Text = p.Name });
+            orderViewModel.Adresse = users.Select(u => u.Adresse)
+                    .Select(a => new SelectListItem { Value = a.Id.ToString(), Text = $"{a.Street} {a.Zip} {a.City}" });
+        }
+        try
+        {
+            var orderDto = new OrdersDto
+            {
+                UserId = orderViewModel.UserId,
+                AddressId = orderViewModel.AddressId,
+                Status = orderViewModel.Status,
+                DeliveryDate = orderViewModel.DeliveryDate,
+                OrderDate = orderViewModel.OrderDate,
+                OrderProducts = orderViewModel.ProductsIds.Select(pid => new OrderProductDto
+                {
+                    ProductsId = pid
+                }).ToList()
+
+                //OrderProducts = new List<OrderProductDto>
+                //{
+                //    new OrderProductDto
+                //    {
+                //        ProductsId = orderViewModel.ProductId,
+                //    }
+                //}
+            };
+
+            await _ordersService.CreateOrderAsync(orderDto);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            return View();
+        }
     }
 }

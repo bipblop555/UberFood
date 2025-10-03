@@ -8,5 +8,5 @@ public class OrdersDto
     public DateTime OrderDate { get; set; }
     public DateTime DeliveryDate { get; set; }
     public int Status { get; set; }
-    public OrderProductDto OrderProduct { get; set; } = null!;
+    public List<OrderProductDto> OrderProducts { get; set; } = null!;
 }
